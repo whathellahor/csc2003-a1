@@ -28,12 +28,6 @@ int64_t EchoMaxAlarm_callback_right(alarm_id_t id, void *user_data);
 uint sampleSize = 30;
 uint totalReadings = 2000;
 
-alarm_id_t triggerAlarm;
-alarm_id_t EchoMaxAlarm;
-alarm_id_t EchoMaxAlarm_center;
-alarm_id_t EchoMaxAlarm_left;
-alarm_id_t EchoMaxAlarm_right;
-
 
 struct Sensors{
     uint8_t triggerPin;
@@ -172,7 +166,6 @@ void echoUltraSonic_callback_center()
         if (sensor_center.timeOut == true)
         {
             sensor_center.timeOut = false;
-            printf("TimeOut\n");
             return;
         }
 
@@ -183,48 +176,50 @@ void echoUltraSonic_callback_center()
 }
 
 // Callback function for Rising|Falling edge IRQ for left sensor
-void echoUltraSonic_callback_left(uint8_t echoPin, uint32_t events)
+void echoUltraSonic_callback_left()
 {
-   // If rising edge detected, Get start time
-    if (gpio_get(echoPin) == 1)
+    if(gpio_get_irq_event_mask(sensor_left.echoPin) & GPIO_IRQ_EDGE_RISE)
     {
+        gpio_acknowledge_irq(sensor_left.echoPin, GPIO_IRQ_EDGE_RISE);
         sensor_left.startTime = get_absolute_time();
         add_alarm_in_ms(MAX_UPTIME, EchoMaxAlarm_callback_left, NULL, true);
     }
-    // If falling edge detected, check if time out reached, else calculate distance
-    else
+    else if(gpio_get_irq_event_mask(sensor_left.echoPin) & GPIO_IRQ_EDGE_FALL)
     {
+        gpio_acknowledge_irq(sensor_left.echoPin, GPIO_IRQ_EDGE_FALL);
         if (sensor_left.timeOut == true)
         {
             sensor_left.timeOut = false;
             return;
         }
+
         sensor_left.endTime = get_absolute_time();
         uint timeDifference = absolute_time_diff_us(sensor_left.startTime, sensor_left.endTime);
-        getDistance(timeDifference,&sensor_left);
+        getDistance(timeDifference, &sensor_left);
     }
 }
 
 // Callback function for Rising|Falling edge IRQ for right sensor
 void echoUltraSonic_callback_right(uint8_t echoPin, uint32_t events)
 {
-   // If rising edge detected, Get start time
-    if (gpio_get(echoPin) == 1)
+   if(gpio_get_irq_event_mask(sensor_right.echoPin) & GPIO_IRQ_EDGE_RISE)
     {
+        gpio_acknowledge_irq(sensor_right.echoPin, GPIO_IRQ_EDGE_RISE);
         sensor_right.startTime = get_absolute_time();
         add_alarm_in_ms(MAX_UPTIME, EchoMaxAlarm_callback_right, NULL, true);
     }
-    // If falling edge detected, check if time out reached, else calculate distance
-    else
+    else if(gpio_get_irq_event_mask(sensor_right.echoPin) & GPIO_IRQ_EDGE_FALL)
     {
+        gpio_acknowledge_irq(sensor_right.echoPin, GPIO_IRQ_EDGE_FALL);
         if (sensor_right.timeOut == true)
         {
             sensor_right.timeOut = false;
             return;
         }
+
         sensor_right.endTime = get_absolute_time();
         uint timeDifference = absolute_time_diff_us(sensor_right.startTime, sensor_right.endTime);
-        getDistance(timeDifference,&sensor_right);
+        getDistance(timeDifference, &sensor_right);
     }
 }
 
@@ -313,8 +308,8 @@ int main()
 
     // Set up the callback function for the echo pin(s)
     gpio_add_raw_irq_handler(CENTER_ECHO_PIN, echoUltraSonic_callback_center);
-    // gpio_add_raw_irq_handler(LEFT_ECHO_PIN, echoUltraSonic_callback_center);
-    // gpio_add_raw_irq_handler(RIGHT_ECHO_PIN, echoUltraSonic_callback_center);
+    // gpio_add_raw_irq_handler(LEFT_ECHO_PIN, echoUltraSonic_callback_left);
+    // gpio_add_raw_irq_handler(RIGHT_ECHO_PIN, echoUltraSonic_callback_right);
 
     //enable interrupt master
     irq_set_enabled(IO_IRQ_BANK0,true);
