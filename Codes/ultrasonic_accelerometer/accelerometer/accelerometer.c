@@ -111,8 +111,8 @@ int main()
 void hump_calculation(float Acc, uint time)
 {
     float height = 0;
-
-    height = Acc * pow(time, 2); // formula to calculate height of the hump
+    height = Acc / 0.14; //0.14 is approximate ratio of change in Y-axis to 1cm
+    //height = Acc * pow(time, 2); // formula to calculate height of the hump
     // printf("time going up the hump: %lld\n", time);
     printf("Height is: %.2f cm\n\n", height);
     // return height;
@@ -157,7 +157,7 @@ bool triggerAcc_callback(repeating_timer_t *t)
             // to get the snapshot of the time the moment the car goes up the hump
             startTime = get_absolute_time();
             printf("Hump detected. Going up\n");
-            accUp = Ax; // assign the value of the acceleration at the X axis to the global value the moment the car goes up the hump
+            accUp = Ay; // assign the value of the acceleration at the X axis to the global value the moment the car goes up the hump
             hump = 1;   // hump detected, set boolean to true
             printf("hump value: %d\n", hump);
         }
