@@ -24,12 +24,16 @@ static int addr = 0x68;
 #define SDA_PIN 16
 #define SCL_PIN 17
 
-// boolean to check for presence of hump. default value is 0 for no hump detected
-bool hump = 0;
-
 static absolute_time_t startTime;
 float accUp;
-float stableAcc;
+
+// set flag and stable values for when car first power up to store initialized values
+bool startFlag = 0;        // car not start yet.
+float stableAcc, min, max; // store value for when car first power up
+// boolean to check for presence of hump. default value is 0 for no hump detected
+bool hump = 0;
+// check if car is at the peak of the hump
+bool peak = 0;
 
 // functions
 void hump_calculation(float Ay, uint time);
@@ -66,18 +70,6 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3], int16_t *temp)
     {
         accel[i] = (buffer[i * 2] << 8 | buffer[(i * 2) + 1]);
     }
-
-    /*// Now gyro data from reg 0x43 for 6 bytes
-    // The register is auto incrementing on each read
-    val = 0x43;
-    i2c_write_blocking(i2c_default, addr, &val, 1, true);
-    i2c_read_blocking(i2c_default, addr, buffer, 6, false); // False - finished with bus
-
-    for (int i = 0; i < 3; i++)
-    {
-        gyro[i] = (buffer[i * 2] << 8 | buffer[(i * 2) + 1]);
-        ;
-    }*/
 }
 #endif
 
@@ -105,7 +97,7 @@ int main()
 
     // call timer to iterate the function to check for the hump
     repeating_timer_t triggerTimer;
-    add_repeating_timer_ms(200, triggerAcc_callback, NULL, &triggerTimer);
+    add_repeating_timer_ms(500, triggerAcc_callback, NULL, &triggerTimer);
 
     while (1)
     {
@@ -143,35 +135,46 @@ bool triggerAcc_callback(repeating_timer_t *t)
     Ay = acceleration[1] / 8192.0;
     Az = acceleration[2] / 8192.0;
 
-    /*// FSR 250 -> 131 LSB
-        Gx = gyro[0] / 131;
-        Gy = gyro[1] / 131;
-        Gz = gyro[2] / 131;
-
-    printf("Raw Gyro. X = %.2f, Y = %.2f, Z = %.2f\n", Gx, Gy, Gz);*/
-
-    //printf("Even more raw acc value:  X = %.2f, Y = %.2f, Z = %.2f\n", acceleration[0], acceleration[1], acceleration[2]);
-    printf("Raw Acceleration is. X = %.2f, Y = %.2f, Z = %.2f\n", Ax, Ay, Az);
-
-    if (Ay > 0 && hump == 0)
+    if (startFlag == 0)
     {
-        // to get the snapshot of the time the moment the car goes up the hump
-        startTime = get_absolute_time();
 
-        printf("Hump detected.\n");
-        accUp = Ax; // assign the value of the acceleration at the X axis to the global value the moment the car goes up the hump
-        hump = 1;   // hump detected, set boolean to true
+        stableAcc = Ay;
+        // set the range of values. if Ay is within this range, it's on flat ground
+        min = stableAcc - 0.1;
+        max = stableAcc + 0.1;
+
+        startFlag = 1; // car is moving. dont come in here again
     }
-    if (Ay <= 0 && hump == 1)
+
+    if (hump == 0)
+    {
+        if (((Ay - min) * (Ay - max)) <= 0)
+        {
+            printf("moving on flat ground\n");
+        }
+        else if (Ay > 0)
+        {
+            // to get the snapshot of the time the moment the car goes up the hump
+            startTime = get_absolute_time();
+            printf("Hump detected. Going up\n");
+            accUp = Ax; // assign the value of the acceleration at the X axis to the global value the moment the car goes up the hump
+            hump = 1;   // hump detected, set boolean to true
+            printf("hump value: %d\n", hump);
+        }
+    }
+
+    if (hump == 1 && Ay < stableAcc)
     {
         absolute_time_t endTime = get_absolute_time();
         uint time = absolute_time_diff_us(startTime, endTime);
         time = time / 1000000; // convert time captured from micro-seconds to seconds
         hump_calculation(accUp, time);
         printf("Check time in secs: %d\n", time); // call the function to calculate the height of the hump
-        // set boolean value back to 0
-        hump = 0;
+        hump = 0;                                 // set boolean value back to 0;
+        printf("down slope: %d\n", hump);
     }
+
+    printf("Raw Acceleration is. X = %.2f, Y = %.2f, Z = %.2f\n", Ax, Ay, Az);
 
     return true;
 }
