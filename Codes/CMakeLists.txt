@@ -1,0 +1,5 @@
+add_subdirectory(communications)
+add_subdirectory(infrared)
+add_subdirectory(mapping_navigation)
+add_subdirectory(motor_control)
+add_subdirectory(ultrasonic_accelerometer)
