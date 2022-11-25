@@ -109,7 +109,7 @@ void Smoothing(struct Sensors *sensor)
         sensor -> averageDistance = arraySum / SAMPLE_SIZE;
 
         // print output in putty
-        printf("%c -> distance: %d cm, average: %d cm \n", sensor -> Name, sensor -> distance, sensor -> averageDistance);
+        //printf("%c -> distance: %d cm, average: %d cm \n", sensor -> Name, sensor -> distance, sensor -> averageDistance);
     }
 }
 

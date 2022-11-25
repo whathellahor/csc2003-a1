@@ -41,7 +41,7 @@ bool calcSpeed(repeating_timer_t* rt) {
     speedB = counterB * (1000/SPEED_CALC_FREQ);
     counterB = 0;
     // COMMS FUNCTION WILL CALL ON GLOBAL VARIABLES
-    printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
+    //printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
     return true;
 }
 
@@ -83,7 +83,7 @@ bool computeErrorA() {
         }
     } 
 
-    printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
+    // printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
 
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_A, pwmA);
 
@@ -119,7 +119,7 @@ bool computeErrorB() {
         }
     } 
 
-    printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
+    //printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
 
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_B, pwmB);
     lastUpdateB = currentTime;
