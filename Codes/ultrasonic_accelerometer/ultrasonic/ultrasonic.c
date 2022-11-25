@@ -147,9 +147,10 @@ void getDistance(uint timeDifference, struct Sensors *sensor)
 }
 
 
-// callback function for rising / falling edge IRQ for center sensor
-void echoUltraSonic_callback_center()
+void echoUltraSonic_callback()
 {
+
+    // callback function for rising / falling edge IRQ for center sensor
     // if rising edge detected
     if(gpio_get_irq_event_mask(sensor_center.echoPin) & GPIO_IRQ_EDGE_RISE)
     {
@@ -182,11 +183,8 @@ void echoUltraSonic_callback_center()
         // get pulse width based on center ultrasonic sensor input
         getDistance(timeDifference, &sensor_center);
     }
-}
 
-// callback function for rising / falling edge IRQ for left sensor
-void echoUltraSonic_callback_left()
-{
+    // callback function for rising / falling edge IRQ for left sensor
     if(gpio_get_irq_event_mask(sensor_left.echoPin) & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(sensor_left.echoPin, GPIO_IRQ_EDGE_RISE);
@@ -207,12 +205,9 @@ void echoUltraSonic_callback_left()
         uint timeDifference = absolute_time_diff_us(sensor_left.startTime, sensor_left.endTime);
         getDistance(timeDifference, &sensor_left);
     }
-}
 
-// callback function for rising / falling edge IRQ for right sensor
-void echoUltraSonic_callback_right()
-{
-   if(gpio_get_irq_event_mask(sensor_right.echoPin) & GPIO_IRQ_EDGE_RISE)
+    // callback function for rising / falling edge IRQ for right sensor
+    if(gpio_get_irq_event_mask(sensor_right.echoPin) & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(sensor_right.echoPin, GPIO_IRQ_EDGE_RISE);
         sensor_right.startTime = get_absolute_time();
@@ -235,14 +230,16 @@ void echoUltraSonic_callback_right()
 }
 
 
+
 // set the trigger pin to high and set alarm to off after 10 microseconds
-bool triggerUltraSonic_callback(struct repeating_timer *t)
+bool triggerUltraSonic_callback(repeating_timer_t *t)
 {
-        setTriggerPinHigh(sensor_center.triggerPin);
-        setTriggerPinHigh(sensor_left.triggerPin);
-        setTriggerPinHigh(sensor_right.triggerPin);
-        add_alarm_in_us(MIN_TRIGGER_TIME, triggerAlarm_callback, NULL, true);
-        return true;   
+    //printf("hello");
+    setTriggerPinHigh(sensor_center.triggerPin);
+    setTriggerPinHigh(sensor_left.triggerPin);
+    setTriggerPinHigh(sensor_right.triggerPin);
+    add_alarm_in_us(MIN_TRIGGER_TIME*1000, triggerAlarm_callback, NULL, true);   
+    return true;
 }
 
 // callback function to set trigger low
@@ -251,11 +248,9 @@ int64_t triggerAlarm_callback(alarm_id_t id, void *user_data)
     setTriggerPinLow(sensor_center.triggerPin);
     setTriggerPinLow(sensor_left.triggerPin);
     setTriggerPinLow(sensor_right.triggerPin);
-    alarm_pool_cancel_alarm(alarm_pool_get_default(), id);
-    return 10;
+    cancel_alarm(id);
+    return 0;
 }
-
-
 // callback function to stop calculating distance if no echo is detected
 int64_t EchoMaxAlarm_callback_center(alarm_id_t id, void *user_data)
 {
@@ -269,7 +264,6 @@ int64_t EchoMaxAlarm_callback_center(alarm_id_t id, void *user_data)
     alarm_pool_cancel_alarm(alarm_pool_get_default(), id);
     return 0;
 }
-
 // callback alarm for left sensor
 int64_t EchoMaxAlarm_callback_left(alarm_id_t id, void *user_data)
 {

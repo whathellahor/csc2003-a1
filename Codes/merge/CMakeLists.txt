@@ -7,7 +7,7 @@ add_executable(
 pico_add_extra_outputs(car)
 
 #Edit below for additional libraries to link
-target_link_libraries(car pico_stdlib hardware_pwm hardware_i2c)
+target_link_libraries(car pico_stdlib hardware_pwm hardware_gpio hardware_i2c hardware_timer)
 
 pico_enable_stdio_usb(car 1)
 pico_enable_stdio_uart(car 1)

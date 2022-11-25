@@ -13,11 +13,10 @@
 // ultrasonic for center of car
 #define CENTER_TRIGGER_PIN 14
 #define CENTER_ECHO_PIN 15
-// shoots pulse every 30 microseconds
+// shoots pulse every 30 milliseconds
 #define PULSE_INTERVAL 30
 // smoothing sample size
 #define SAMPLE_SIZE 30
-
 // struct function for sensors
 extern struct Sensors{
     uint8_t triggerPin;
@@ -44,10 +43,8 @@ void setTriggerPinLow(uint trigPin);
 void setEchoPinHigh(uint echoPin);
 void setEchoPinLow(uint echoPin);
 void getDistance(uint timeDifference, struct Sensors *sensor);
-void echoUltraSonic_callback_center();
-void echoUltraSonic_callback_left();
-void echoUltraSonic_callback_right();
-bool triggerUltraSonic_callback(struct repeating_timer *t);
+void echoUltraSonic_callback();
+bool triggerUltraSonic_callback(repeating_timer_t *t);
 
 
 // IRQ handlers

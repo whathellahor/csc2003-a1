@@ -1,9 +1,5 @@
 #include "zoomies.h"
 
-const uint16_t PWM_COUNTER = 10000;
-const uint16_t SPEED_CALC_FREQ = 250; //In ms
-const uint16_t PID_FREQ = 25; //In ms
-const int TARGET_SPEED = 6;
 const float Kp = 2.5;   
 const float Ki = 0.0005;
 const float Kd = 0.0025;
@@ -23,28 +19,7 @@ int integralB;
 int lastErrorB;
 absolute_time_t lastUpdateB;
 
-bool initEncoders(repeating_timer_t *timer) {
-    //Speed Calc
-    //create a timer to call a given function (i.e. calcSpeed) every n milliseconds) returns false if no timer slots available
-    if (!add_repeating_timer_ms(SPEED_CALC_FREQ, calcSpeed, NULL, timer)) {
-         printf("Failed to add timer\n");
-         return 1;
-    };
-    //Encoder init
-    //Set gpio pin to call interrtupt on rising edge.
-    gpio_set_irq_enabled(pinENCA, GPIO_IRQ_EDGE_RISE, true);
-    gpio_set_irq_enabled(pinENCB, GPIO_IRQ_EDGE_RISE, true);
-    //Assign pin interrupt to call a specific function.
-    // Something like in msp
-    // void PORT_1_IRQHANDLER() {
-    //     encoderAIRQ();
-    // }
-    gpio_add_raw_irq_handler(pinENCA,encoderAIRQ);
-    gpio_add_raw_irq_handler(pinENCB,encoderBIRQ);
-
-}
-
-void encoderAIRQ() {
+void encoderIRQ() {
     //check interrupt flag and status
     if (gpio_get_irq_event_mask(pinENCA) & GPIO_IRQ_EDGE_RISE) {
         //clear interrupt
@@ -52,14 +27,12 @@ void encoderAIRQ() {
         counterA++;
         //printf("===\nCounter A: %d\nCounter B: %d\n", counterA, counterB);
     }    
-}
 
-void encoderBIRQ() {
     if (gpio_get_irq_event_mask(pinENCB) & GPIO_IRQ_EDGE_RISE) {
         gpio_acknowledge_irq(pinENCB, GPIO_IRQ_EDGE_RISE);
         counterB++;
         //printf("===\nCounter A: %d\nCounter B: %d\n", counterA, counterB);
-    }    
+    }  
 }
 
 bool calcSpeed(repeating_timer_t* rt) {
@@ -69,9 +42,10 @@ bool calcSpeed(repeating_timer_t* rt) {
     counterB = 0;
     // COMMS FUNCTION WILL CALL ON GLOBAL VARIABLES
     printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
+    return true;
 }
 
-bool initPWM(repeating_timer_t *timer2) {
+bool initPWM() {
     //PWM
     //Set pin to pwm function
     gpio_set_function(pinENA, GPIO_FUNC_PWM);
@@ -87,12 +61,7 @@ bool initPWM(repeating_timer_t *timer2) {
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_B, pwmB);
     pwm_set_enabled(pwm_gpio_to_slice_num(pinENA), true);
 
-    //Add timer to run PID periodically
-    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, timer2)) {
-         printf("Failed to add timer\n");
-         return 1;
-    };
-
+    return true;
 }
 
 bool computeErrorA() {
@@ -120,6 +89,8 @@ bool computeErrorA() {
 
     lastUpdateA = currentTime;
     lastErrorA = error;
+
+    return true;
 }
 
 bool computeErrorB() {
@@ -150,15 +121,19 @@ bool computeErrorB() {
 
     printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
 
-
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_B, pwmB);
     lastUpdateB = currentTime;
     lastErrorB = error;
+
+    return true;
+
 }
 
 bool computeError(repeating_timer_t *rt) {
     computeErrorB();
     computeErrorA();
+
+    return true;
 }
 
 void resetVariables() {
@@ -192,13 +167,13 @@ void initWheels(){
     gpio_put(pinIN4, 0); 
 } 
  
-int64_t moveForwards(int time){ 
+int64_t moveForwards(){ 
     resetVariables();
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 1); 
     gpio_put(pinIN3, 0); 
     gpio_put(pinIN4, 1); 
-    add_alarm_in_ms(time, stopMovement,NULL,false);
+    return 0;
 } 
  
 int64_t moveBackwards(int time){

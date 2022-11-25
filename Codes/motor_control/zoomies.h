@@ -10,10 +10,10 @@
 #include "hardware/pwm.h"
 #include "hardware/timer.h"
 
-extern const uint16_t PWM_COUNTER;
-extern const uint16_t SPEED_CALC_FREQ; //In ms
-extern const uint16_t PID_FREQ; //In ms
-extern const int TARGET_SPEED;
+#define PWM_COUNTER 10000
+#define SPEED_CALC_FREQ 250 //In ms
+#define PID_FREQ 25 //In ms
+#define TARGET_SPEED 6
 extern const float Kp;   
 extern const float Ki;
 extern const float Kd;
@@ -31,19 +31,18 @@ extern const float Kd;
 //Function Prototypes
 
 //Encoder
-void encoderAIRQ();
-void encoderBIRQ();
+void encoderIRQ();
 bool calcSpeed(repeating_timer_t *rt);
 bool initEncoders(repeating_timer_t *rt);
 
 bool computeError(repeating_timer_t *rt);
 bool computeErrorA();
 bool computeErrorB();
-bool initPWM(repeating_timer_t *rt);
+bool initPWM();
 void resetVariables();
 
 void initWheels();
-int64_t moveForwards(int time);
+int64_t moveForwards();
 int64_t moveBackwards(int time);
 int64_t moveAntiClockWise(int time);
 int64_t moveClockWise(int time);
