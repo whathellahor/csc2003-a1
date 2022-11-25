@@ -1,9 +1,4 @@
-/**
- * Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
+// Include libraries
 #include <stdio.h>
 #include <string.h>
 #include "pico/stdlib.h"
@@ -36,7 +31,7 @@ bool hump = 0;
 bool peak = 0;
 
 // functions
-void hump_calculation(float Ay, uint time);
+void hump_calculation(float Ay);
 bool triggerAcc_callback(struct repeating_timer *t);
 
 #ifdef i2c_default
@@ -97,7 +92,7 @@ int main()
 
     // call timer to iterate the function to check for the hump
     repeating_timer_t triggerTimer;
-    add_repeating_timer_ms(500, triggerAcc_callback, NULL, &triggerTimer);
+    add_repeating_timer_ms(250, triggerAcc_callback, NULL, &triggerTimer);
 
     while (1)
     {
@@ -108,13 +103,12 @@ int main()
     return 0;
 }
 
-void hump_calculation(float Acc, uint time)
+void hump_calculation(float Acc)
 {
     float height = 0;
-    height = Acc / 0.14; //0.14 is approximate ratio of change in Y-axis to 1cm
-    //height = Acc * pow(time, 2); // formula to calculate height of the hump
-    // printf("time going up the hump: %lld\n", time);
-    printf("Height is: %.2f cm\n\n", height);
+    height = Acc / 0.14; // 0.14 is approximate ratio of change in Y-axis to 1cm
+
+    printf("Height is: %.2f cm\n", height);
     // return height;
 }
 
@@ -137,43 +131,45 @@ bool triggerAcc_callback(repeating_timer_t *t)
 
     if (startFlag == 0)
     {
-
+        //snapshot of stable acceleration when the car first start up
         stableAcc = Ay;
         // set the range of values. if Ay is within this range, it's on flat ground
-        min = stableAcc - 0.1;
-        max = stableAcc + 0.1;
+        min = stableAcc - 0.15;
+        max = stableAcc + 0.15;
 
         startFlag = 1; // car is moving. dont come in here again
     }
 
+    //checks if car is moving at flat ground (hump == 0)
     if (hump == 0)
     {
+        // clipping algoirthm. if value of Ay is within the specified range,
+        // car is moving on flat ground
         if (((Ay - min) * (Ay - max)) <= 0)
         {
             printf("moving on flat ground\n");
         }
-        else if (Ay > 0)
+        else if (Ay > 0) // else a hump is detected by accelerometer
         {
-            // to get the snapshot of the time the moment the car goes up the hump
-            startTime = get_absolute_time();
             printf("Hump detected. Going up\n");
             accUp = Ay; // assign the value of the acceleration at the X axis to the global value the moment the car goes up the hump
             hump = 1;   // hump detected, set boolean to true
-            printf("hump value: %d\n", hump);
         }
     }
 
+    //if hump had been detected previously and value of Ay is lower than
+    //the global stable acceleration value, car is going down the hump
     if (hump == 1 && Ay < stableAcc)
     {
-        absolute_time_t endTime = get_absolute_time();
-        uint time = absolute_time_diff_us(startTime, endTime);
-        time = time / 1000000; // convert time captured from micro-seconds to seconds
-        hump_calculation(accUp, time);
-        printf("Check time in secs: %d\n", time); // call the function to calculate the height of the hump
-        hump = 0;                                 // set boolean value back to 0;
-        printf("down slope: %d\n", hump);
+
+        // call the function to calculate the height of the hump the
+        //moment car is going down the hump
+        hump_calculation(accUp);
+        hump = 0; // set boolean value back to 0;
+        printf("Moving down the slope\n\n");
     }
 
+    //raw acceleration values
     printf("Raw Acceleration is. X = %.2f, Y = %.2f, Z = %.2f\n", Ax, Ay, Az);
 
     return true;
