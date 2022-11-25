@@ -5,54 +5,12 @@
 #include "hardware/timer.h"
 #include <stdio.h>
 #include <math.h>
-//#include "ultrasonic.h"
-
-// global variables
-#define MIN_DISTANCE 15 // distance 15cm, car stop
-#define MIN_TRIGGER_TIME 10 // min time pulse high (for 10 microseconds)
-#define MAX_UPTIME 3 // time to timeout
-// testing
-#define LED_PIN 25
-// ultrasonic for right side of car
-#define RIGHT_TRIGGER_PIN 10 // output pin
-#define RIGHT_ECHO_PIN 11 // input pin
-// ultrasonic for left side of car
-#define LEFT_TRIGGER_PIN 12
-#define LEFT_ECHO_PIN 13
-// ultrasonic for center of car
-#define CENTER_TRIGGER_PIN 14
-#define CENTER_ECHO_PIN 15
-// shoots pulse every 30 microseconds
-#define PULSE_INTERVAL 30
-// smoothing sample size
-#define SAMPLE_SIZE 30
-
-
-// IRQ handlers
-int64_t triggerAlarm_callback(alarm_id_t id, void *user_data); // shooting pulse IRQ
-int64_t EchoMaxAlarm_callback_center(alarm_id_t id, void *user_data); // center car IRQ
-int64_t EchoMaxAlarm_callback_left(alarm_id_t id, void *user_data); // left side of car IRQ
-int64_t EchoMaxAlarm_callback_right(alarm_id_t id, void *user_data); // right side of car IRQ
-
-// struct function for sensors
-struct Sensors{
-    uint8_t triggerPin;
-    uint8_t echoPin;
-    uint8_t distance;
-    absolute_time_t startTime;
-    absolute_time_t endTime;
-    bool timeOut; // timeout to stop calculating distance after a certain time (force falling edge)
-    // smoothing algorithm
-    uint8_t averageDistance;
-    uint8_t distanceArray[SAMPLE_SIZE]; // array to store "sample size" number of readings
-    uint8_t numberofElements;
-    uint8_t noOfElements;
-    // print name of sensor (left, center, right)
-    char Name;
-} sensor_center, sensor_left, sensor_right; // 3 sensors: center ultrasound, left ultrasound, right ultrasound
-
+#include "ultrasonic.h"
 
 //initialize all sensors struct values
+
+struct Sensors sensor_center, sensor_left, sensor_right;
+
 void initializeSensorValues()
 {
     // center ultrasonic
@@ -78,7 +36,6 @@ void initializeSensorValues()
     // boolean to check sensor timeOut
     sensor_center.timeOut = sensor_left.timeOut = sensor_right.timeOut = false;
 }
-
 
 // setup pins
 void setupUltrasonicPins()
@@ -338,46 +295,46 @@ int64_t EchoMaxAlarm_callback_right(alarm_id_t id, void *user_data)
     return 0;
 }
 
-int main()
-{
-    stdio_init_all();
+// int main()
+// {
+//     stdio_init_all();
 
-    alarm_pool_init_default();
+//     alarm_pool_init_default();
 
-    // setup struct values
-    initializeSensorValues();
+//     // setup struct values
+//     initializeSensorValues();
 
-    // setup ultrasonic pins
-    setupUltrasonicPins();
+//     // setup ultrasonic pins
+//     setupUltrasonicPins();
 
-    // set up the repeating timer to trigger the ultrasonic sensor
-    struct repeating_timer triggerTimer;
-    add_repeating_timer_ms(PULSE_INTERVAL, triggerUltraSonic_callback, NULL, &triggerTimer);
+//     // set up the repeating timer to trigger the ultrasonic sensor
+//     struct repeating_timer triggerTimer;
+//     add_repeating_timer_ms(PULSE_INTERVAL, triggerUltraSonic_callback, NULL, &triggerTimer);
 
-    gpio_set_irq_enabled(sensor_center.echoPin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true);
-    gpio_set_irq_enabled(sensor_left.echoPin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true);
-    gpio_set_irq_enabled(sensor_right.echoPin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true);
+//     gpio_set_irq_enabled(sensor_center.echoPin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true);
+//     gpio_set_irq_enabled(sensor_left.echoPin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true);
+//     gpio_set_irq_enabled(sensor_right.echoPin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true);
 
-    // set up the callback function for the echo pin(s)
-    gpio_add_raw_irq_handler(sensor_center.echoPin, echoUltraSonic_callback_center);
-    gpio_add_raw_irq_handler(sensor_left.echoPin, echoUltraSonic_callback_left);
-    gpio_add_raw_irq_handler(sensor_right.echoPin, echoUltraSonic_callback_right);
+//     // set up the callback function for the echo pin(s)
+//     gpio_add_raw_irq_handler(sensor_center.echoPin, echoUltraSonic_callback_center);
+//     gpio_add_raw_irq_handler(sensor_left.echoPin, echoUltraSonic_callback_left);
+//     gpio_add_raw_irq_handler(sensor_right.echoPin, echoUltraSonic_callback_right);
 
-    // enable interrupt master
-    irq_set_enabled(IO_IRQ_BANK0,true);
+//     // enable interrupt master
+//     irq_set_enabled(IO_IRQ_BANK0,true);
 
    
-    while (true)
-    {
-        tight_loop_contents();
-        if (sensor_center.averageDistance <= MIN_DISTANCE && sensor_center.averageDistance > 0  && sensor_center.timeOut == false)
-        {
-            gpio_put(LED_PIN, 1);
+//     while (true)
+//     {
+//         tight_loop_contents();
+//         if (sensor_center.averageDistance <= MIN_DISTANCE && sensor_center.averageDistance > 0  && sensor_center.timeOut == false)
+//         {
+//             gpio_put(LED_PIN, 1);
              
-        }
-        else
-        {
-            gpio_put(LED_PIN, 0);
-        }
-    }
-}
+//         }
+//         else
+//         {
+//             gpio_put(LED_PIN, 0);
+//         }
+//     }
+// }

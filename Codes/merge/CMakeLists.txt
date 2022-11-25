@@ -1,0 +1,13 @@
+add_executable(
+        car car.c
+        ../motor_control/zoomies.h ../motor_control/zoomies.c
+        ../ultrasonic_accelerometer/ultrasonic/ultrasonic.h ../ultrasonic_accelerometer/ultrasonic/ultrasonic.c 
+)
+
+pico_add_extra_outputs(car)
+
+#Edit below for additional libraries to link
+target_link_libraries(car pico_stdlib hardware_pwm hardware_i2c)
+
+pico_enable_stdio_usb(car 1)
+pico_enable_stdio_uart(car 1)

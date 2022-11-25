@@ -1,0 +1,2 @@
+#add_subdirectory(accelerometer)
+add_subdirectory(ultrasonic)

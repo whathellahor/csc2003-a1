@@ -1,49 +1,12 @@
-#include "pico/stdlib.h"
-#include <stdio.h>
-#include <inttypes.h>
-#include "pico/time.h"
-#include "hardware/irq.h"
-#include "hardware/pwm.h"
-#include "hardware/timer.h"
+#include "zoomies.h"
 
 const uint16_t PWM_COUNTER = 10000;
 const uint16_t SPEED_CALC_FREQ = 250; //In ms
 const uint16_t PID_FREQ = 25; //In ms
-const int TARGET_SPEED = 12;
-const float Kp = 6.5;   
-const float Ki = 0.007;
-const float Kd = 9.5;
-
-//MACROS
-#define pinENA 8 //PWM_CHAN_A
-#define pinENB 9 //PWM_CHAN_B
-#define pinIN1 2
-#define pinIN2 3
-#define pinIN3 4
-#define pinIN4 5
-#define pinENCA 6
-#define pinENCB 7
-
-//Function Prototypes
-
-//Encoder
-void encoderAIRQ();
-void encoderBIRQ();
-bool calcSpeed(repeating_timer_t *rt);
-bool initEncoders(repeating_timer_t *rt);
-
-bool computeError(repeating_timer_t *rt);
-bool computeErrorA();
-bool computeErrorB();
-bool initPWM(repeating_timer_t *rt);
-void resetVariables();
-
-void initWheels();
-int64_t moveForwards(int time);
-int64_t moveBackwards(int time);
-int64_t moveAntiClockWise(int time);
-int64_t moveClockWise(int time);
-int64_t stopMovement(alarm_id_t id, void *user_data);
+const int TARGET_SPEED = 6;
+const float Kp = 2.5;   
+const float Ki = 0.0005;
+const float Kd = 0.0025;
 
 uint counterA = 0;
 uint counterB = 0;
@@ -59,40 +22,6 @@ absolute_time_t lastUpdateA;
 int integralB;
 int lastErrorB;
 absolute_time_t lastUpdateB;
-
-bool isEngineOn = 0;
-bool startFlag = 1;
-
-int main() {
-    repeating_timer_t timer;
-    repeating_timer_t timer2;
-    repeating_timer_t timer3;
-    alarm_callback_t alarm;
-
-    stdio_init_all();  
-    //enable uart output with stdlib
-    sleep_ms(1000);
-    printf("Initialise Zoom");
-
-      
-    initWheels();
-
-    if (!initEncoders(&timer)){
-        printf("Failed to add timer\n");
-        return 1; //Failed to add timer, terminate
-    };
-
-    if (!initPWM(&timer2)) {
-        printf("Failed to add timer\n");
-        return 1; //Failed to add timer, terminate
-    }
-    
-    //Enable interrupt on GPIO
-    irq_set_enabled(IO_IRQ_BANK0, true);
-
-    while (1)
-        tight_loop_contents();
-}
 
 bool initEncoders(repeating_timer_t *timer) {
     //Speed Calc
@@ -114,7 +43,6 @@ bool initEncoders(repeating_timer_t *timer) {
     gpio_add_raw_irq_handler(pinENCB,encoderBIRQ);
 
 }
-
 
 void encoderAIRQ() {
     //check interrupt flag and status
