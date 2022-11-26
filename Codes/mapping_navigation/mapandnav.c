@@ -104,45 +104,45 @@ void firstGridMapping()
     nodeArray[numberOfNodes].yCoord = currentYCoord;
 
     // check left, front, right and save
-    if ((ULTRASONIC.FRONT_DISTANCE() < MIN_DISTANCE))
+    if ((getCenterDistance() < MIN_DISTANCE))
     {
         nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_1_WALL;
     }
     else
     {
-        checkExit(1, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
+        checkExit(1, getCenterDistance()); // check if it is an exit
     }
     // check if direction 2 has a wall
-    if (ULTRASONIC.RIGHT_DISTANCE() < MIN_DISTANCE)
+    if (getRightDistance() < MIN_DISTANCE)
     {
         nodeArray[numberOfNodes].wallOpenings |= DIRECTION_2_WALL;
     }
     else
     {
-        checkExit(2, ULTRASONIC.RIGHT_DISTANCE()); // check if it is an exit
+        checkExit(2, getRightDistance()); // check if it is an exit
     }
     // check if direction 0 has wall
-    if (ULTRASONIC.LEFT_DISTANCE() < MIN_DISTANCE)
+    if (getLeftDistance() < MIN_DISTANCE)
     {
         nodeArray[numberOfNodes].wallOpenings |= DIRECTION_0_WALL;
     }
     else
     {
-        checkExit(0, ULTRASONIC.LEFT_DISTANCE()); // check if it is an exit
+        checkExit(0, getLeftDistance()); // check if it is an exit
     }
 
     // after mapping left, front, right wall, turn right to map the last wall
-    MOTOR.TURN_RIGHT();
+    rightTurn();
     delay(TURNING_DELAY);   // delay while car turns
     incrementDirection(); // increment direction when turn right
     // checks if direction 3 has a wall
-    if (ULTRASONIC.RIGHT_DISTANCE() < MIN_DISTANCE)
+    if (getRightDistance() < MIN_DISTANCE)
     {
         nodeArray[numberOfNodes].wallOpenings |= DIRECTION_3_WALL; // set bitmask with 0000 1000
     }
     else
     {
-        checkExit(3, ULTRASONIC.RIGHT_DISTANCE()); // check if it is an exit
+        checkExit(3, getRightDistance()); // check if it is an exit
     }
 
     // turn to face nearest open wall that is not an exit
@@ -193,7 +193,7 @@ void firstGridMapping()
         if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3)))
         {
             // there is an opening on the right, turn to face right
-            MOTOR.TURN_RIGHT();
+            rightTurn();
             delay(TURNING_DELAY);   // delay while car turns
             incrementDirection();
 
@@ -222,7 +222,7 @@ void firstGridMapping()
         if (!((isExit[0] == numberOfNodes) && (isExit[1] == 1)))
         {
             // there is an opening on the left, turn to face left
-            MOTOR.TURN_LEFT();
+            leftTurn();
             delay(TURNING_DELAY);   // delay while car turns
             decrementDirection();
             if ((nodeArray[numberOfNodes].wallOpenings & DIRECTION_0_WALL) == 0)
@@ -238,10 +238,10 @@ void firstGridMapping()
     }
     else
     { // nearest opening is behind the car, so u-turn
-        MOTOR.TURN_RIGHT();
+        rightTurn();
         delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
-        MOTOR.TURN_RIGHT();
+        rightTurn();
         delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
     }
@@ -282,25 +282,25 @@ void peripheralChecking()
         {
         case 0: // facing direction 0
             // check if direction 3 has wall
-            if (ULTRASONIC.FRONT_DISTANCE() < MIN_DISTANCE)
+            if (getCenterDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_0_WALL;
             }
             else
             {
-                checkExit(0, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
+                checkExit(0, getCenterDistance()); // check if it is an exit
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0))){
                     ++openingCounter;                          // increment opening counter
                 }
             }
             // check if direction 0 has a wall
-            if (ULTRASONIC.RIGHT_DISTANCE() < MIN_DISTANCE)
+            if (getRightDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings |= DIRECTION_1_WALL;
             }
             else
             {
-                checkExit(1, ULTRASONIC.RIGHT_DISTANCE()); // check if it is an exit
+                checkExit(1, getRightDistance()); // check if it is an exit
                 // if there is more than 1 opening
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 1))) {
                     if (openingCounter >= 1)
@@ -313,13 +313,13 @@ void peripheralChecking()
                 }
             }
             // check if direction 2 has wall
-            if (ULTRASONIC.LEFT_DISTANCE() < MIN_DISTANCE)
+            if (getLeftDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings |= DIRECTION_3_WALL;
             }
             else
             {
-                checkExit(3, ULTRASONIC.LEFT_DISTANCE()); // check if it is an exit
+                checkExit(3, getLeftDistance()); // check if it is an exit
                 // if there is more than 1 opening
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3)))
                 {
@@ -335,25 +335,25 @@ void peripheralChecking()
             break;
         case 1: // facing direction 1
             // check if direction 1 has wall
-            if (ULTRASONIC.FRONT_DISTANCE() < MIN_DISTANCE)
+            if (getCenterDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_1_WALL;
             }
             else
             {
-                checkExit(1, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
+                checkExit(1, getCenterDistance()); // check if it is an exit
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 1))){
                     ++openingCounter;                          // increment opening counter
                 }
             }
             // check if direction 2 has a wall
-            if (ULTRASONIC.RIGHT_DISTANCE() < MIN_DISTANCE)
+            if (getRightDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings |= DIRECTION_2_WALL;
             }
             else
             {
-                checkExit(2, ULTRASONIC.RIGHT_DISTANCE()); // check if it is an exit
+                checkExit(2, getRightDistance()); // check if it is an exit
                 // if there is more than 1 opening
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2)))
                 {
@@ -367,13 +367,13 @@ void peripheralChecking()
                 }
             }
             // check if direction 0 has wall
-            if (ULTRASONIC.LEFT_DISTANCE() < MIN_DISTANCE)
+            if (getLeftDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings |= DIRECTION_0_WALL;
             }
             else
             {
-                checkExit(0, ULTRASONIC.LEFT_DISTANCE()); // check if it is an exit
+                checkExit(0, getLeftDistance()); // check if it is an exit
                 // if there is more than 1 opening
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0)))
                 {
@@ -389,25 +389,25 @@ void peripheralChecking()
             break;
         case 2: // facing direction 2
             // check if direction 2 has wall
-            if (ULTRASONIC.FRONT_DISTANCE() < MIN_DISTANCE)
+            if (getCenterDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_2_WALL;
             }
             else
             {
-                checkExit(2, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
+                checkExit(2, getCenterDistance()); // check if it is an exit
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2))){
                     ++openingCounter;                          // increment opening counter
                 }
             }
             // check if direction 3 has a wall
-            if (ULTRASONIC.RIGHT_DISTANCE() < MIN_DISTANCE)
+            if (getRightDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings |= DIRECTION_3_WALL;
             }
             else
             {
-                checkExit(3, ULTRASONIC.RIGHT_DISTANCE()); // check if it is an exit
+                checkExit(3, getRightDistance()); // check if it is an exit
                 // if there is more than 1 opening
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3)))
                 {
@@ -421,13 +421,13 @@ void peripheralChecking()
                 }
             }
             // check if direction 1 has wall
-            if (ULTRASONIC.LEFT_DISTANCE() < MIN_DISTANCE)
+            if (getLeftDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings |= DIRECTION_1_WALL;
             }
             else
             {
-                checkExit(1, ULTRASONIC.LEFT_DISTANCE()); // check if it is an exit
+                checkExit(1, getLeftDistance()); // check if it is an exit
                 // if there is more than 1 opening
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == currentYCoord) && (isExit[1] == 1)))
                 {
@@ -443,25 +443,25 @@ void peripheralChecking()
             break;
         case 3: // facing direction 3
             // check if direction 3 has wall
-            if (ULTRASONIC.FRONT_DISTANCE() < MIN_DISTANCE)
+            if (getCenterDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_3_WALL;
             }
             else
             {
-                checkExit(3, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
+                checkExit(3, getCenterDistance()); // check if it is an exit
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3))){
                     ++openingCounter;                          // increment opening counter
                 }
             }
             // check if direction 0 has a wall
-            if (ULTRASONIC.RIGHT_DISTANCE() < MIN_DISTANCE)
+            if (getRightDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings |= DIRECTION_0_WALL;
             }
             else
             {
-                checkExit(0, ULTRASONIC.RIGHT_DISTANCE()); // check if it is an exit
+                checkExit(0, getRightDistance()); // check if it is an exit
                 // if there is more than 1 opening
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0)))
                 {
@@ -475,13 +475,13 @@ void peripheralChecking()
                 }
             }
             // check if direction 2 has wall
-            if (ULTRASONIC.LEFT_DISTANCE() < MIN_DISTANCE)
+            if (getLeftDistance() < MIN_DISTANCE)
             {
                 nodeArray[numberOfNodes].wallOpenings |= DIRECTION_2_WALL;
             }
             else
             {
-                checkExit(2, ULTRASONIC.LEFT_DISTANCE()); // check if it is an exit
+                checkExit(2, getLeftDistance()); // check if it is an exit
                 // if there is more than 1 opening
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2)))
                 {
@@ -503,10 +503,10 @@ void peripheralChecking()
     else
     {
         // make a u-turn
-        MOTOR.TURN_RIGHT();
+        rightTurn();
         delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
-        MOTOR.TURN_RIGHT();
+        rightTurn();
         delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         // call debt visiting
@@ -547,7 +547,7 @@ void carMovement()
 
     numberOfMoves++; // increment number of moves
 
-    MOTOR.MOVE_FORWARD();
+    forward();
     delay(MOVEMENT_DELAY);   // delay while car moves
 
     // change x-y coord.
@@ -564,24 +564,24 @@ void carMovement()
 // call car to visit latest debt
 void carTurning()
 {
-    if ((ULTRASONIC.FRONT_DISTANCE() > MIN_DISTANCE) && (ULTRASONIC.FRONT_DISTANCE() < EXIT_DISTANCE))
+    if ((getCenterDistance() > MIN_DISTANCE) && (getCenterDistance() < EXIT_DISTANCE))
     { // there is an opening in the front
         // call car movement
         carMovement();
     }
     // check if direction 3 has a wall, if it is empty, move forward
-    else if ((ULTRASONIC.RIGHT_DISTANCE() > MIN_DISTANCE) && (ULTRASONIC.RIGHT_DISTANCE() < EXIT_DISTANCE))
+    else if ((getRightDistance() > MIN_DISTANCE) && (getRightDistance() < EXIT_DISTANCE))
     { //
-        MOTOR.TURN_RIGHT();
+        rightTurn();
         delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         // call car movement
         carMovement();
     }
     // check if direction 1 has a wall, if it is empty, move forward
-    else if ((ULTRASONIC.LEFT_DISTANCE() > MIN_DISTANCE) && (ULTRASONIC.LEFT_DISTANCE() < EXIT_DISTANCE))
+    else if ((getLeftDistance() > MIN_DISTANCE) && (getLeftDistance() < EXIT_DISTANCE))
     {
-        MOTOR.TURN_LEFT();
+        leftTurn();
         delay(TURNING_DELAY);   // delay while car turns
         decrementDirection();
         // call car movement
@@ -590,10 +590,10 @@ void carTurning()
     // else, make a u-turn
     else
     {
-        MOTOR.TURN_RIGHT();
+        rightTurn();
         delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
-        MOTOR.TURN_RIGHT();
+        rightTurn();
         delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         // call debt visiting
@@ -608,13 +608,13 @@ void debtCarTurning(short int target)
     {
         if (target == 3 && direction == 0)
         {
-            MOTOR.TURN_LEFT();
+            leftTurn();
             delay(TURNING_DELAY);   // delay while car turns
             decrementDirection();
         }
         else if (target == 0 && direction == 3)
         {
-            MOTOR.TURN_RIGHT();
+            rightTurn();
             delay(TURNING_DELAY);   // delay while car turns
             incrementDirection();
         }
@@ -622,13 +622,13 @@ void debtCarTurning(short int target)
         {
             if (target > direction)
             {
-                MOTOR.TURN_RIGHT();
+                rightTurn();
                 delay(TURNING_DELAY);   // delay while car turns
                 incrementDirection();
             }
             else
             {
-                MOTOR.TURN_LEFT();
+                leftTurn();
                 delay(TURNING_DELAY);   // delay while car turns
                 decrementDirection();
             }
@@ -684,7 +684,7 @@ void debtVisit()
         }
 
         // make car move forward
-        MOTOR.MOVE_FORWARD();
+        forward();
         delay(MOVEMENT_DELAY);   // delay while car moves
         changeCoord();
         // remove from pathArray as we are backtracking
@@ -699,7 +699,7 @@ void debtVisit()
     debtArray[debtCounter][1] = NULL;
     --debtCounter;
     // make car move forward
-    MOTOR.MOVE_FORWARD();
+    forward();
     delay(MOVEMENT_DELAY);   // delay while car moves
     // change coord.
     changeCoord();
@@ -920,7 +920,7 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
         }
 
         // make car move forward
-        MOTOR.MOVE_FORWARD();
+        forward();
         delay(MOVEMENT_DELAY);   // delay while car moves
     }
     
@@ -930,13 +930,13 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
     {
         if (exitDirection == 3 && direction == 0)
         {
-            MOTOR.TURN_LEFT();
+            leftTurn();
             delay(TURNING_DELAY);   // delay while car turns
             decrementDirection();
         }
         else if (exitDirection == 0 && direction == 3)
         {
-            MOTOR.TURN_RIGHT();
+            rightTurn();
             delay(TURNING_DELAY);   // delay while car turns
             incrementDirection();
         }
@@ -944,13 +944,13 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
         {
             if (exitDirection > direction)
             {
-                MOTOR.TURN_RIGHT();
+                rightTurn();
                 delay(TURNING_DELAY);   // delay while car turns
                 incrementDirection();
             }
             else
             {
-                MOTOR.TURN_LEFT();
+                leftTurn();
                 delay(TURNING_DELAY);   // delay while car turns
                 decrementDirection();
             }
@@ -958,7 +958,7 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
     }
 
     // make car move forward, and you have exited the maze
-    MOTOR.MOVE_FORWARD();
+    forward();
     delay(MOVEMENT_DELAY);   // delay while car moves
 }
 
