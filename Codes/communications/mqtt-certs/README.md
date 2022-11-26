@@ -1,0 +1,1 @@
+We are using HiveMQ mqtt as our broker. With SSL enabled, the flask application require certificates to be able to publish/subscribe.
