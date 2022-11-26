@@ -32,7 +32,7 @@ bool peak = 0;
 
 // functions
 void getHumpHeight(float Ay);
-void getDetectHump(uint hump)
+void getDetectHump(uint hump);
 bool triggerAcc_callback(struct repeating_timer *t);
 
 #ifdef i2c_default
