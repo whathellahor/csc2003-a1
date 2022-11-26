@@ -31,7 +31,8 @@ bool hump = 0;
 bool peak = 0;
 
 // functions
-void hump_calculation(float Ay);
+void getHumpHeight(float Ay);
+void getDetectHump(uint hump)
 bool triggerAcc_callback(struct repeating_timer *t);
 
 #ifdef i2c_default
@@ -103,13 +104,45 @@ int main()
     return 0;
 }
 
-void hump_calculation(float Acc)
+void getHumpHeight(float Acc)
 {
     float height = 0;
     height = Acc / 0.14; // 0.14 is approximate ratio of change in Y-axis to 1cm
 
     printf("Height is: %.2f cm\n", height);
     // return height;
+}
+
+void getDetectHump(uint hump){
+    //checks if car is moving at flat ground (hump == 0)
+    if (hump == 0)
+    {
+        // clipping algoirthm. if value of Ay is within the specified range,
+        // car is moving on flat ground
+        if (((Ay - min) * (Ay - max)) <= 0)
+        {
+            printf("moving on flat ground\n");
+        }
+        else if (Ay > 0) // else a hump is detected by accelerometer
+        {
+            printf("Hump detected. Going up\n");
+            accUp = Ay; // assign the value of the acceleration at the X axis to the global value the moment the car goes up the hump
+            hump = 1;   // hump detected, set boolean to true
+        }
+    }
+
+    //if hump had been detected previously and value of Ay is lower than
+    //the global stable acceleration value, car is going down the hump
+    if (hump == 1 && Ay < stableAcc)
+    {
+
+        // call the function to calculate the height of the hump the
+        //moment car is going down the hump
+        hump_calculation(accUp);
+        hump = 0; // set boolean value back to 0;
+        printf("Moving down the slope\n\n");
+    }
+
 }
 
 bool triggerAcc_callback(repeating_timer_t *t)
@@ -140,35 +173,11 @@ bool triggerAcc_callback(repeating_timer_t *t)
         startFlag = 1; // car is moving. dont come in here again
     }
 
-    //checks if car is moving at flat ground (hump == 0)
-    if (hump == 0)
-    {
-        // clipping algoirthm. if value of Ay is within the specified range,
-        // car is moving on flat ground
-        if (((Ay - min) * (Ay - max)) <= 0)
-        {
-            printf("moving on flat ground\n");
-        }
-        else if (Ay > 0) // else a hump is detected by accelerometer
-        {
-            printf("Hump detected. Going up\n");
-            accUp = Ay; // assign the value of the acceleration at the X axis to the global value the moment the car goes up the hump
-            hump = 1;   // hump detected, set boolean to true
-        }
-    }
+    getDetectHump(hump);
 
-    //if hump had been detected previously and value of Ay is lower than
-    //the global stable acceleration value, car is going down the hump
-    if (hump == 1 && Ay < stableAcc)
-    {
 
-        // call the function to calculate the height of the hump the
-        //moment car is going down the hump
-        hump_calculation(accUp);
-        hump = 0; // set boolean value back to 0;
-        printf("Moving down the slope\n\n");
-    }
 
+    
     //raw acceleration values
     printf("Raw Acceleration is. X = %.2f, Y = %.2f, Z = %.2f\n", Ax, Ay, Az);
 
