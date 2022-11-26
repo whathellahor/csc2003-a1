@@ -2,12 +2,15 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define MAX_WIDTH 5          // set max width of the maze to 5
 #define MAX_HEIGHT 4         // set max height of the maze to 4
 #define MOVEMENT_DISTANCE 30 // set default distance to move forward one grid as 30cm
 #define MIN_DISTANCE 10       // set default distance to check for wall to 5cm
 #define EXIT_DISTANCE 180    // set default distance for exit to be 180cm
+#define MOVEMENT_DELAY 10
+#define TURNING_DELAY 5
 
 // perform AND or OR operation with these to check for wall
 #define DIRECTION_0_WALL 0x01 // 0000 0001b
@@ -43,6 +46,17 @@ struct node nodeArray[MAX_WIDTH * MAX_HEIGHT];
 // create debt array size of total number of lines in grid to store debt coord. and wall
 short int debtArray[(MAX_WIDTH * (MAX_HEIGHT + 1)) + (MAX_HEIGHT * (MAX_WIDTH + 1))][3];
 
+// delay function
+void delay(int number_of_seconds)
+{
+    // Converting time into milli_seconds
+    int milli_seconds = 1000000 * number_of_seconds;
+    // Storing start time
+    clock_t start_time = clock();
+    // looping till required time is not achieved
+    while (clock() < start_time + milli_seconds)
+        ;
+}
 
 // create path array to store coord. of path taken
 // add coord. in when visited
@@ -119,6 +133,7 @@ void firstGridMapping()
 
     // after mapping left, front, right wall, turn right to map the last wall
     MOTOR.TURN_RIGHT();
+    delay(TURNING_DELAY);   // delay while car turns
     incrementDirection(); // increment direction when turn right
     // checks if direction 3 has a wall
     if (ULTRASONIC.RIGHT_DISTANCE() < MIN_DISTANCE)
@@ -179,6 +194,7 @@ void firstGridMapping()
         {
             // there is an opening on the right, turn to face right
             MOTOR.TURN_RIGHT();
+            delay(TURNING_DELAY);   // delay while car turns
             incrementDirection();
 
             if ((nodeArray[numberOfNodes].wallOpenings & DIRECTION_0_WALL) == 0)
@@ -207,6 +223,7 @@ void firstGridMapping()
         {
             // there is an opening on the left, turn to face left
             MOTOR.TURN_LEFT();
+            delay(TURNING_DELAY);   // delay while car turns
             decrementDirection();
             if ((nodeArray[numberOfNodes].wallOpenings & DIRECTION_0_WALL) == 0)
             {
@@ -222,8 +239,10 @@ void firstGridMapping()
     else
     { // nearest opening is behind the car, so u-turn
         MOTOR.TURN_RIGHT();
+        delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         MOTOR.TURN_RIGHT();
+        delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
     }
 
@@ -485,8 +504,10 @@ void peripheralChecking()
     {
         // make a u-turn
         MOTOR.TURN_RIGHT();
+        delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         MOTOR.TURN_RIGHT();
+        delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         // call debt visiting
         debtVisit();
@@ -527,6 +548,7 @@ void carMovement()
     numberOfMoves++; // increment number of moves
 
     MOTOR.MOVE_FORWARD();
+    delay(MOVEMENT_DELAY);   // delay while car moves
 
     // change x-y coord.
     changeCoord();
@@ -551,6 +573,7 @@ void carTurning()
     else if ((ULTRASONIC.RIGHT_DISTANCE() > MIN_DISTANCE) && (ULTRASONIC.RIGHT_DISTANCE() < EXIT_DISTANCE))
     { //
         MOTOR.TURN_RIGHT();
+        delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         // call car movement
         carMovement();
@@ -559,6 +582,7 @@ void carTurning()
     else if ((ULTRASONIC.LEFT_DISTANCE() > MIN_DISTANCE) && (ULTRASONIC.LEFT_DISTANCE() < EXIT_DISTANCE))
     {
         MOTOR.TURN_LEFT();
+        delay(TURNING_DELAY);   // delay while car turns
         decrementDirection();
         // call car movement
         carMovement();
@@ -567,8 +591,10 @@ void carTurning()
     else
     {
         MOTOR.TURN_RIGHT();
+        delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         MOTOR.TURN_RIGHT();
+        delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         // call debt visiting
         debtVisit();
@@ -583,11 +609,13 @@ void debtCarTurning(short int target)
         if (target == 3 && direction == 0)
         {
             MOTOR.TURN_LEFT();
+            delay(TURNING_DELAY);   // delay while car turns
             decrementDirection();
         }
         else if (target == 0 && direction == 3)
         {
             MOTOR.TURN_RIGHT();
+            delay(TURNING_DELAY);   // delay while car turns
             incrementDirection();
         }
         else
@@ -595,11 +623,13 @@ void debtCarTurning(short int target)
             if (target > direction)
             {
                 MOTOR.TURN_RIGHT();
+                delay(TURNING_DELAY);   // delay while car turns
                 incrementDirection();
             }
             else
             {
                 MOTOR.TURN_LEFT();
+                delay(TURNING_DELAY);   // delay while car turns
                 decrementDirection();
             }
         }
@@ -655,6 +685,7 @@ void debtVisit()
 
         // make car move forward
         MOTOR.MOVE_FORWARD();
+        delay(MOVEMENT_DELAY);   // delay while car moves
         changeCoord();
         // remove from pathArray as we are backtracking
         pathArray[numberOfMoves][0] = NULL;
@@ -669,6 +700,7 @@ void debtVisit()
     --debtCounter;
     // make car move forward
     MOTOR.MOVE_FORWARD();
+    delay(MOVEMENT_DELAY);   // delay while car moves
     // change coord.
     changeCoord();
 }
@@ -889,6 +921,7 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
 
         // make car move forward
         MOTOR.MOVE_FORWARD();
+        delay(MOVEMENT_DELAY);   // delay while car moves
     }
     
     // turn to face exit direction
@@ -898,11 +931,13 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
         if (exitDirection == 3 && direction == 0)
         {
             MOTOR.TURN_LEFT();
+            delay(TURNING_DELAY);   // delay while car turns
             decrementDirection();
         }
         else if (exitDirection == 0 && direction == 3)
         {
             MOTOR.TURN_RIGHT();
+            delay(TURNING_DELAY);   // delay while car turns
             incrementDirection();
         }
         else
@@ -910,11 +945,13 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
             if (exitDirection > direction)
             {
                 MOTOR.TURN_RIGHT();
+                delay(TURNING_DELAY);   // delay while car turns
                 incrementDirection();
             }
             else
             {
                 MOTOR.TURN_LEFT();
+                delay(TURNING_DELAY);   // delay while car turns
                 decrementDirection();
             }
         }
@@ -922,6 +959,7 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
 
     // make car move forward, and you have exited the maze
     MOTOR.MOVE_FORWARD();
+    delay(MOVEMENT_DELAY);   // delay while car moves
 }
 
 
