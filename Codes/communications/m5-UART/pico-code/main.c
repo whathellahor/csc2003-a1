@@ -13,13 +13,6 @@
 
 int8_t x = 0;   // Variable for data that will be sent.
 
-// Delay function
-void delay(){
-    int x = 0;
-    for(x = 0; x < 30000; x++){
-    }
-}
-
 // RX interrupt handler
 void on_uart_rx() {
     // Infinite loop to check for data in RX
@@ -49,8 +42,6 @@ int main() {
     irq_set_enabled(UART_IRQ, true);                    // Enabling interrupt handlers
 
     uart_set_irq_enables(UART_ID, true, false);         // Allow UART to send interrupts
-
-    delay();
 
     while (1){
         tight_loop_contents();
