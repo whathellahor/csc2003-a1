@@ -1,13 +1,15 @@
+#include "../ultrasonic_accelerometer/accelerometer/accelerometer.h"
 #include "../motor_control/zoomies.h"
 #include "../ultrasonic_accelerometer/ultrasonic/ultrasonic.h"
 #include "../infrared/barcode/barcode.h"
 #include "pico/time.h"
+#include "pico/binary_info.h"
 #include "pico/multicore.h"
 #include "hardware/timer.h"
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
-
+#include "hardware/i2c.h"
 
 
 void IRQ_HANDLER() {
@@ -18,10 +20,6 @@ void IRQ_HANDLER() {
         //encoderIRQ();
         echoUltraSonic_callback();
     }
-}
-
-void TimerTest() {
-    //printf("Hello\n");
 }
 
 repeating_timer_t timer;
@@ -36,11 +34,11 @@ void barcodeCore(){
 
 int main() {
 
-    stdio_init_all();  
-    
+    stdio_init_all(); 
+    sleep_ms(1000); 
+
+    initAcc();
     //enable uart output with stdlib
-    sleep_ms(10000);
-    
     multicore_launch_core1(barcodeCore);
     
     //printf("Initialise Zoom\n");
@@ -94,9 +92,17 @@ int main() {
     irq_set_enabled(IO_IRQ_BANK0, true);
     //printf("all irq enabled\n");
 
-    moveForwards();
+    
 
-    while (1)
-        tight_loop_contents();
+
+    while (1) {
+        forward();
+        sleep_ms(6000);
+        rightTurn();
+        sleep_ms(2000);
+        leftTurn();
+        sleep_ms(2000);
+        //tight_loop_contents();
+    }
 
 }

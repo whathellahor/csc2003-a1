@@ -1,4 +1,3 @@
-
 #ifndef MOTOR_H
 #define MOTOR_H
 
@@ -11,6 +10,7 @@
 #include "hardware/timer.h"
 
 #define PWM_COUNTER 10000
+#define PWM_DEFAULTS 7300
 #define SPEED_CALC_FREQ 250 //In ms
 #define PID_FREQ 25 //In ms
 #define TARGET_SPEED 6
@@ -42,11 +42,14 @@ bool initPWM();
 void resetVariables();
 
 void initWheels();
-int64_t moveForwards();
+int64_t moveForwards(int time);
 int64_t moveBackwards(int time);
 int64_t moveAntiClockWise(int time);
 int64_t moveClockWise(int time);
 int64_t stopMovement(alarm_id_t id, void *user_data);
+void rightTurn();
+void leftTurn();
+void forward();
 
 extern uint counterA;
 extern uint counterB;

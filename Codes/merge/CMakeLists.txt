@@ -2,6 +2,7 @@ add_executable(
         car car.c
         ../motor_control/zoomies.h ../motor_control/zoomies.c
         ../ultrasonic_accelerometer/ultrasonic/ultrasonic.h ../ultrasonic_accelerometer/ultrasonic/ultrasonic.c
+        ../ultrasonic_accelerometer/accelerometer/accelerometer.h ../ultrasonic_accelerometer/accelerometer/accelerometer.c
         ../infrared/barcode/barcode.h ../infrared/barcode/barcode.c
 )
 

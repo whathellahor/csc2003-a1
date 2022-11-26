@@ -3256,6 +3256,93 @@ Codes\merge\CMakeFiles\car.dir\__\motor_control\zoomies.c.obj: C:\Users\quan_\De
 Codes\merge\CMakeFiles\car.dir\__\motor_control\zoomies.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pwm.h
 
 
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\ultrasonic_accelerometer\accelerometer\accelerometer.c
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\ultrasonic_accelerometer\accelerometer\accelerometer.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\stdio.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_ansi.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\newlib.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_newlib_version.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\config.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\ieeefp.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\features.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\cdefs.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_default_types.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stddef.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdarg.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\reent.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_ansi.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_types.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_types.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\lock.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\types.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_stdint.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\endian.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_endian.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\select.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_sigset.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_timeval.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\timespec.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_timespec.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_pthreadtypes.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\sched.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\types.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\stdio.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\string.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_locale.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\strings.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\string.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\types.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\assert.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdbool.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\assert.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdint.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\stdint.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_intsup.h"
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: generated\pico_base\pico\version.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\config.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: generated\pico_base\pico\config_autogen.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\boards\include\boards\pico.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\cmsis\include\cmsis\rename_exceptions.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_platform\include\pico\platform.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\types.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\error.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_time\include\pico\time.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\hardware_timer\include\hardware\timer.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\timer.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\hardware_base\include\hardware\address_mapped.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\timer.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\hardware_gpio\include\hardware\gpio.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\sio.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\interp.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\padsbank0.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pads_bank0.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\iobank0.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\io_bank0.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\hardware_irq\include\hardware\irq.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\intctrl.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\m0plus.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\hardware_uart\include\hardware\uart.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\uart.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\uart.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_uart.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_stdio_usb\include\pico\stdio_usb.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_binary_info\include\pico\binary_info.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\defs.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\structure.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\code.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\hardware_i2c\include\hardware\i2c.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\i2c.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\i2c.h
+Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\accelerometer\accelerometer.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\math.h"
+
+
 Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\ultrasonic\ultrasonic.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\ultrasonic_accelerometer\ultrasonic\ultrasonic.c
 Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\ultrasonic\ultrasonic.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
 Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\ultrasonic\ultrasonic.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico.h
@@ -3333,25 +3420,49 @@ Codes\merge\CMakeFiles\car.dir\__\ultrasonic_accelerometer\ultrasonic\ultrasonic
 
 
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\merge\car.c
-Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\motor_control\zoomies.h
-Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
-Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico.h
-Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\types.h
-Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\assert.h
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdbool.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\assert.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\ultrasonic_accelerometer\accelerometer\accelerometer.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\stdio.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_ansi.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\newlib.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_newlib_version.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\config.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\ieeefp.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\features.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\cdefs.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_default_types.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stddef.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdarg.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\reent.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_ansi.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_types.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_types.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\lock.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\types.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_stdint.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\endian.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_endian.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\select.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_sigset.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_timeval.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\timespec.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_timespec.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_pthreadtypes.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\sched.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\types.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\stdio.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\string.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_locale.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\strings.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\string.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\types.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\assert.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdbool.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\assert.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdint.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\stdint.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_default_types.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_intsup.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_stdint.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stddef.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: generated\pico_base\pico\version.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\config.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: generated\pico_base\pico\config_autogen.h
@@ -3361,7 +3472,6 @@ Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\platform_defs.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\addressmap.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\sio.h
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\cdefs.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\types.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_base\include\pico\error.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_stdio\include\pico\stdio.h
@@ -3386,27 +3496,16 @@ Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dreq.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_uart.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_stdio_usb\include\pico\stdio_usb.h
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\stdio.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdarg.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\reent.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_ansi.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_types.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_types.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\lock.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\types.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\endian.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_endian.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\select.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_sigset.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_timeval.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\timespec.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_timespec.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_pthreadtypes.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\sched.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\types.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\stdio.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_binary_info\include\pico\binary_info.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\defs.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\structure.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_binary_info\include\pico\binary_info\code.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\hardware_i2c\include\hardware\i2c.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\i2c.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\i2c.h
+Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\math.h"
+Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\motor_control\zoomies.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\inttypes.h"
-Codes\merge\CMakeFiles\car.dir\car.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_locale.h"
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\hardware_pwm\include\hardware\pwm.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pwm.h
 Codes\merge\CMakeFiles\car.dir\car.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pwm.h
@@ -3673,6 +3772,8 @@ C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\lib\tinyusb\src\portable\raspberr
 
 C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\usb.h:
 
+C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\ultrasonic_accelerometer\accelerometer\accelerometer.h:
+
 C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\usb.h:
 
 C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_stdio_uart\include\pico\stdio_uart.h:
@@ -3910,6 +4011,8 @@ C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_stdlib\include\pi
 C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\infrared\barcode\barcode.h:
 
 C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\motor_control\zoomies.h:
+
+C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\ultrasonic_accelerometer\accelerometer\accelerometer.c:
 
 C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\ultrasonic_accelerometer\ultrasonic\ultrasonic.c:
 

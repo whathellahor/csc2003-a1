@@ -1,15 +1,15 @@
 #include "zoomies.h"
 
 const float Kp = 2.5;   
-const float Ki = 0.0005;
-const float Kd = 0.0025;
+const float Ki = 0.0007;
+const float Kd = 8.0;
 
 uint counterA = 0;
 uint counterB = 0;
 uint speedA = 0;
 uint speedB = 0;
-uint pwmA = 7500;
-uint pwmB = 7500;
+uint pwmA = PWM_DEFAULTS;
+uint pwmB = PWM_DEFAULTS;
 
 int integralA;
 int lastErrorA;
@@ -40,8 +40,9 @@ bool calcSpeed(repeating_timer_t* rt) {
     counterA = 0;
     speedB = counterB * (1000/SPEED_CALC_FREQ);
     counterB = 0;
+    triggerAcc_callback();
     // COMMS FUNCTION WILL CALL ON GLOBAL VARIABLES
-    //printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
+    printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
     return true;
 }
 
@@ -83,7 +84,7 @@ bool computeErrorA() {
         }
     } 
 
-    // printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
+    printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
 
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_A, pwmA);
 
@@ -119,7 +120,7 @@ bool computeErrorB() {
         }
     } 
 
-    //printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
+    printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
 
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_B, pwmB);
     lastUpdateB = currentTime;
@@ -140,10 +141,12 @@ void resetVariables() {
     integralA = 0;
     lastErrorA = 0;
     lastUpdateA = get_absolute_time();
+    pwmA = PWM_DEFAULTS;
 
     integralB = 0;
     lastErrorB = 0;
     lastUpdateB = get_absolute_time();
+    pwmB = PWM_DEFAULTS;
 }
 
 void initWheels(){ 
@@ -167,12 +170,13 @@ void initWheels(){
     gpio_put(pinIN4, 0); 
 } 
  
-int64_t moveForwards(){ 
+int64_t moveForwards(int time){ 
     resetVariables();
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 1); 
     gpio_put(pinIN3, 0); 
     gpio_put(pinIN4, 1); 
+    add_alarm_in_ms(time, stopMovement,NULL,false);
     return 0;
 } 
  
@@ -183,6 +187,7 @@ int64_t moveBackwards(int time){
     gpio_put(pinIN3, 1); 
     gpio_put(pinIN4, 0); 
     add_alarm_in_ms(time, stopMovement,NULL,false);
+    return 0;
 } 
  
 int64_t moveAntiClockWise(int time){ 
@@ -192,6 +197,7 @@ int64_t moveAntiClockWise(int time){
     gpio_put(pinIN3, 1); 
     gpio_put(pinIN4, 0); 
     add_alarm_in_ms(time, stopMovement,NULL,false);
+    return 0;
 } 
  
 int64_t moveClockWise(int time){ 
@@ -201,6 +207,7 @@ int64_t moveClockWise(int time){
     gpio_put(pinIN3, 0); 
     gpio_put(pinIN4, 1); 
     add_alarm_in_ms(time, stopMovement,NULL,false);
+    return 0;
 }
 
 int64_t stopMovement(alarm_id_t id, void *user_data) {
@@ -209,4 +216,17 @@ int64_t stopMovement(alarm_id_t id, void *user_data) {
     gpio_put(pinIN2, 0); 
     gpio_put(pinIN3, 0); 
     gpio_put(pinIN4, 0); 
+    return 0;
+}
+
+void forward() {
+    moveForwards(5000);
+}
+
+void rightTurn() {
+    moveClockWise(1000);
+}
+
+void leftTurn() {
+    moveAntiClockWise(1000);
 }
