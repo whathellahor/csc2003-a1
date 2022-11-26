@@ -31,8 +31,8 @@ bool hump = 0;
 bool peak = 0;
 
 // functions
-void getHumpHeight(float Ay);
-void getDetectHump(uint hump);
+float getHumpHeight(float Ay);
+bool getDetectHump(uint hump, float Ay);
 bool triggerAcc_callback(struct repeating_timer *t);
 
 #ifdef i2c_default
@@ -104,17 +104,21 @@ int main()
     return 0;
 }
 
-void getHumpHeight(float Acc)
+//method to calculate height of hump
+float getHumpHeight(float Acc)
 {
     float height = 0;
     height = Acc / 0.14; // 0.14 is approximate ratio of change in Y-axis to 1cm
 
     printf("Height is: %.2f cm\n", height);
-    // return height;
+    return height;
 }
 
-void getDetectHump(uint hump){
+//method to detect hump
+bool getDetectHump(uint hump, float Ay){
     //checks if car is moving at flat ground (hump == 0)
+
+    bool onHump = 0; //by default, detect no hump
     if (hump == 0)
     {
         // clipping algoirthm. if value of Ay is within the specified range,
@@ -128,6 +132,7 @@ void getDetectHump(uint hump){
             printf("Hump detected. Going up\n");
             accUp = Ay; // assign the value of the acceleration at the X axis to the global value the moment the car goes up the hump
             hump = 1;   // hump detected, set boolean to true
+            onHump = true;
         }
     }
 
@@ -138,10 +143,13 @@ void getDetectHump(uint hump){
 
         // call the function to calculate the height of the hump the
         //moment car is going down the hump
-        hump_calculation(accUp);
+        getHumpHeight(accUp);
         hump = 0; // set boolean value back to 0;
+        onHump = false;
         printf("Moving down the slope\n\n");
     }
+
+    return onHump;
 
 }
 
@@ -173,7 +181,8 @@ bool triggerAcc_callback(repeating_timer_t *t)
         startFlag = 1; // car is moving. dont come in here again
     }
 
-    getDetectHump(hump);
+    //call method to check if car is on hump
+    getDetectHump(hump, Ay);
 
 
 
