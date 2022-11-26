@@ -3,67 +3,52 @@
 #include "hardware/irq.h"
 #include <stdio.h>
 
-#define UART_ID uart0
-#define BAUD_RATE 115200
-#define DATA_BITS 8
-#define STOP_BITS 1
-#define PARITY    UART_PARITY_NONE
+#define UART_ID uart0               // Configuring uart0 for pico
+#define BAUD_RATE 115200            // Setting BAUD_RATE
+#define DATA_BITS 8                 // Setting DATA_BITS
+#define STOP_BITS 1                 // Setting STOP_BITS
+#define PARITY    UART_PARITY_NONE  // Setting PARTIY
+#define UART_TX_PIN 0               // Configuring GP0 as TX
+#define UART_RX_PIN 1               // Configuring GP1 as RX
 
-// We are using pins 0 and 1, but see the GPIO function select table in the
-// datasheet for information on which other pins can be used.
-#define UART_TX_PIN 0
-#define UART_RX_PIN 1
+int8_t x = 0;   // Variable for data that will be sent.
 
-static int chars_rxed = 0;
-int8_t x = 0;
+// Delay function
+void delay(){
+    int x = 0;
+    for(x = 0; x < 30000; x++){
+    }
+}
 
 // RX interrupt handler
 void on_uart_rx() {
-
+    // Infinite loop to check for data in RX
     while (uart_is_readable(UART_ID)) {
-        uint8_t ch = uart_getc(UART_ID);
-
-        char text[6];
+        char text[6];               // Create a char variable to store value
         sprintf(text, "%d\n", x);
-        uart_puts(UART_ID, text);
-        x += 1;
-        if (x==20){
+        uart_puts(UART_ID, text);   // Send data via TX
+        x += 1;                     // Increment value
+        if (x == 20){               // Reset value
             x = 0;
         }
     }
-    chars_rxed++;
 }
 
-
 int main() {
-    stdio_init_all();
-    // Set up our UART with a basic baud rate.
-    uart_init(UART_ID, BAUD_RATE);
+    stdio_init_all();               // To allow data to print in PUTTY
+    uart_init(UART_ID, BAUD_RATE);  // Confiuring basic baud rate
 
-    // Set the TX and RX pins by using the function select on the GPIO
-    // Set datasheet for more information on function select
-    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
-    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART); // Setting GP0 as TX
+    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART); // Setting GP1 as RX
 
-    // Set our data format
-    uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
+    uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY); // Formatting data
 
-    // Set up a RX interrupt
-    // We need to set up the handler first
-    // Select correct interrupt for the UART we are using
-    int UART_IRQ = UART_ID == uart0 ? UART0_IRQ : UART1_IRQ;
+    int UART_IRQ = UART_ID == uart0 ? UART0_IRQ : UART1_IRQ;    // Setting up the handler
 
-    // And set up and enable the interrupt handlers
-    irq_set_exclusive_handler(UART_IRQ, on_uart_rx);
-    irq_set_enabled(UART_IRQ, true);
+    irq_set_exclusive_handler(UART_IRQ, on_uart_rx);    // Setting up handler
+    irq_set_enabled(UART_IRQ, true);                    // Enabling interrupt handlers
 
-    // Now enable the UART to send interrupts - RX only
-    uart_set_irq_enables(UART_ID, true, false);
-
-    // OK, all set up.
-    // Lets send a basic string out, and then run a loop and wait for RX interrupts
-    // The handler will count them, but also reflect the incoming data back with a slight change!
-    uart_puts(UART_ID, "\nHello, uart interrupts\n");
+    uart_set_irq_enables(UART_ID, true, false);         // Allow UART to send interrupts
 
     delay();
 
@@ -71,4 +56,3 @@ int main() {
         tight_loop_contents();
     }
 }
-/// \end:uart_advanced[]
