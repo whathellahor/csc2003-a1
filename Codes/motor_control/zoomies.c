@@ -230,3 +230,7 @@ void rightTurn() {
 void leftTurn() {
     moveAntiClockWise(1000);
 }
+
+uint getAvgSpeed() {
+    return (speedA + speedB)/2;
+}

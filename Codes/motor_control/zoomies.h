@@ -47,6 +47,7 @@ int64_t moveBackwards(int time);
 int64_t moveAntiClockWise(int time);
 int64_t moveClockWise(int time);
 int64_t stopMovement(alarm_id_t id, void *user_data);
+uint getAvgSpeed();
 void rightTurn();
 void leftTurn();
 void forward();

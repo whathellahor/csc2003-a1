@@ -35,7 +35,7 @@ void barcodeCore(){
 int main() {
 
     stdio_init_all(); 
-    sleep_ms(1000); 
+    sleep_ms(10000); 
 
     initAcc();
     //enable uart output with stdlib
@@ -102,12 +102,12 @@ int main() {
         // sleep_ms(2000);
         // leftTurn();
         // sleep_ms(2000);
-        //tight_loop_contents();
+        tight_loop_contents();
         // call main function to start mapping
-        startMapping();
+        //startMapping();
 
         //call main function to start navigating
-        startNavigating();
+        //startNavigating();
     }
 
 }
