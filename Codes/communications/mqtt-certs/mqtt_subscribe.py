@@ -5,10 +5,11 @@ from paho import mqtt
 import os
 from config import *
 
+# Configuring terminal color
 START = '\33[42m'
 END = '\33[0m'
 
-# callback to print a message once it arrives
+# Dallback to print a message once it arrives
 def print_msg(client, userdata, message):
     msg = message.payload.decode("utf-8")
     print("%s : %s" % (message.topic, msg))
