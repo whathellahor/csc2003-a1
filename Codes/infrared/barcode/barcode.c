@@ -9,7 +9,7 @@ void barcode()
     uint16_t raw_value = adc_read();
 
     // Color 0 = white , black = 0
-    int color = detection(raw_value * (3.3f / (1 << 12)));
+    int color = colorDetection(raw_value * (3.3f / (1 << 12)));
 
     static int previous_color = 1, color_change_count = 0, start_time = 0, end_time = 0, unit_time = 0, index = 0;
     static int sampling_time[10] = {0}, message[16] = {0};

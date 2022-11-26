@@ -1,3 +1,7 @@
+#ifndef ULTRASONIC_H
+#define ULTRASONIC_H
+
+
 // global variables
 #define MIN_DISTANCE 15 // distance 15cm, car stop
 #define MIN_TRIGGER_TIME 10 // min time pulse high (for 10 microseconds)
@@ -58,3 +62,4 @@ int64_t EchoMaxAlarm_callback_left(alarm_id_t id, void *user_data); // left side
 int64_t EchoMaxAlarm_callback_right(alarm_id_t id, void *user_data); // right side of car IRQ
 
 
+#endif /* ULTRASONIC_H */
