@@ -7,5 +7,6 @@ char decode(int message[]);
 int colorDetection(float volatage);
 void barcode();
 void initBarcode();
+char getCharacter();
 
 #endif /* BARCODE_H */
