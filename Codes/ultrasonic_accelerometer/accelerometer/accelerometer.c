@@ -1,6 +1,7 @@
 #include "accelerometer.h"
 
 // set flag and stable values for when car first power up to store initialized values
+float accUp;
 bool startFlag = 0;        // car not start yet.
 float stableAcc, min, max; // store value for when car first power up
 // boolean to check for presence of hump. default value is 0 for no hump detected
@@ -118,7 +119,7 @@ bool triggerAcc_callback()
     mpu6050_read_raw(acceleration, gyro, &temp);
 
     float Ax, Ay, Az;
-    float Gx, Gy, Gz;
+    //float Gx, Gy, Gz;
 
     // uint time;
     // 16384
@@ -175,42 +176,3 @@ bool triggerAcc_callback()
 
 }
 
-bool triggerAcc_callback(repeating_timer_t *t)
-{
-    // array variables to store accelerometer values
-    int16_t acceleration[3], gyro[3], temp;
-    // calling the method to obtain the raw values that the acclerometer read
-    mpu6050_read_raw(acceleration, gyro, &temp);
-
-    float Ax, Ay, Az;
-    float Gx, Gy, Gz;
-
-    // uint time;
-    // 16384
-    //+- 4g Full Scale Range. 8192 LSB Sensitivity
-    Ax = acceleration[0] / 8192.0;
-    Ay = acceleration[1] / 8192.0;
-    Az = acceleration[2] / 8192.0;
-
-    if (startFlag == 0)
-    {
-        //snapshot of stable acceleration when the car first start up
-        stableAcc = Ay;
-        // set the range of values. if Ay is within this range, it's on flat ground
-        min = stableAcc - 0.15;
-        max = stableAcc + 0.15;
-
-        startFlag = 1; // car is moving. dont come in here again
-    }
-
-    //call method to check if car is on hump
-    getDetectHump(hump, Ay);
-
-
-
-    
-    //raw acceleration values
-    printf("Raw Acceleration is. X = %.2f, Y = %.2f, Z = %.2f\n", Ax, Ay, Az);
-
-    return true;
-}

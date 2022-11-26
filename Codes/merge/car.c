@@ -96,13 +96,18 @@ int main() {
 
 
     while (1) {
-        forward();
-        sleep_ms(6000);
-        rightTurn();
-        sleep_ms(2000);
-        leftTurn();
-        sleep_ms(2000);
+        // forward();
+        // sleep_ms(6000);
+        // rightTurn();
+        // sleep_ms(2000);
+        // leftTurn();
+        // sleep_ms(2000);
         //tight_loop_contents();
+        // call main function to start mapping
+        startMapping();
+
+        //call main function to start navigating
+        startNavigating();
     }
 
 }

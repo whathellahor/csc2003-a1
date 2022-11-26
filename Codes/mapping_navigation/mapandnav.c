@@ -978,7 +978,7 @@ int startMapping(){
         if (numberOfNodes == ((MAX_HEIGHT * MAX_WIDTH) - 1))
         {
             printf("\nMapping completed.");
-            print("\nSize of map (node array): %d", sizeof(nodeArray));
+            printf("\nSize of map (node array): %d", sizeof(nodeArray));
             return 0;
         }
 
@@ -1005,13 +1005,13 @@ int startNavigating(){
 }
 
 
-int main()
-{
-    // call main function to start mapping
-    startMapping();
+// int main()
+// {
+//     // call main function to start mapping
+//     startMapping();
 
-    //call main function to start navigating
-    startNavigating();
+//     //call main function to start navigating
+//     startNavigating();
 
-    return 0;
-}
+//     return 0;
+// }

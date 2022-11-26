@@ -3176,6 +3176,49 @@ Codes\merge\CMakeFiles\car.dir\__\infrared\barcode\barcode.c.obj: C:\Users\quan_
 Codes\merge\CMakeFiles\car.dir\__\infrared\barcode\barcode.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\infrared\barcode\barcode.h
 
 
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\mapping_navigation\mapandnav.c
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\stdio.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_ansi.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\newlib.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_newlib_version.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\config.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\ieeefp.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\features.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\cdefs.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_default_types.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stddef.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdarg.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\reent.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\_ansi.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_types.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_types.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\lock.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\types.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_stdint.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\endian.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\_endian.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\select.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_sigset.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_timeval.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\timespec.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_timespec.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_pthreadtypes.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\sched.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\types.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\stdio.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\stdlib.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\stdlib.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\alloca.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include-fixed\limits.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include-fixed\syslimits.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\limits.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\syslimits.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\lib\gcc\arm-none-eabi\10.2.1\include\stdbool.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\time.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\time.h"
+Codes\merge\CMakeFiles\car.dir\__\mapping_navigation\mapandnav.c.obj: "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\sys\_locale.h"
+
+
 Codes\merge\CMakeFiles\car.dir\__\motor_control\zoomies.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\motor_control\zoomies.c
 Codes\merge\CMakeFiles\car.dir\__\motor_control\zoomies.c.obj: C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\motor_control\zoomies.h
 Codes\merge\CMakeFiles\car.dir\__\motor_control\zoomies.c.obj: C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h
@@ -4009,6 +4052,12 @@ C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\rp2_common\pico_stdlib\stdlib
 C:\Users\quan_\Desktop\School\CSC2003\pico-sdk\src\common\pico_stdlib\include\pico\stdlib.h:
 
 C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\infrared\barcode\barcode.h:
+
+C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\mapping_navigation\mapandnav.c:
+
+"C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\time.h":
+
+"C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\arm-none-eabi\include\machine\time.h":
 
 C:\Users\quan_\Desktop\School\CSC2003\csc2003-a1\Codes\motor_control\zoomies.h:
 

@@ -4,6 +4,7 @@ add_executable(
         ../ultrasonic_accelerometer/ultrasonic/ultrasonic.h ../ultrasonic_accelerometer/ultrasonic/ultrasonic.c
         ../ultrasonic_accelerometer/accelerometer/accelerometer.h ../ultrasonic_accelerometer/accelerometer/accelerometer.c
         ../infrared/barcode/barcode.h ../infrared/barcode/barcode.c
+        ../mapping_navigation/mapandnav ../mapping_navigation/mapandnav.c
 )
 
 pico_add_extra_outputs(car)
