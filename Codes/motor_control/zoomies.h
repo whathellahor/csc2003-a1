@@ -9,16 +9,13 @@
 #include "hardware/pwm.h"
 #include "hardware/timer.h"
 
+//MACROS
 #define PWM_COUNTER 10000
 #define PWM_DEFAULTS 7300
 #define SPEED_CALC_FREQ 250 //In ms
 #define PID_FREQ 25 //In ms
 #define TARGET_SPEED 6
-extern const float Kp;   
-extern const float Ki;
-extern const float Kd;
 
-//MACROS
 #define pinENA 8 //PWM_CHAN_A
 #define pinENB 9 //PWM_CHAN_B
 #define pinIN1 2
@@ -28,29 +25,10 @@ extern const float Kd;
 #define pinENCA 6
 #define pinENCB 7
 
-//Function Prototypes
-
-//Encoder
-void encoderIRQ();
-bool calcSpeed(repeating_timer_t *rt);
-bool initEncoders(repeating_timer_t *rt);
-
-bool computeError(repeating_timer_t *rt);
-bool computeErrorA();
-bool computeErrorB();
-bool initPWM();
-void resetVariables();
-
-void initWheels();
-int64_t moveForwards(int time);
-int64_t moveBackwards(int time);
-int64_t moveAntiClockWise(int time);
-int64_t moveClockWise(int time);
-int64_t stopMovement(alarm_id_t id, void *user_data);
-uint getAvgSpeed();
-void rightTurn();
-void leftTurn();
-void forward();
+//Globals
+extern const float Kp;   
+extern const float Ki;
+extern const float Kd;
 
 extern uint counterA;
 extern uint counterB;
@@ -66,5 +44,27 @@ extern absolute_time_t lastUpdateA;
 extern int integralB;
 extern int lastErrorB;
 extern absolute_time_t lastUpdateB;
+
+//Function Prototypes
+void encoderIRQ();
+bool calcSpeed(repeating_timer_t *rt);
+bool initEncoders(repeating_timer_t *rt);
+
+bool computeError(repeating_timer_t *rt);
+bool computeErrorA();
+bool computeErrorB();
+bool initPWM();
+void resetVariables();
+
+void initWheels();
+void moveForwards(int time);
+void moveBackwards(int time);
+void moveAntiClockWise(int time);
+void moveClockWise(int time);
+int64_t stopMovement(alarm_id_t id, void *user_data);
+uint getAvgSpeed();
+void rightTurn();
+void leftTurn();
+void forward();
 
 #endif
