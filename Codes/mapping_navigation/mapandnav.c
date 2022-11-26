@@ -6,7 +6,7 @@
 #define MAX_WIDTH 5          // set max width of the maze to 5
 #define MAX_HEIGHT 4         // set max height of the maze to 4
 #define MOVEMENT_DISTANCE 30 // set default distance to move forward one grid as 30cm
-#define MIN_DISTANCE 5       // set default distance to check for wall to 5cm
+#define MIN_DISTANCE 10       // set default distance to check for wall to 5cm
 #define EXIT_DISTANCE 180    // set default distance for exit to be 180cm
 
 // perform AND or OR operation with these to check for wall
@@ -14,9 +14,6 @@
 #define DIRECTION_1_WALL 0x02 // 0000 0010b
 #define DIRECTION_2_WALL 0x04 // 0000 0100b
 #define DIRECTION_3_WALL 0x08 // 0000 1000b
-
-#define TRUE 1
-#define FALSE 0
 
 short int direction = 1;      // initialize default direction as 1, facing front
 short int isExit[2] = {MAX_WIDTH * MAX_WIDTH + 1, 4};          // contain value for isExit, [nodeArray index, wall]
@@ -27,7 +24,7 @@ short int currentYCoord = 0;  // contain current y-coordinate
 short int debtCounter = 0;    // counter for debt list
 short int shortestPathArray[MAX_WIDTH * MAX_WIDTH];  // stores the shortest path for the navigation
 short int shortestPathCounter = 0;                     // counter for the shortest path array
-short int adjMatrix[MAX_WIDTH * MAX_HEIGHT][MAX_WIDTH * MAX_HEIGHT];
+short int adjMatrix[MAX_WIDTH * MAX_HEIGHT][MAX_WIDTH * MAX_HEIGHT];    // adjacency matrix to store each node's adjacent nodes
 
 // create struct for nodes
 // contains x-y coord.
@@ -56,7 +53,7 @@ short int pathArray[MAX_WIDTH * MAX_HEIGHT][2];
 // increment direction
 void incrementDirection()
 {
-    direction++;
+    ++direction;
     if (direction == 4)
     {
         direction = 0;
@@ -66,7 +63,7 @@ void incrementDirection()
 // decrement direction
 void decrementDirection()
 {
-    direction--;
+    --direction;
     if (direction == -1)
     {
         direction = 3;
@@ -84,10 +81,11 @@ void checkExit(short int direction, float distance)
 }
 
 // first grid mapping
+// different from mapping the rest of the grids as it requires the car to turn and map the back wall
 void firstGridMapping()
 {
     // save current coord.
-    numberOfNodes++;
+    ++numberOfNodes;
     nodeArray[numberOfNodes].xCoord = currentXCoord;
     nodeArray[numberOfNodes].yCoord = currentYCoord;
 
@@ -119,7 +117,7 @@ void firstGridMapping()
         checkExit(0, ULTRASONIC.LEFT_DISTANCE()); // check if it is an exit
     }
 
-    // after mapping left, front, right wall, turn right
+    // after mapping left, front, right wall, turn right to map the last wall
     MOTOR.TURN_RIGHT();
     incrementDirection(); // increment direction when turn right
     // checks if direction 3 has a wall
@@ -133,17 +131,16 @@ void firstGridMapping()
     }
 
     // turn to face nearest open wall that is not an exit
-    // check current facing direction first (3)
+    // check current facing direction first (2)
     // if not, then check direction 0
     // if not, then check direction 2
     // if not, then check direction 1
-
     // save the other open walls as debt only if they are not an exit
-    if ((nodeArray[numberOfNodes].wallOpenings & DIRECTION_2_WALL) == 0)
-    { // there is an opening in the front
 
+    // there is an opening in the front
+    if ((nodeArray[numberOfNodes].wallOpenings & DIRECTION_2_WALL) == 0)
+    { 
         // if it is not an exit, save the other open walls into debt
-        
         if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2)))
         {
             
@@ -153,7 +150,7 @@ void firstGridMapping()
                     debtArray[debtCounter][0] = currentXCoord;
                     debtArray[debtCounter][1] = currentYCoord;
                     debtArray[debtCounter][2] = 3;
-                    debtCounter++;
+                    ++debtCounter;
                 }
             }
             else if ((nodeArray[numberOfNodes].wallOpenings & DIRECTION_1_WALL) == 0)
@@ -162,7 +159,7 @@ void firstGridMapping()
                     debtArray[debtCounter][0] = currentXCoord;
                     debtArray[debtCounter][1] = currentYCoord;
                     debtArray[debtCounter][2] = 1;
-                    debtCounter++;
+                    ++debtCounter;
                 }
             }
             else if ((nodeArray[numberOfNodes].wallOpenings & DIRECTION_0_WALL) == 0)
@@ -171,7 +168,7 @@ void firstGridMapping()
                     debtArray[debtCounter][0] = currentXCoord;
                     debtArray[debtCounter][1] = currentYCoord;
                     debtArray[debtCounter][2] = 0;
-                    debtCounter++;
+                    ++debtCounter;
                 }
             }
         }
@@ -190,7 +187,7 @@ void firstGridMapping()
                     debtArray[debtCounter][0] = currentXCoord;
                     debtArray[debtCounter][1] = currentYCoord;
                     debtArray[debtCounter][2] = 0;
-                    debtCounter++;
+                    ++debtCounter;
                 }
             }
             else if ((nodeArray[numberOfNodes].wallOpenings & DIRECTION_2_WALL) == 0)
@@ -199,7 +196,7 @@ void firstGridMapping()
                     debtArray[debtCounter][0] = currentXCoord;
                     debtArray[debtCounter][1] = currentYCoord;
                     debtArray[debtCounter][2] = 2;
-                    debtCounter++;
+                    ++debtCounter;
                 }
             }
         }
@@ -217,7 +214,7 @@ void firstGridMapping()
                     debtArray[debtCounter][0] = currentXCoord;
                     debtArray[debtCounter][1] = currentYCoord;
                     debtArray[debtCounter][2] = 0;
-                    debtCounter++;
+                    ++debtCounter;
                 }
             }
         }
@@ -239,7 +236,7 @@ void firstGridMapping()
 void peripheralChecking()
 {
     // flag to check if node has been visited
-    short int flag = TRUE; // true means it is a new node
+    short int flag = 1; // true means it is a new node
 
     for (short int i = 0; i < numberOfNodes + 1; i++)
     {
@@ -247,15 +244,15 @@ void peripheralChecking()
         if ((nodeArray[i].xCoord == currentXCoord) && (nodeArray[i].yCoord == currentYCoord))
         {
             // set flag to false if it has been mapped
-            flag = FALSE;
+            flag = 0;
         }
     }
     
     // if flag is true, the node has not been mapped, start mapping 4 sides of the wall
-    if (flag == TRUE)
+    if (flag == 1)
     {
         // save current coord.
-        numberOfNodes++;
+        ++numberOfNodes;
         nodeArray[numberOfNodes].xCoord = currentXCoord; 
         nodeArray[numberOfNodes].yCoord = currentYCoord;
 
@@ -274,7 +271,7 @@ void peripheralChecking()
             {
                 checkExit(0, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0))){
-                    openingCounter++;                          // increment opening counter
+                    ++openingCounter;                          // increment opening counter
                 }
             }
             // check if direction 0 has a wall
@@ -292,7 +289,7 @@ void peripheralChecking()
                         debtArray[debtCounter][0] = currentXCoord;
                         debtArray[debtCounter][1] = currentYCoord;
                         debtArray[debtCounter][2] = 1;
-                        debtCounter++;
+                        ++debtCounter;
                     }
                 }
             }
@@ -312,7 +309,7 @@ void peripheralChecking()
                         debtArray[debtCounter][0] = currentXCoord;
                         debtArray[debtCounter][1] = currentYCoord;
                         debtArray[debtCounter][2] = 3;
-                        debtCounter++;
+                        ++debtCounter;
                     }
                 }
             }
@@ -327,7 +324,7 @@ void peripheralChecking()
             {
                 checkExit(1, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 1))){
-                    openingCounter++;                          // increment opening counter
+                    ++openingCounter;                          // increment opening counter
                 }
             }
             // check if direction 2 has a wall
@@ -346,7 +343,7 @@ void peripheralChecking()
                         debtArray[debtCounter][0] = currentXCoord;
                         debtArray[debtCounter][1] = currentYCoord;
                         debtArray[debtCounter][2] = 2;
-                        debtCounter++;
+                        ++debtCounter;
                     }
                 }
             }
@@ -366,7 +363,7 @@ void peripheralChecking()
                         debtArray[debtCounter][0] = currentXCoord;
                         debtArray[debtCounter][1] = currentYCoord;
                         debtArray[debtCounter][2] = 0;
-                        debtCounter++;
+                        ++debtCounter;
                     }
                 }
             }
@@ -381,7 +378,7 @@ void peripheralChecking()
             {
                 checkExit(2, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2))){
-                    openingCounter++;                          // increment opening counter
+                    ++openingCounter;                          // increment opening counter
                 }
             }
             // check if direction 3 has a wall
@@ -400,7 +397,7 @@ void peripheralChecking()
                         debtArray[debtCounter][0] = currentXCoord;
                         debtArray[debtCounter][1] = currentYCoord;
                         debtArray[debtCounter][2] = 3;
-                        debtCounter++;
+                        ++debtCounter;
                     }
                 }
             }
@@ -420,7 +417,7 @@ void peripheralChecking()
                         debtArray[debtCounter][0] = currentXCoord;
                         debtArray[debtCounter][1] = currentYCoord;
                         debtArray[debtCounter][2] = 1;
-                        debtCounter++;
+                        ++debtCounter;
                     }
                 }
             }
@@ -435,7 +432,7 @@ void peripheralChecking()
             {
                 checkExit(3, ULTRASONIC.FRONT_DISTANCE()); // check if it is an exit
                 if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3))){
-                    openingCounter++;                          // increment opening counter
+                    ++openingCounter;                          // increment opening counter
                 }
             }
             // check if direction 0 has a wall
@@ -454,7 +451,7 @@ void peripheralChecking()
                         debtArray[debtCounter][0] = currentXCoord;
                         debtArray[debtCounter][1] = currentYCoord;
                         debtArray[debtCounter][2] = 0;
-                        debtCounter++;
+                        ++debtCounter;
                     }
                 }
             }
@@ -474,7 +471,7 @@ void peripheralChecking()
                         debtArray[debtCounter][0] = currentXCoord;
                         debtArray[debtCounter][1] = currentYCoord;
                         debtArray[debtCounter][2] = 2;
-                        debtCounter++;
+                        ++debtCounter;
                     }
                 }
             }
@@ -503,19 +500,19 @@ void changeCoord()
     {
     case 0:
         // facing the left, decrement x coord
-        currentXCoord--;
+        --currentXCoord;
         break;
     case 1:
         // facing the front, increment y coord
-        currentYCoord++;
+        ++currentYCoord;
         break;
     case 2:
         // facing the right, increment x coord
-        currentXCoord++;
+        ++currentXCoord;
         break;
     case 3:
         // facing the back, decrement y coord
-        currentYCoord--;
+        --currentYCoord;
         break;
     }
 }
@@ -662,14 +659,14 @@ void debtVisit()
         // remove from pathArray as we are backtracking
         pathArray[numberOfMoves][0] = NULL;
         pathArray[numberOfMoves][1] = NULL;
-        numberOfMoves--;
+        ++numberOfMoves;
     }
     // turn car to face debt open wall
     debtCarTurning(debt_coord[2]);
     // remove debt
     debtArray[debtCounter][0] = NULL;
     debtArray[debtCounter][1] = NULL;
-    debtCounter--;
+    --debtCounter;
     // make car move forward
     MOTOR.MOVE_FORWARD();
     // change coord.
@@ -688,11 +685,11 @@ void debtVisit()
 // path tree
 
 short int saveStartNode (){
-    // get from communications module yay
+    // get from communications module
 }
 
 short int saveNavDirection (){
-    // get from communications module yay
+    // get from communications module
 }
 
 int minDistance(int dist[], bool sptSet[])
@@ -928,24 +925,12 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
 }
 
 
-
-
-
-
-
-// main function
-// call first grid mapping
-// while loop (?)
-// call peripheral checking
-// call car turning
-// check if mapped 20 grids, if yes, break from while loop.
-
-
 // MAIN FUNCTION TO START MAPPING
 
 int startMapping(){
     firstGridMapping(); // call method to map first grid
 
+    // while loop until it is fully mapped
     while (1)
     {
         // call method to check peripheral with sensors
@@ -954,7 +939,8 @@ int startMapping(){
         // if number of nodes mapped == total map grids, then mapping is complete
         if (numberOfNodes == ((MAX_HEIGHT * MAX_WIDTH) - 1))
         {
-            printf("Mapping completed.");
+            printf("\nMapping completed.");
+            print("\nSize of map (node array): %d", sizeof(nodeArray));
             return 0;
         }
 
@@ -976,12 +962,18 @@ int startNavigating(){
 
     // navDirection given by communication
     navToExit(shortestPathArray, shortestPathCounter, saveNavDirection());  
+
+    printf("\nNavigation completed.");
 }
-
-
 
 
 int main()
 {
+    // call main function to start mapping
+    startMapping();
+
+    //call main function to start navigating
+    startNavigating();
+
     return 0;
 }
