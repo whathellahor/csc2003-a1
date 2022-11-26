@@ -45,6 +45,10 @@ void setEchoPinLow(uint echoPin);
 void getDistance(uint timeDifference, struct Sensors *sensor);
 void echoUltraSonic_callback();
 bool triggerUltraSonic_callback(repeating_timer_t *t);
+uint8_t getCenterDistance();
+uint8_t getLeftDistance();
+uint8_t getRightDistance();
+
 
 
 // IRQ handlers

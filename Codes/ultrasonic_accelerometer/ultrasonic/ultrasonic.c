@@ -289,6 +289,24 @@ int64_t EchoMaxAlarm_callback_right(alarm_id_t id, void *user_data)
     return 0;
 }
 
+//returns middle sensor distance
+uint8_t getCenterDistance()
+{
+    return sensor_center.averageDistance;
+}
+//returns left sensor distacne
+uint8_t getLeftDistance()
+{
+    return sensor_left.averageDistance;
+}
+
+//returns right sensor distance
+uint8_t getRightDistance()
+{
+    return sensor_right.averageDistance;
+}
+
+
 // int main()
 // {
 //     stdio_init_all();
