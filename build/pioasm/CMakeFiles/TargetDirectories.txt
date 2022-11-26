@@ -1,3 +1,0 @@
-C:/Users/quan_/Desktop/School/CSC2003/csc2003-a1/build/pioasm/CMakeFiles/pioasm.dir
-C:/Users/quan_/Desktop/School/CSC2003/csc2003-a1/build/pioasm/CMakeFiles/edit_cache.dir
-C:/Users/quan_/Desktop/School/CSC2003/csc2003-a1/build/pioasm/CMakeFiles/rebuild_cache.dir

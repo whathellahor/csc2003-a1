@@ -109,7 +109,7 @@ void Smoothing(struct Sensors *sensor)
         sensor -> averageDistance = arraySum / SAMPLE_SIZE;
 
         // print output in putty
-        printf("%c -> distance: %d cm, average: %d cm \n", sensor -> Name, sensor -> distance, sensor -> averageDistance);
+        //printf("%c -> distance: %d cm, average: %d cm \n", sensor -> Name, sensor -> distance, sensor -> averageDistance);
     }
 }
 
@@ -288,6 +288,24 @@ int64_t EchoMaxAlarm_callback_right(alarm_id_t id, void *user_data)
     alarm_pool_cancel_alarm(alarm_pool_get_default(), id);
     return 0;
 }
+
+//returns middle sensor distance
+uint8_t getCenterDistance()
+{
+    return sensor_center.averageDistance;
+}
+//returns left sensor distacne
+uint8_t getLeftDistance()
+{
+    return sensor_left.averageDistance;
+}
+
+//returns right sensor distance
+uint8_t getRightDistance()
+{
+    return sensor_right.averageDistance;
+}
+
 
 // int main()
 // {
