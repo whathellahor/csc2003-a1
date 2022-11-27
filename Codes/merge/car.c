@@ -2,6 +2,7 @@
 #include "../motor_control/zoomies.h"
 #include "../ultrasonic_accelerometer/ultrasonic/ultrasonic.h"
 #include "../infrared/barcode/barcode.h"
+#include "../communicatations/esp-uart/comm_mod.h"
 #include "pico/time.h"
 #include "pico/binary_info.h"
 #include "pico/multicore.h"
@@ -11,6 +12,8 @@
 #include "hardware/adc.h"
 #include "hardware/i2c.h"
 
+/*FUNCTION PROTOTYPE*/
+void update_car();
 
 void IRQ_HANDLER() {
     //Checks interrupt source and handle appropriately
@@ -29,6 +32,22 @@ void barcodeCore(){
     
     // initBarcode(speedA,speedB);
     initBarcode();
+}
+
+/***************************************************************************
+ * UPDATE COMMS GLOBAL VARIABLE, car_data
+ * TO BE PARKED IN SOME TIMER/ INTERRUPT, AFTER ALL MODS INCLUDE THEIR DATA
+ * TO BE OUTPUTTED TO WEBAPP
+****************************************************************************/
+void update_car() {
+    car_data.hump = NULL; // TOTAL NUMBER OF HUMPS, UINT8_T
+    car_data.turn = NULL ; // TOTAL NUMBER OF TURNS, UINT8_T
+    car_data.hump_detected = NULL; // 1 FOR DETECTED, 0 FOR NOT DETECTED, UINT8_T
+    car_data.turn_detected = NULL; // 1 FOR DETECTED, 0 FOR NOT DETECTED, UINT8_T
+    car_data.distance = NULL; // TOTAL DISTANCE TRAVELLED, UINT8_T
+    car_data.speed = NULL; // CURRENT SPEED, UINT8_T
+    sprintf(car_data.barcode, "%s", NULL); // ACCEPT STRING UP TO LEN 99, OR ANY OTHER FORMAT JUST CHANGE THE SPECIFIER
+    sprintf(car_data.map_data, "%s", NULL); // ACCEPT STRING UP TO LEN 99, OR ANY OTHER FORMAT JUST CHANGE THE SPECIFIER
 }
 
 int main() {
@@ -96,6 +115,22 @@ int main() {
 
         //call main function to start navigating
         //startNavigating();
+
+        /*************************************************************
+         * START COMMS
+         * REPLACE SSID AND PASS WITH OWN TO TEST
+         * DO IP SCAN TO ACQUIRE IP IF NO DEBUG OUTPUT
+         * CONNECTING TO PICO IP ON BROWSER WILL DISPLAY JSON VALUES
+         * init_comms() IS A BLOCKING FUNCTION
+        *************************************************************/
+        char ssid[] = "pico_test1"; // REPLACE WITH OWN SSID
+        char pass[] = "testtest"; // REPLACE WITH OWN PASSWORD
+        init_comms(1, ssid, pass); // 1: STATION MODE, 2: HOST, 3: BOTH
+        /*************************************************************
+         * ANYTHING FROM HERE ONWARDS SHOULDN'T RUN
+         * END COMMS
+        **************************************************************/
+
     }
 
 }
