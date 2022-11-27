@@ -94,6 +94,47 @@ void checkExit(short int direction, float distance)
     }
 }
 
+
+// change coord.
+void changeCoord()
+{
+    switch (direction)
+    {
+    case 0:
+        // facing the left, decrement x coord
+        --currentXCoord;
+        break;
+    case 1:
+        // facing the front, increment y coord
+        ++currentYCoord;
+        break;
+    case 2:
+        // facing the right, increment x coord
+        ++currentXCoord;
+        break;
+    case 3:
+        // facing the back, decrement y coord
+        --currentYCoord;
+        break;
+    }
+}
+
+// car movement
+void carMovement()
+{
+    // save coord. into pathArray
+    pathArray[numberOfMoves][0] = currentXCoord;
+    pathArray[numberOfMoves][1] = currentYCoord;
+
+    numberOfMoves++; // increment number of moves
+
+    forward();
+    delay(MOVEMENT_DELAY);   // delay while car moves
+
+    // change x-y coord.
+    changeCoord();
+}
+
 // first grid mapping
 // different from mapping the rest of the grids as it requires the car to turn and map the back wall
 void firstGridMapping()
@@ -250,6 +291,110 @@ void firstGridMapping()
     carMovement();
 };
 
+
+// debt car turning
+void debtCarTurning(short int target)
+{
+    while (direction != target)
+    {
+        if (target == 3 && direction == 0)
+        {
+            leftTurn();
+            delay(TURNING_DELAY);   // delay while car turns
+            decrementDirection();
+        }
+        else if (target == 0 && direction == 3)
+        {
+            rightTurn();
+            delay(TURNING_DELAY);   // delay while car turns
+            incrementDirection();
+        }
+        else
+        {
+            if (target > direction)
+            {
+                rightTurn();
+                delay(TURNING_DELAY);   // delay while car turns
+                incrementDirection();
+            }
+            else
+            {
+                leftTurn();
+                delay(TURNING_DELAY);   // delay while car turns
+                decrementDirection();
+            }
+        }
+    }
+}
+
+// car visiting debt
+// check latest debt coord. in debt list, save into variable
+// while loop to see if reached debt coord.
+// check last pathArray for previous coord.
+// compare x-y coord. of current grid to previous coord., see which direction to turn from there
+// call car move forward
+// remove last pathArray coords. from path stack
+// once reached, remove debt from debt list
+// move forward
+// call peripheral checking
+// go back to main while loop to explore
+void debtVisit()
+{
+    // check latest debt coord. in debt list, save into variable
+    short int debt_coord[3] = {debtArray[debtCounter][0], debtArray[debtCounter][1], debtArray[debtCounter][2]};
+    // while loop to see if reached debt coord.
+    while ((currentXCoord != debt_coord[0]) && (currentYCoord != debt_coord[1]))
+    {
+        //
+        if (currentXCoord != pathArray[numberOfMoves][0])
+        {
+            if (currentXCoord > pathArray[numberOfMoves][0])
+            {
+                // call function to turn
+                debtCarTurning(0);
+            }
+            else
+            {
+                // call function to turn
+                debtCarTurning(2);
+            }
+        }
+
+        else if (currentYCoord != pathArray[numberOfMoves][1])
+        {
+            if (currentYCoord > pathArray[numberOfMoves][1])
+            {
+                // call function to turn
+                debtCarTurning(3);
+            }
+            else
+            {
+                // call function to turn
+                debtCarTurning(1);
+            }
+        }
+
+        // make car move forward
+        forward();
+        delay(MOVEMENT_DELAY);   // delay while car moves
+        changeCoord();
+        // remove from pathArray as we are backtracking
+        pathArray[numberOfMoves][0] = NULL;
+        pathArray[numberOfMoves][1] = NULL;
+        ++numberOfMoves;
+    }
+    // turn car to face debt open wall
+    debtCarTurning(debt_coord[2]);
+    // remove debt
+    debtArray[debtCounter][0] = NULL;
+    debtArray[debtCounter][1] = NULL;
+    --debtCounter;
+    // make car move forward
+    forward();
+    delay(MOVEMENT_DELAY);   // delay while car moves
+    // change coord.
+    changeCoord();
+}
 
 // peripheral checking, mask and set here
 void peripheralChecking()
@@ -514,45 +659,7 @@ void peripheralChecking()
     }
 }
 
-// change coord.
-void changeCoord()
-{
-    switch (direction)
-    {
-    case 0:
-        // facing the left, decrement x coord
-        --currentXCoord;
-        break;
-    case 1:
-        // facing the front, increment y coord
-        ++currentYCoord;
-        break;
-    case 2:
-        // facing the right, increment x coord
-        ++currentXCoord;
-        break;
-    case 3:
-        // facing the back, decrement y coord
-        --currentYCoord;
-        break;
-    }
-}
 
-// car movement
-void carMovement()
-{
-    // save coord. into pathArray
-    pathArray[numberOfMoves][0] = currentXCoord;
-    pathArray[numberOfMoves][1] = currentYCoord;
-
-    numberOfMoves++; // increment number of moves
-
-    forward();
-    delay(MOVEMENT_DELAY);   // delay while car moves
-
-    // change x-y coord.
-    changeCoord();
-}
 
 // car turning
 // if forward is not blocked, remain
@@ -600,114 +707,6 @@ void carTurning()
         debtVisit();
     }
 }
-
-// debt car turning
-void debtCarTurning(short int target)
-{
-    while (direction != target)
-    {
-        if (target == 3 && direction == 0)
-        {
-            leftTurn();
-            delay(TURNING_DELAY);   // delay while car turns
-            decrementDirection();
-        }
-        else if (target == 0 && direction == 3)
-        {
-            rightTurn();
-            delay(TURNING_DELAY);   // delay while car turns
-            incrementDirection();
-        }
-        else
-        {
-            if (target > direction)
-            {
-                rightTurn();
-                delay(TURNING_DELAY);   // delay while car turns
-                incrementDirection();
-            }
-            else
-            {
-                leftTurn();
-                delay(TURNING_DELAY);   // delay while car turns
-                decrementDirection();
-            }
-        }
-    }
-}
-
-// car visiting debt
-// check latest debt coord. in debt list, save into variable
-// while loop to see if reached debt coord.
-// check last pathArray for previous coord.
-// compare x-y coord. of current grid to previous coord., see which direction to turn from there
-// call car move forward
-// remove last pathArray coords. from path stack
-// once reached, remove debt from debt list
-// move forward
-// call peripheral checking
-// go back to main while loop to explore
-void debtVisit()
-{
-    // check latest debt coord. in debt list, save into variable
-    short int debt_coord[3] = {debtArray[debtCounter][0], debtArray[debtCounter][1], debtArray[debtCounter][2]};
-    // while loop to see if reached debt coord.
-    while ((currentXCoord != debt_coord[0]) && (currentYCoord != debt_coord[1]))
-    {
-        //
-        if (currentXCoord != pathArray[numberOfMoves][0])
-        {
-            if (currentXCoord > pathArray[numberOfMoves][0])
-            {
-                // call function to turn
-                debtCarTurning(0);
-            }
-            else
-            {
-                // call function to turn
-                debtCarTurning(2);
-            }
-        }
-
-        else if (currentYCoord != pathArray[numberOfMoves][1])
-        {
-            if (currentYCoord > pathArray[numberOfMoves][1])
-            {
-                // call function to turn
-                debtCarTurning(3);
-            }
-            else
-            {
-                // call function to turn
-                debtCarTurning(1);
-            }
-        }
-
-        // make car move forward
-        forward();
-        delay(MOVEMENT_DELAY);   // delay while car moves
-        changeCoord();
-        // remove from pathArray as we are backtracking
-        pathArray[numberOfMoves][0] = NULL;
-        pathArray[numberOfMoves][1] = NULL;
-        ++numberOfMoves;
-    }
-    // turn car to face debt open wall
-    debtCarTurning(debt_coord[2]);
-    // remove debt
-    debtArray[debtCounter][0] = NULL;
-    debtArray[debtCounter][1] = NULL;
-    --debtCounter;
-    // make car move forward
-    forward();
-    delay(MOVEMENT_DELAY);   // delay while car moves
-    // change coord.
-    changeCoord();
-}
-
-
-
-
 
 //------------------------------------------------------------------------------------------------------------
 // NAVIGATION
@@ -769,7 +768,7 @@ int printSolution(int dist[], int n, int parent[], short int dst)
 // Funtion that implements Dijkstra's single source shortest path
 // algorithm for a graph represented using adjacency matrix
 // representation
-void dijkstra(int graph[numberOfNodes + 1][numberOfNodes + 1], short int src, short int dst)
+void dijkstra(short int graph[numberOfNodes + 1][numberOfNodes + 1], short int src, short int dst)
 {
     int dist[numberOfNodes + 1];  // The output array. dist[i] will hold
                   // the shortest distance from src to i
