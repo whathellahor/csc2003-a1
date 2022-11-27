@@ -4,3 +4,4 @@
 # add_subdirectory(motor_control)
 # add_subdirectory(ultrasonic_accelerometer)
 add_subdirectory(merge)
+add_subdirectory(motor_control/individual)

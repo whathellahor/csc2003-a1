@@ -1,4 +1,4 @@
-#include "zoomies.h"
+#include "motorModule.h"
 
 const float Kp = 8.0;   
 const float Ki = 0.001;
@@ -227,8 +227,8 @@ int64_t stopMovement(alarm_id_t id, void *user_data) {
 }
 
 void forward() {
-    //moveForwards(20000);
-    moveForwards(1200);
+    moveForwards(20000);
+    //moveForwards(1200);
 }
 
 void rightTurn() {
@@ -241,4 +241,45 @@ void leftTurn() {
 
 uint getAvgSpeed() {
     return (speedA + speedB)/2;
+}
+
+int main() {
+    //Enable serial output
+    stdio_init_all(); 
+    //Wait for Init
+    sleep_ms(10000);  
+    //Init Encoders
+    initWheels();
+
+    repeating_timer_t speedTimer;
+    repeating_timer_t pidTimer;
+
+    //Speed Calc
+    //create a timer to call a given function (i.e. calcSpeed) every n milliseconds) returns false if no timer slots available
+    if (!add_repeating_timer_ms(SPEED_CALC_FREQ, calcSpeed, NULL, &speedTimer)) {
+         return 1;
+    };
+
+    //Init and Start PWM on motors
+    initPWM();
+
+    //PID Controller Loop
+    //Add timer to run PID periodically
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+         return 1;
+    };
+
+    gpio_set_irq_enabled(pinENCA, GPIO_IRQ_EDGE_RISE, true);
+    gpio_set_irq_enabled(pinENCB, GPIO_IRQ_EDGE_RISE, true);
+
+    //Define interrupt handler function
+    gpio_add_raw_irq_handler_masked(pinENCA | pinENB , encoderIRQ);
+
+    //Enable interrupt on GPIO
+    irq_set_enabled(IO_IRQ_BANK0, true);
+
+    forward();
+    while (1) {
+        tight_loop_contents();
+    }
 }

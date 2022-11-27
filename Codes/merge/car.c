@@ -84,13 +84,13 @@ int main() {
     irq_set_enabled(IO_IRQ_BANK0, true);
 
     while (1) {
-        // forward();
-        // sleep_ms(6000);
+        forward();
+        sleep_ms(2000);
         // rightTurn();
         // sleep_ms(2000);
         // leftTurn();
         // sleep_ms(2000);
-        tight_loop_contents();
+        //tight_loop_contents();
         // call main function to start mapping
         //startMapping();
 
