@@ -2,7 +2,7 @@
 #include "../motor_control/zoomies.h"
 #include "../ultrasonic_accelerometer/ultrasonic/ultrasonic.h"
 #include "../infrared/barcode/barcode.h"
-#include "../communicatations/esp-uart/comm_mod.h"
+#include "../communications/esp-uart/comm_mod.h"
 #include "pico/time.h"
 #include "pico/binary_info.h"
 #include "pico/multicore.h"
@@ -11,6 +11,19 @@
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 #include "hardware/i2c.h"
+
+Car car_data = {
+    0, // HUMP NUMBER
+    0, // TURN NUMBER
+    0, // HUMP DETECTED
+    0, // TURN DETECTED
+    "", // BARCODE
+    0, // DISTANCE
+    0, // SPEED
+    "", // MAP DATA
+};
+
+uint8_t data[BUFFER_LEN];
 
 /*FUNCTION PROTOTYPE*/
 void update_car();
@@ -45,7 +58,7 @@ void update_car() {
     car_data.hump_detected = NULL; // 1 FOR DETECTED, 0 FOR NOT DETECTED, UINT8_T
     car_data.turn_detected = NULL; // 1 FOR DETECTED, 0 FOR NOT DETECTED, UINT8_T
     car_data.distance = NULL; // TOTAL DISTANCE TRAVELLED, UINT8_T
-    car_data.speed = NULL; // CURRENT SPEED, UINT8_T
+    car_data.speed = getAvgSpeed(); // CURRENT SPEED, UINT8_T
     sprintf(car_data.barcode, "%s", NULL); // ACCEPT STRING UP TO LEN 99, OR ANY OTHER FORMAT JUST CHANGE THE SPECIFIER
     sprintf(car_data.map_data, "%s", NULL); // ACCEPT STRING UP TO LEN 99, OR ANY OTHER FORMAT JUST CHANGE THE SPECIFIER
 }

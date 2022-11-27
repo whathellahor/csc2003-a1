@@ -38,18 +38,9 @@ void init_comms(int esp_mode, char ssid[], char password[]);
 
 // GLOBAL VARIABLES
 // CAR DATA
-Car car_data = {
-    0, // HUMP NUMBER
-    0, // TURN NUMBER
-    0, // HUMP DETECTED
-    0, // TURN DETECTED
-    "", // BARCODE
-    0, // DISTANCE
-    0, // SPEED
-    "", // MAP DATA
-};
+extern Car car_data;
 // DATA BUFFER
-uint8_t data[BUFFER_LEN];
+extern uint8_t data[BUFFER_LEN];
 
 // IMPORT GUARD END
 #endif

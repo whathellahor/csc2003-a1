@@ -7,6 +7,8 @@
  * SET AND GET VALUES FROM car_data GLOBAL STRUCT
 *************************************************************************************/
 
+
+
 // UART CONFIG
 void config_uart() {
 
@@ -219,7 +221,7 @@ void init_comms(int esp_mode, char ssid[], char password[]) {
     sleep_ms(1000);
 }
 
-// MAIN PROGRAM ENTRY
-int main() {
-    init_comms(1, "pico_test1", "testtest"); // ESP MODE: USE 1, SSID, PASSWORD
-}
+// // MAIN PROGRAM ENTRY
+// int main() {
+//     init_comms(1, "pico_test1", "testtest"); // ESP MODE: USE 1, SSID, PASSWORD
+// }
