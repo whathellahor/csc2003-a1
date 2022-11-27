@@ -29,6 +29,11 @@ short int shortestPathArray[MAX_WIDTH * MAX_WIDTH];  // stores the shortest path
 short int shortestPathCounter = 0;                     // counter for the shortest path array
 short int adjMatrix[MAX_WIDTH * MAX_HEIGHT][MAX_WIDTH * MAX_HEIGHT];    // adjacency matrix to store each node's adjacent nodes
 
+// FOR COMMUNICATIONS MODULE TO SET
+short int startNode = 0;        // set start node for navigation, default as 0
+short int navDirection = 1;     // set start direction for navigation, default at 1 
+
+
 // create struct for nodes
 // contains x-y coord.
 // contain char representing wall opening: default 0000 0000 (use last 4 bits to represent)
@@ -42,9 +47,15 @@ struct node
 // create map array size MAX_WIDTH * MAX_HEIGHT to store node structs
 struct node nodeArray[MAX_WIDTH * MAX_HEIGHT];
 
-
 // create debt array size of total number of lines in grid to store debt coord. and wall
 short int debtArray[(MAX_WIDTH * (MAX_HEIGHT + 1)) + (MAX_HEIGHT * (MAX_WIDTH + 1))][3];
+
+// create path array to store coord. of path taken
+// add coord. in when visited
+// remove coord. when backtracking
+// use numberOfMoves as index for array
+short int pathArray[MAX_WIDTH * MAX_HEIGHT][2];
+
 
 // delay function
 void delay(int number_of_seconds)
@@ -57,12 +68,6 @@ void delay(int number_of_seconds)
     while (clock() < start_time + milli_seconds)
         ;
 }
-
-// create path array to store coord. of path taken
-// add coord. in when visited
-// remove coord. when backtracking
-// use numberOfMoves as index for array
-short int pathArray[MAX_WIDTH * MAX_HEIGHT][2];
 
 // increment direction
 void incrementDirection()
@@ -711,18 +716,8 @@ void carTurning()
 //------------------------------------------------------------------------------------------------------------
 // NAVIGATION
 
-// A utility function to find the vertex with minimum distance
-// value, from the set of vertices not yet included in shortest
-// path tree
-
-short int saveStartNode (){
-    // get from communications module
-}
-
-short int saveNavDirection (){
-    // get from communications module
-}
-
+// a utility function to find the vertex with minimum distance
+// value, from the set of vertices not yet included in shortest path tree
 int minDistance(int dist[], bool sptSet[])
 {
     // Initialize min value
@@ -735,11 +730,10 @@ int minDistance(int dist[], bool sptSet[])
     return min_index;
 }
  
-// Function to print shortest path from source to j
-// using parent array
+// function to print shortest path from source to j using parent array
 void printPath(int parent[], int j)
 {
-    // Base Case : If j is source
+    // base Case : if j is source
     if (parent[j]==-1)
         return;
  
@@ -748,8 +742,7 @@ void printPath(int parent[], int j)
     shortestPathCounter++;
 }
  
-// A utility function to print the constructed distance
-// array
+// a utility function to print the constructed distance array
 int printSolution(int dist[], int n, int parent[], short int dst)
 {
     int src = 0;
@@ -765,22 +758,21 @@ int printSolution(int dist[], int n, int parent[], short int dst)
     shortestPathArray[shortestPathCounter] = dst;
 }
  
-// Funtion that implements Dijkstra's single source shortest path
-// algorithm for a graph represented using adjacency matrix
-// representation
+// function that implements Dijkstra's single source shortest path
+// algorithm for a graph represented using adjacency matrix representation
 void dijkstra(short int graph[numberOfNodes + 1][numberOfNodes + 1], short int src, short int dst)
 {
-    int dist[numberOfNodes + 1];  // The output array. dist[i] will hold
+    int dist[numberOfNodes + 1];  // the output array. dist[i] will hold
                   // the shortest distance from src to i
  
     // sptSet[i] will true if vertex i is included / in shortest
     // path tree or shortest distance from src to i is finalized
     bool sptSet[numberOfNodes + 1];
  
-    // Parent array to store shortest path tree
+    // parent array to store shortest path tree
     int parent[numberOfNodes + 1];
  
-    // Initialize all distances as INFINITE and stpSet[] as false
+    // initialize all distances as INFINITE and stpSet[] as false
     for (int i = 0; i < numberOfNodes + 1; i++)
     {
         parent[0] = -1;
@@ -788,28 +780,26 @@ void dijkstra(short int graph[numberOfNodes + 1][numberOfNodes + 1], short int s
         sptSet[i] = false;
     }
  
-    // Distance of source vertex from itself is always 0
+    // distance of source vertex from itself is always 0
     dist[src] = 0;
  
-    // Find shortest path for all vertices
+    // find shortest path for all vertices
     for (int count = 0; count < numberOfNodes + 1; count++)
     {
   
-        // Pick the minimum distance vertex from the set of
+        // pick the minimum distance vertex from the set of
         // vertices not yet processed. u is always equal to src
         // in first iteration.
         int u = minDistance(dist, sptSet);
 
-        // Mark the picked vertex as processed
+        // mark the picked vertex as processed
         sptSet[u] = true;
 
-        // Update dist value of the adjacent vertices of the
-        // picked vertex.
+        // update dist value of the adjacent vertices of the picked vertex.
         for (int v = 0; v < numberOfNodes + 1; v++)
-            // Update dist[v] only if is not in sptSet, there is
+            // update dist[v] only if is not in sptSet, there is
             // an edge from u to v, and total weight of path from
-            // src to v through u is smaller than current value of
-            // dist[v]
+            // src to v through u is smaller than current value of dist[v]
             if (!sptSet[v] && graph[u][v] &&
                 dist[u] + graph[u][v] < dist[v])
             {
@@ -823,18 +813,9 @@ void dijkstra(short int graph[numberOfNodes + 1][numberOfNodes + 1], short int s
     // print the constructed distance array
     printSolution(dist, numberOfNodes + 1, parent, dst);
 }
- 
-// Initialize the matrix to zero
-void init(int arr[][numberOfNodes + 1])
-{
-  int i, j;
-  for (i = 0; i < numberOfNodes + 1; i++)
-    for (j = 0; j < numberOfNodes + 1; j++)
-      arr[i][j] = 0;
-}
 
 void saveToMatrix(){
-    // create a matrix
+    // create an adjacency matrix
 
     // node array's first item will be vertex 0
     // check the wall opening of current node
@@ -881,7 +862,6 @@ void saveToMatrix(){
         } 
     }
 }
-
 
 
 // with the calculated shortest path, do navigation using x-y coord. to know which direction to turn for each path node
@@ -990,15 +970,16 @@ int startMapping(){
 
 
 // MAIN FUNCTION TO START NAVIGATING
+// COMMUNICATIONS MODULE MUST SET THE startNode AND navDirection VARIABLES
 int startNavigating(){
     // save nodeArray to matrix
     saveToMatrix();
 
     // start point given by communication
-    dijkstra(adjMatrix, saveStartNode(), isExit[0]);  //return shortest path, shortest path counter
+    dijkstra(adjMatrix, startNode, isExit[0]);  // sets shortest path array and shortest path counter
 
     // navDirection given by communication
-    navToExit(shortestPathArray, shortestPathCounter, saveNavDirection());  
+    navToExit(shortestPathArray, shortestPathCounter, navDirection);  
 
     printf("\nNavigation completed.");
 }
