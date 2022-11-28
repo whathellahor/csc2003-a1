@@ -24,7 +24,7 @@ short int numberOfNodes = -1; // counter for number of nodes
 short int numberOfMoves = 0;  // counter for number of moves made
 short int currentXCoord = 0;  // contain current x-coordinate
 short int currentYCoord = 0;  // contain current y-coordinate
-short int debtCounter = 0;    // counter for debt list
+short int debtCounter = -1;    // counter for debt list
 short int shortestPathArray[MAX_WIDTH * MAX_WIDTH];  // stores the shortest path for the navigation
 short int shortestPathCounter = 0;                     // counter for the shortest path array
 short int adjMatrix[MAX_WIDTH * MAX_HEIGHT][MAX_WIDTH * MAX_HEIGHT];    // adjacency matrix to store each node's adjacent nodes
