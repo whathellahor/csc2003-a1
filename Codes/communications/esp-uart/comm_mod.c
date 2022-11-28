@@ -7,6 +7,74 @@
  * SET AND GET VALUES FROM car_data GLOBAL STRUCT
 *************************************************************************************/
 
+// UART RX INTERRUPT
+void on_uart_rx() {
+        // GET CONNECTION IPD
+        if (check_at_response(1, "+IPD") < 0) {
+             return;
+        }
+
+        // SET ID
+        // SET POINTER TO START OF FIRST OCCURENCE OF "+IPD"
+        char *b = strstr(data, "+IPD");
+        b += 5;
+        strncpy(temp, b, sizeof(temp));
+        char *e = strstr(temp, ",");
+        int d = e - temp;
+        memset(id, '\0', sizeof(id));;
+        strncpy(id, temp, d);
+
+        // DUMMY DATA - FOR DEBUG
+        if (DEBUG == 1) {
+            static int count;
+            if (count % 2 == 0) {
+                sprintf(car_data.barcode, "%s", "DATASET 1");
+                sprintf(car_data.map_data, "%s", "111100001111000");
+                car_data.hump_detected = 1;
+                car_data.turn_detected = 1;
+                car_data.hump ++;
+                car_data.turn ++;
+                car_data.speed = 0;
+            } else {
+                sprintf(car_data.barcode, "%s", "DATASET 2");   
+                sprintf(car_data.map_data, "%s", "111100001111111");     
+                car_data.hump_detected = 0;
+                car_data.turn_detected = 0;
+                car_data.distance += 10;
+                car_data.speed = 10;
+            }
+            count ++;
+        }
+
+        // DATA OUT TO CLIENTS
+        char data_out[BUFFER_LEN];
+        sprintf(data_out, "HTTP/1.0 200 OK\r\nServer: Pico\r\nAccess-Control-Allow-Origin: *\r\nContent-type: application/json\r\n\r\n{\"car_hump\":\"%d\", \"car_turn\":\"%d\", \"hump_number\":\"%d\", \"turn_number\": \"%d\", \"car_barcode\":\"%s\", \"car_distance\":\"%d\", \"car_speed\":\"%d\", \"map_data\":\"%s\"}\r\n", car_data.hump_detected, car_data.turn_detected, car_data.hump, car_data.turn, car_data.barcode, car_data.distance, car_data.speed, car_data.map_data);
+
+        // GETTING CORRECT ID TO SEND RESPONSE
+        uint8_t command[128];
+        sprintf(command, "AT+CIPSEND=%s,%d\r\n", id, strlen(data_out));
+        uart_write_blocking(UART_ID, command, strlen(command));
+        // IF SUCCESS, ESP01 WILL INDICATE ">" TO SEND DATA
+        if (check_at_response(10, ">") < 0) {
+            return -1;
+        }
+
+        // SENDING DATA
+        uart_write_blocking(UART_ID, data_out, strlen(data_out));
+        // CHECK IF SENDING SUCCEEDED
+        if (check_at_response(10, "OK") < 0) {
+            return -1;
+        }
+
+        // CLOSE SENDING CONNECTION
+        sprintf(command, "AT+CIPCLOSE=%s\r\n", id);
+        uart_write_blocking(UART_ID, command, strlen(command));
+        // CHECK IF SUCCESS
+        if (check_at_response(10, "OK") < 0) {
+            return -1;
+        }    
+}
+
 
 
 // UART CONFIG
@@ -125,85 +193,16 @@ int start_server() {
         return -1;
     }
 
-    // IPD RESPONSE
-    // char ipd[5] = "+IPD";
-
-    // INIT SERVER LOOP
-    while (1) {
-        // GET CONNECTION IPD
-        if (check_at_response(1, "+IPD") < 0) {
-            continue;
-        }
-
-        // SET ID
-        // SET POINTER TO START OF FIRST OCCURENCE OF "+IPD"
-        char *b = strstr(data, "+IPD");
-        b += 5;
-        strncpy(temp, b, sizeof(temp));
-        char *e = strstr(temp, ",");
-        int d = e - temp;
-        memset(id, '\0', sizeof(id));
-        strncpy(id, temp, d);
-
-        // DUMMY DATA - FOR DEBUG
-        if (DEBUG == 1) {
-            static int count;
-            if (count % 2 == 0) {
-                sprintf(car_data.barcode, "%s", "DATASET 1");
-                sprintf(car_data.map_data, "%s", "111100001111000");
-                car_data.hump_detected = 1;
-                car_data.turn_detected = 1;
-                car_data.hump ++;
-                car_data.turn ++;
-                car_data.speed = 0;
-            } else {
-                sprintf(car_data.barcode, "%s", "DATASET 2");   
-                sprintf(car_data.map_data, "%s", "111100001111111");     
-                car_data.hump_detected = 0;
-                car_data.turn_detected = 0;
-                car_data.distance += 10;
-                car_data.speed = 10;
-            }
-            count ++;
-        }
-
-        // DATA OUT TO CLIENTS
-        char data_out[BUFFER_LEN];
-        sprintf(data_out, "HTTP/1.0 200 OK\r\nServer: Pico\r\nAccess-Control-Allow-Origin: *\r\nContent-type: application/json\r\n\r\n{\"car_hump\":\"%d\", \"car_turn\":\"%d\", \"hump_number\":\"%d\", \"turn_number\": \"%d\", \"car_barcode\":\"%s\", \"car_distance\":\"%d\", \"car_speed\":\"%d\", \"map_data\":\"%s\"}\r\n", car_data.hump_detected, car_data.turn_detected, car_data.hump, car_data.turn, car_data.barcode, car_data.distance, car_data.speed, car_data.map_data);
-
-        // GETTING CORRECT ID TO SEND RESPONSE
-        uint8_t command[128];
-        sprintf(command, "AT+CIPSEND=%s,%d\r\n", id, strlen(data_out));
-        uart_write_blocking(UART_ID, command, strlen(command));
-        // IF SUCCESS, ESP01 WILL INDICATE ">" TO SEND DATA
-        if (check_at_response(10, ">") < 0) {
-            return -1;
-        }
-
-        // SENDING DATA
-        uart_write_blocking(UART_ID, data_out, strlen(data_out));
-        // CHECK IF SENDING SUCCEEDED
-        if (check_at_response(10, "OK") < 0) {
-            return -1;
-        }
-
-        // CLOSE SENDING CONNECTION
-        sprintf(command, "AT+CIPCLOSE=%s\r\n", id);
-        uart_write_blocking(UART_ID, command, strlen(command));
-        // CHECK IF SUCCESS
-        if (check_at_response(10, "OK") < 0) {
-            return -1;
-        }
-    }
+    // ENABLE IRQ
+    irq_set_exclusive_handler(UART0_IRQ, on_uart_rx);
+    irq_set_enabled(UART0_IRQ, true);
+    uart_set_irq_enables(uart0, true, false);
 
     return 0;
 }
 
 // INIT COMMS BUNDLE | ESP MODE: 1-3 | DEBUG MODE: 1 FOR DEBUG
 void init_comms(int esp_mode, char ssid[], char password[]) {
-    // INIT STDIO
-    stdio_init_all();
-    sleep_ms(1000);
     
     // CONFIG UART
     config_uart();
