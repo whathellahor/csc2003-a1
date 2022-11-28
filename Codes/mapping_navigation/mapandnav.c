@@ -90,7 +90,7 @@ void decrementDirection()
 }
 
 // check if exit
-void checkExit(short int direction, float distance)
+void checkExit(short int direction, int distance)
 {
     if (distance > EXIT_DISTANCE)
     {
