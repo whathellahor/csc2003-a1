@@ -21,7 +21,7 @@
 short int direction = 1;      // initialize default direction as 1, facing front
 short int isExit[2] = {MAX_WIDTH * MAX_WIDTH + 1, 4};          // contain value for isExit, [nodeArray index, wall]
 short int numberOfNodes = -1; // counter for number of nodes
-short int numberOfMoves = 0;  // counter for number of moves made
+short int numberOfMoves = -1;  // counter for number of moves made
 short int currentXCoord = 0;  // contain current x-coordinate
 short int currentYCoord = 0;  // contain current y-coordinate
 short int debtCounter = -1;    // counter for debt list
@@ -386,7 +386,7 @@ void debtVisit()
         // remove from pathArray as we are backtracking
         pathArray[numberOfMoves][0] = NULL;
         pathArray[numberOfMoves][1] = NULL;
-        ++numberOfMoves;
+        --numberOfMoves;
     }
     // turn car to face debt open wall
     debtCarTurning(debt_coord[2]);
