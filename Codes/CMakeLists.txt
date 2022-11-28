@@ -5,3 +5,6 @@
 # add_subdirectory(ultrasonic_accelerometer)
 add_subdirectory(merge)
 add_subdirectory(motor_control/individual)
+# add_subdirectory(communications/esp-uart)
+add_subdirectory(communications/bluetoot)
+add_subdirectory(communications/m5-UART/pico-code)
