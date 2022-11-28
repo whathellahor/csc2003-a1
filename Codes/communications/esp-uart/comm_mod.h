@@ -17,11 +17,10 @@
 typedef struct {
     uint8_t hump; // TOTAL NUMBER OF HUMPS
     uint8_t turn; // TOTAL NUMBER OF TURNS 
-    uint8_t hump_detected; // 1 FOR DETECTED, 0 FOR NOT DETECTED
-    uint8_t turn_detected; // 1 FOR DETECTED, 0 FOR NOT DETECTED
     uint8_t barcode[100]; // BARCODE, ONCE BARCODE DETECTED, FIX THE VALUE UNTIL NEXT BARCODE
-    uint8_t distance; // TOTAL DISTANCE TRAVELLED
     uint8_t speed; // CURRENT SPEED
+    uint8_t start_node; // START NODE 0 to 19
+    uint8_t direction; // DIRECTION 0: W, 1: N, 2: E, 3: S
     char map_data[100]; // ARBITARY NUMBER, SET ACCORDING TO ACTUAL TILES
 } Car;
 
@@ -35,12 +34,17 @@ void set_connection(char ssid[], char password[]);
 void get_ip();
 int start_server();
 void init_comms(int esp_mode, char ssid[], char password[]);
+void on_uart_rx();
 
 // GLOBAL VARIABLES
 // CAR DATA
 extern Car car_data;
 // DATA BUFFER
 extern uint8_t data[BUFFER_LEN];
+
+// EXTERN RX BUFFER
+extern char temp[256];
+extern char id[10];
 
 // IMPORT GUARD END
 #endif
