@@ -37,7 +37,6 @@ void IRQ_HANDLER() {
 }
 
 repeating_timer_t speedTimer;
-repeating_timer_t pidTimer;
 repeating_timer_t triggerTimer;
 
 void barcodeCore(){
@@ -62,8 +61,9 @@ void update_car() {
 int main() {
     //Enable serial output
     stdio_init_all(); 
+    sleep_ms(5000);
     //Wait for Init
-    init_comms(1, "pico_test1", "testtest");
+    //init_comms(1, "OnePlus", "pppppppp");
     //Init Accelerometer over I2C
     initAcc();      
     //Init Barcode polling on core1  
@@ -86,12 +86,6 @@ int main() {
 
     //Init and Start PWM on motors
     initPWM();
-
-    //PID Controller Loop
-    //Add timer to run PID periodically
-    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
-         return 1;
-    };
 
     //Adds a timer to send pulses from ultrasonic sensors
     if (!add_repeating_timer_ms(PULSE_INTERVAL, triggerUltraSonic_callback , NULL, &triggerTimer)){

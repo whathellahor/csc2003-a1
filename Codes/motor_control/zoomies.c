@@ -1,8 +1,8 @@
 #include "zoomies.h"
 
-const float Kp = 8.0;   
-const float Ki = 0.001;
-const float Kd = 5.0;
+const float Kp = 2.5;   
+const float Ki = 0.03;
+const float Kd = 0.0;
 
 uint counterA = 0;
 uint counterB = 0;
@@ -18,6 +18,9 @@ absolute_time_t lastUpdateA;
 int integralB;
 int lastErrorB;
 absolute_time_t lastUpdateB;
+
+bool start = 0;
+repeating_timer_t pidTimer;
 
 void encoderIRQ() {
     //check interrupt flag and status
@@ -42,7 +45,7 @@ bool calcSpeed(repeating_timer_t* rt) {
     counterB = 0;
 
     //Slot in accelerometer computation
-    //triggerAcc_callback();
+    triggerAcc_callback();
     // COMMS FUNCTION WILL CALL ON GLOBAL VARIABLES
     printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
     return true;
@@ -68,6 +71,9 @@ bool initPWM() {
 }
 
 bool computeErrorA() {
+    if (!start){
+        return true;
+    }
     uint currentSpeed = speedA;
     //Computes timeDelta for integral and derivatives
     absolute_time_t currentTime = get_absolute_time();
@@ -77,7 +83,6 @@ bool computeErrorA() {
     integralA += error * deltaTime;
     //Compute PWM correction and derivative
     int output = (Kp * error) + (Ki * integralA) + (int)(((error - lastErrorA)*Kd)/deltaTime);    
-
     //Limit corrected PWM pulse to range 0-10000
     if ( pwmA + output < 0) {
         pwmA = 0;
@@ -88,26 +93,19 @@ bool computeErrorA() {
             pwmA += output;
         }
     } 
-    printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
     //Set new PWM on ENA pin
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_A, pwmA);
-
     //Stores data for next cycle
     lastUpdateA = currentTime;
     lastErrorA = error;
-
+    printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
     return true;
 }
 
 bool computeErrorB() {
-
-
-    // if (startFlag) {
-    //     integralB = 0;
-    //     lastErrorB = 0;
-    //     lastUpdateB = nil_time;
-    // }
-    
+    if (!start){
+        return true;
+    }
     uint currentSpeed = speedB;
     //Computes timeDelta for integral and derivatives
     absolute_time_t currentTime = get_absolute_time();
@@ -181,8 +179,14 @@ void initWheels(){
     gpio_put(pinIN4, 0); 
 } 
  
-void moveForwards(int time){ 
+bool moveForwards(int time){ 
     resetVariables();
+    start = 1;
+    //PID Controller Loop
+    //Add timer to run PID periodically
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+         return 1;
+    };
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 1); 
     gpio_put(pinIN3, 0); 
@@ -190,8 +194,14 @@ void moveForwards(int time){
     add_alarm_in_ms(time, stopMovement,NULL,false);
 } 
  
-void moveBackwards(int time){
-    resetVariables(); 
+bool moveBackwards(int time){
+    resetVariables();
+    start = 1;
+    //PID Controller Loop
+    //Add timer to run PID periodically
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+         return 1;
+    }; 
     gpio_put(pinIN1, 1); 
     gpio_put(pinIN2, 0); 
     gpio_put(pinIN3, 1); 
@@ -199,8 +209,14 @@ void moveBackwards(int time){
     add_alarm_in_ms(time, stopMovement,NULL,false);
 }
  
-void moveAntiClockWise(int time){ 
+bool moveAntiClockWise(int time){ 
     resetVariables();
+    start = 1;
+    //PID Controller Loop
+    //Add timer to run PID periodically
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+         return 1;
+    };
     gpio_put(pinIN1, 1); 
     gpio_put(pinIN2, 0); 
     gpio_put(pinIN3, 0); 
@@ -208,8 +224,14 @@ void moveAntiClockWise(int time){
     add_alarm_in_ms(time, stopMovement,NULL,false);
 } 
  
-void moveClockWise(int time){ 
+bool moveClockWise(int time){ 
     resetVariables();
+    start = 1;
+    //PID Controller Loop
+    //Add timer to run PID periodically
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+         return 1;
+    };
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 1); 
     gpio_put(pinIN3, 1); 
@@ -218,6 +240,8 @@ void moveClockWise(int time){
 }
 
 int64_t stopMovement(alarm_id_t id, void *user_data) {
+    start = 0;
+    cancel_repeating_timer(&pidTimer);
     resetVariables();
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 0); 

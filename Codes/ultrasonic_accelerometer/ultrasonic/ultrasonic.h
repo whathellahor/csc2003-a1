@@ -1,7 +1,5 @@
 #ifndef ULTRASONIC_H
 #define ULTRASONIC_H
-
-
 // global variables
 #define MIN_DISTANCE 15 // distance 15cm, car stop
 #define MIN_TRIGGER_TIME 10 // min time pulse high (for 10 microseconds)

@@ -46,6 +46,9 @@ extern int integralB;
 extern int lastErrorB;
 extern absolute_time_t lastUpdateB;
 
+extern bool start;
+extern repeating_timer_t pidTimer;
+
 //Function Prototypes
 void encoderIRQ();
 bool calcSpeed(repeating_timer_t *rt);
@@ -58,10 +61,10 @@ bool initPWM();
 void resetVariables();
 
 void initWheels();
-void moveForwards(int time);
-void moveBackwards(int time);
-void moveAntiClockWise(int time);
-void moveClockWise(int time);
+bool moveForwards(int time);
+bool moveBackwards(int time);
+bool moveAntiClockWise(int time);
+bool moveClockWise(int time);
 int64_t stopMovement(alarm_id_t id, void *user_data);
 uint getAvgSpeed();
 void rightTurn();

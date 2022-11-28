@@ -26,9 +26,13 @@
 #define pinENCB 7
 
 //Globals
-extern const float Kp;   
-extern const float Ki;
-extern const float Kd;
+// extern const float Kp;   
+// extern const float Ki;
+// extern const float Kd;
+
+extern float Kp;   
+extern float Ki;
+extern float Kd;
 
 extern uint counterA;
 extern uint counterB;
@@ -58,7 +62,7 @@ bool initPWM();
 void resetVariables();
 
 void initWheels();
-void moveForwards(int time);
+bool moveForwards(int time);
 void moveBackwards(int time);
 void moveAntiClockWise(int time);
 void moveClockWise(int time);

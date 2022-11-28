@@ -1,8 +1,12 @@
 #include "motorModule.h"
 
-const float Kp = 8.0;   
-const float Ki = 0.001;
-const float Kd = 5.0;
+// float Kp = 8.0;   //const
+// float Ki = 0.001; //const
+// float Kd = 5.0;   //const
+
+float KpA = 2.5, KpB = 2.5;
+float KiA = 0.003, KiB = 0.003;
+float KdA = 0.0, KdB = 0.0;
 
 uint counterA = 0;
 uint counterB = 0;
@@ -18,6 +22,13 @@ absolute_time_t lastUpdateA;
 int integralB;
 int lastErrorB;
 absolute_time_t lastUpdateB;
+
+bool start = 0;
+
+repeating_timer_t speedTimer;
+repeating_timer_t pidTimer;
+
+
 
 void encoderIRQ() {
     //check interrupt flag and status
@@ -44,7 +55,7 @@ bool calcSpeed(repeating_timer_t* rt) {
     //Slot in accelerometer computation
     //triggerAcc_callback();
     // COMMS FUNCTION WILL CALL ON GLOBAL VARIABLES
-    printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
+    //printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
     return true;
 }
 
@@ -68,6 +79,9 @@ bool initPWM() {
 }
 
 bool computeErrorA() {
+    if (!start){
+        return true;
+    }
     uint currentSpeed = speedA;
     //Computes timeDelta for integral and derivatives
     absolute_time_t currentTime = get_absolute_time();
@@ -76,7 +90,7 @@ bool computeErrorA() {
     int error = TARGET_SPEED - currentSpeed;
     integralA += error * deltaTime;
     //Compute PWM correction and derivative
-    int output = (Kp * error) + (Ki * integralA) + (int)(((error - lastErrorA)*Kd)/deltaTime);    
+    int output = (KpA * error) + (KiA * integralA) + (int)(((error - lastErrorA)*KdA)/deltaTime);    
 
     //Limit corrected PWM pulse to range 0-10000
     if ( pwmA + output < 0) {
@@ -88,26 +102,22 @@ bool computeErrorA() {
             pwmA += output;
         }
     } 
-    printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
+
     //Set new PWM on ENA pin
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_A, pwmA);
 
     //Stores data for next cycle
     lastUpdateA = currentTime;
     lastErrorA = error;
+    printf("[%5d, %5d, %5d,", currentSpeed, integralA, pwmA);
 
     return true;
 }
 
 bool computeErrorB() {
-
-
-    // if (startFlag) {
-    //     integralB = 0;
-    //     lastErrorB = 0;
-    //     lastUpdateB = nil_time;
-    // }
-    
+    if (!start) {
+        return true;
+    }
     uint currentSpeed = speedB;
     //Computes timeDelta for integral and derivatives
     absolute_time_t currentTime = get_absolute_time();
@@ -116,7 +126,7 @@ bool computeErrorB() {
     int error = TARGET_SPEED - currentSpeed;
     integralB += error * deltaTime;
     //Compute PWM correction and derivative
-    int output = (Kp * error) + (Ki * integralB) + (int)(((error - lastErrorB)*Kd)/deltaTime);    
+    int output = (KpB * error) + (KiB * integralB) + (int)(((error - lastErrorB)*KdB)/deltaTime);    
     
     //Limit corrected PWM pulse to range 0-10000
     if ( pwmB + output < 0) {
@@ -129,21 +139,21 @@ bool computeErrorB() {
         }
     } 
 
-    printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
+    //printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
     //Set new PWM on ENA pin
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_B, pwmB);
     //Stores data for next cycle
     lastUpdateB = currentTime;
     lastErrorB = error;
-
+    printf("%5d, %5d, %5d],\n", currentSpeed, integralB, pwmB);
     return true;
 
 }
 
 //Shorthand to call individual PID function, used by timer
 bool computeError(repeating_timer_t *rt) {
-    computeErrorB();
     computeErrorA();
+    computeErrorB(); 
     return true;
 }
 
@@ -181,8 +191,13 @@ void initWheels(){
     gpio_put(pinIN4, 0); 
 } 
  
-void moveForwards(int time){ 
+bool moveForwards(int time){ 
     resetVariables();
+    start = 1;
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+        printf("hello\n");
+        return 1;
+    };
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 1); 
     gpio_put(pinIN3, 0); 
@@ -218,6 +233,8 @@ void moveClockWise(int time){
 }
 
 int64_t stopMovement(alarm_id_t id, void *user_data) {
+    start = 0;
+    cancel_repeating_timer(&pidTimer);
     resetVariables();
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 0); 
@@ -227,7 +244,7 @@ int64_t stopMovement(alarm_id_t id, void *user_data) {
 }
 
 void forward() {
-    moveForwards(20000);
+    moveForwards(60000);
     //moveForwards(1200);
 }
 
@@ -251,8 +268,7 @@ int main() {
     //Init Encoders
     initWheels();
 
-    repeating_timer_t speedTimer;
-    repeating_timer_t pidTimer;
+
 
     //Speed Calc
     //create a timer to call a given function (i.e. calcSpeed) every n milliseconds) returns false if no timer slots available
@@ -264,10 +280,10 @@ int main() {
     initPWM();
 
     //PID Controller Loop
-    //Add timer to run PID periodically
-    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
-         return 1;
-    };
+    // //Add timer to run PID periodically
+    // if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+    //      return 1;
+    // };
 
     gpio_set_irq_enabled(pinENCA, GPIO_IRQ_EDGE_RISE, true);
     gpio_set_irq_enabled(pinENCB, GPIO_IRQ_EDGE_RISE, true);
@@ -278,8 +294,13 @@ int main() {
     //Enable interrupt on GPIO
     irq_set_enabled(IO_IRQ_BANK0, true);
 
-    forward();
+
+
+
     while (1) {
-        tight_loop_contents();
+        forward();
+        sleep_ms(62000);
+        break;
     }
+    return 0;
 }
