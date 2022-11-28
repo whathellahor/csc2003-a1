@@ -386,7 +386,7 @@ void debtVisit()
         // remove from pathArray as we are backtracking
         pathArray[numberOfMoves][0] = NULL;
         pathArray[numberOfMoves][1] = NULL;
-        ++numberOfMoves;
+        --numberOfMoves;
     }
     // turn car to face debt open wall
     debtCarTurning(debt_coord[2]);
