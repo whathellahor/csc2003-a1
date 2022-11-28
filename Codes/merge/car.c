@@ -15,11 +15,10 @@
 Car car_data = {
     0, // HUMP NUMBER
     0, // TURN NUMBER
-    0, // HUMP DETECTED
-    0, // TURN DETECTED
     "", // BARCODE
-    0, // DISTANCE
     0, // SPEED
+    0, // START NODE 0 to 19
+    1, // DIRECTION 0: W, 1: N, 2: E, 3: S
     "", // MAP DATA
 };
 
@@ -53,21 +52,18 @@ void barcodeCore(){
  * TO BE OUTPUTTED TO WEBAPP
 ****************************************************************************/
 void update_car() {
-    car_data.hump = NULL; // TOTAL NUMBER OF HUMPS, UINT8_T
-    car_data.turn = NULL ; // TOTAL NUMBER OF TURNS, UINT8_T
-    car_data.hump_detected = NULL; // 1 FOR DETECTED, 0 FOR NOT DETECTED, UINT8_T
-    car_data.turn_detected = NULL; // 1 FOR DETECTED, 0 FOR NOT DETECTED, UINT8_T
-    car_data.distance = NULL; // TOTAL DISTANCE TRAVELLED, UINT8_T
+    car_data.hump = 0; // TOTAL NUMBER OF HUMPS, UINT8_T
+    car_data.turn = 0 ; // TOTAL NUMBER OF TURNS, UINT8_T
     car_data.speed = getAvgSpeed(); // CURRENT SPEED, UINT8_T
-    sprintf(car_data.barcode, "%s", NULL); // ACCEPT STRING UP TO LEN 99, OR ANY OTHER FORMAT JUST CHANGE THE SPECIFIER
-    sprintf(car_data.map_data, "%s", NULL); // ACCEPT STRING UP TO LEN 99, OR ANY OTHER FORMAT JUST CHANGE THE SPECIFIER
+    sprintf(car_data.barcode, "%s", ""); // ACCEPT STRING UP TO LEN 99, OR ANY OTHER FORMAT JUST CHANGE THE SPECIFIER
+    sprintf(car_data.map_data, "%s", ""); // ACCEPT STRING UP TO LEN 99, OR ANY OTHER FORMAT JUST CHANGE THE SPECIFIER
 }
 
 int main() {
     //Enable serial output
     stdio_init_all(); 
     //Wait for Init
-    sleep_ms(10000);  
+    init_comms(1, "pico_test1", "testtest");
     //Init Accelerometer over I2C
     initAcc();      
     //Init Barcode polling on core1  
@@ -128,21 +124,6 @@ int main() {
 
         //call main function to start navigating
         //startNavigating();
-
-        /*************************************************************
-         * START COMMS
-         * REPLACE SSID AND PASS WITH OWN TO TEST
-         * DO IP SCAN TO ACQUIRE IP IF NO DEBUG OUTPUT
-         * CONNECTING TO PICO IP ON BROWSER WILL DISPLAY JSON VALUES
-         * init_comms() IS A BLOCKING FUNCTION
-        *************************************************************/
-        char ssid[] = "pico_test1"; // REPLACE WITH OWN SSID
-        char pass[] = "testtest"; // REPLACE WITH OWN PASSWORD
-        init_comms(1, ssid, pass); // 1: STATION MODE, 2: HOST, 3: BOTH
-        /*************************************************************
-         * ANYTHING FROM HERE ONWARDS SHOULDN'T RUN
-         * END COMMS
-        **************************************************************/
 
     }
 
