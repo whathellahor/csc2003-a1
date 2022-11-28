@@ -127,11 +127,11 @@ void changeCoord()
 // car movement
 void carMovement()
 {
+    ++numberOfMoves; // increment number of moves
+
     // save coord. into pathArray
     pathArray[numberOfMoves][0] = currentXCoord;
     pathArray[numberOfMoves][1] = currentYCoord;
-
-    numberOfMoves++; // increment number of moves
 
     forward();
     delay(MOVEMENT_DELAY);   // delay while car moves
@@ -383,7 +383,7 @@ void debtVisit()
         forward();
         delay(MOVEMENT_DELAY);   // delay while car moves
         changeCoord();
-        if (!((pathArray[numberOfMoves][0] == debt_coord[0]) && (pathArray[numberOfMoves][1] == debt_coord[1]))){
+        if (!((currentXCoord == debt_coord[0]) && (currentYCoord == debt_coord[1]))){
             // remove from pathArray as we are backtracking
             pathArray[numberOfMoves][0] = NULL;
             pathArray[numberOfMoves][1] = NULL;
