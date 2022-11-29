@@ -205,31 +205,49 @@ bool moveForwards(int time){
     add_alarm_in_ms(time, stopMovement,NULL,false);
 } 
  
-void moveBackwards(int time){
+bool moveBackwards(int time){
     resetVariables(); 
+    start = 1;
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+        printf("hello\n");
+        return 0;
+    };
     gpio_put(pinIN1, 1); 
     gpio_put(pinIN2, 0); 
     gpio_put(pinIN3, 1); 
     gpio_put(pinIN4, 0); 
     add_alarm_in_ms(time, stopMovement,NULL,false);
+    return 1;
 }
  
-void moveAntiClockWise(int time){ 
+bool moveAntiClockWise(int time){ 
     resetVariables();
+    start = 1;
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+        printf("hello\n");
+        return 0;
+    };
     gpio_put(pinIN1, 1); 
     gpio_put(pinIN2, 0); 
     gpio_put(pinIN3, 0); 
     gpio_put(pinIN4, 1); 
     add_alarm_in_ms(time, stopMovement,NULL,false);
+    return 1;
 } 
  
-void moveClockWise(int time){ 
+bool moveClockWise(int time){ 
     resetVariables();
+    start = 1;
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+        printf("hello\n");
+        return 0;
+    };
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 1); 
     gpio_put(pinIN3, 1); 
     gpio_put(pinIN4, 0); 
     add_alarm_in_ms(time, stopMovement,NULL,false);
+    return 1;
 }
 
 int64_t stopMovement(alarm_id_t id, void *user_data) {
@@ -268,8 +286,6 @@ int main() {
     //Init Encoders
     initWheels();
 
-
-
     //Speed Calc
     //create a timer to call a given function (i.e. calcSpeed) every n milliseconds) returns false if no timer slots available
     if (!add_repeating_timer_ms(SPEED_CALC_FREQ, calcSpeed, NULL, &speedTimer)) {
@@ -279,12 +295,6 @@ int main() {
     //Init and Start PWM on motors
     initPWM();
 
-    //PID Controller Loop
-    // //Add timer to run PID periodically
-    // if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
-    //      return 1;
-    // };
-
     gpio_set_irq_enabled(pinENCA, GPIO_IRQ_EDGE_RISE, true);
     gpio_set_irq_enabled(pinENCB, GPIO_IRQ_EDGE_RISE, true);
 
@@ -293,9 +303,6 @@ int main() {
 
     //Enable interrupt on GPIO
     irq_set_enabled(IO_IRQ_BANK0, true);
-
-
-
 
     while (1) {
         forward();

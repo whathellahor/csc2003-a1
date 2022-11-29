@@ -11,7 +11,7 @@
 
 //MACROS
 #define PWM_COUNTER 10000
-#define PWM_DEFAULTS 8000
+#define PWM_DEFAULTS 7700
 #define SPEED_CALC_FREQ 250 //In ms
 #define PID_FREQ 25 //In ms
 #define TARGET_SPEED 18
@@ -63,9 +63,9 @@ void resetVariables();
 
 void initWheels();
 bool moveForwards(int time);
-void moveBackwards(int time);
-void moveAntiClockWise(int time);
-void moveClockWise(int time);
+bool moveBackwards(int time);
+bool moveAntiClockWise(int time);
+bool moveClockWise(int time);
 int64_t stopMovement(alarm_id_t id, void *user_data);
 uint getAvgSpeed();
 void rightTurn();
