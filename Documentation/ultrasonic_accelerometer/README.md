@@ -1,5 +1,12 @@
 # Ultrasonic
 
+
+## Submodule Team members
+1. Foo Seow Wei Edward 2101258
+2. Chan Xue Li 2102524
+3. Chrystal Lim Jing Yee 2102466
+
+
 ## Smoothing algorithm
 The smoothing algorithm helps to filter out the noise readings to ensure the accuracy of calcuation of the distance.
 <br>
