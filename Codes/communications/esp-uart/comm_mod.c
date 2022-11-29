@@ -182,7 +182,7 @@ int start_server() {
     if (check_at_response(10, "OK") < 0) {
         // SET MODE TO MULTIPLE CONNECTIONS FAILED
 
-        print("%s", "SERVER MUX SET FAILED\n");
+        printf("%s", "SERVER MUX SET FAILED\n");
         exit(1);
 
         return -1;
@@ -193,7 +193,7 @@ int start_server() {
     if (check_at_response(10, "OK") < 0) {
         // START SERVER FAILED
 
-        print("%s", "SERVER START SERVER FAILED\n");
+        printf("%s", "SERVER START SERVER FAILED\n");
         exit(1);
 
         return -1;

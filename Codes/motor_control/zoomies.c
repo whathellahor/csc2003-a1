@@ -39,6 +39,10 @@ void encoderIRQ() {
 }
 
 bool calcSpeed(repeating_timer_t* rt) {
+    if(!start) {
+        speedA = 0;
+        speedB = 0;
+    }
     speedA = counterA * (1000/SPEED_CALC_FREQ);
     counterA = 0;
     speedB = counterB * (1000/SPEED_CALC_FREQ);
@@ -46,8 +50,8 @@ bool calcSpeed(repeating_timer_t* rt) {
 
     //Slot in accelerometer computation
     triggerAcc_callback();
-    // COMMS FUNCTION WILL CALL ON GLOBAL VARIABLES
-    printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
+    //COMMS FUNCTION WILL CALL ON GLOBAL VARIABLES
+    //printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
     return true;
 }
 
@@ -217,6 +221,7 @@ bool moveAntiClockWise(int time){
     if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
          return 1;
     };
+
     gpio_put(pinIN1, 1); 
     gpio_put(pinIN2, 0); 
     gpio_put(pinIN3, 0); 
@@ -252,7 +257,7 @@ int64_t stopMovement(alarm_id_t id, void *user_data) {
 
 void forward() {
     //moveForwards(20000);
-    moveForwards(1200);
+    moveForwards(1000);
 }
 
 void rightTurn() {
