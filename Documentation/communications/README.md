@@ -1,5 +1,11 @@
 # CSC2003 - Embedded Systems and Sensor Programming (Communications)
 
+## Team Members - Communications Sub-Module
+- Wang Minxi John (2101925)
+- Ng Zi Hao (2102893)
+- Low Li Pin (2101542)
+
+
 ## M5StickC-Plus
 There are two different hardware to configure for this to work.
 1.	M5 Stick C Plus
