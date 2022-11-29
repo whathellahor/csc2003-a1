@@ -1,5 +1,5 @@
 # Ultrasonic
-## Code logic
+
 ## Smoothing algorithm
 The smoothing algorithm helps to filter out the noise readings to ensure the accuracy of calcuation of the distance.
 <br>
@@ -61,7 +61,7 @@ After obtaining the range of values for which the car is moving on flat ground, 
 
 This method that returns a boolean value of onHump. Itis used to check if the car has gone up a hump or not.
 
-If a hump has been detected:
+<b>If a hump has been detected:</b>
 
 <ol>
 <li>Checks if car is moving within range of values that indicate it’s on the ground</li>
@@ -73,7 +73,7 @@ If a hump has been detected:
 <li>Sets onHump as true</li>
 </ol>
 
-If car is going down the hump:
+<b>If car is going down the hump:</b>
 
 <ol>
 <li>Checks if hump == 1 (car is on hump)</li>
@@ -88,5 +88,4 @@ This method returns the height of the hump as a float
 
 > <b>Height calculation:</b><br>
 height = Acc / 0.14;
-
 0.14 is the approximate change of acceleration of when the accelerometer moves 1cm
