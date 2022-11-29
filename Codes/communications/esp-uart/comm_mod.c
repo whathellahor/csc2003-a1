@@ -89,7 +89,7 @@ int get_at_response() {
     int data_count = 0;
     while (data_count < BUFFER_LEN - 1) {
         // ARBITRARY NUMBER FOR UART READABLE TIMEOUT
-        if (uart_is_readable_within_us(uart0, 10000)) {
+        if (uart_is_readable_within_us(uart0, 20000)) {
             // INCREMENT DATA COUNT AND GET UART DATA BACK FROM AT
             data[data_count++] = uart_getc(uart0);
             // FOR DEBUG
@@ -112,7 +112,7 @@ int check_at_response(int len_to_check, char str_to_check[])
     for (int i = 0; i < len_to_check; i++)
     {
         // ARBITRARY NUMBER FOR UART READABLE TIMEOUT
-        if (uart_is_readable_within_us(uart0, 1000 * 1000))
+        if (uart_is_readable_within_us(uart0, 2000 * 2000))
         {
             // GET RESPONSE
             get_at_response();
