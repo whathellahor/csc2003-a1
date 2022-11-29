@@ -179,6 +179,10 @@ int start_server() {
     uart_write_blocking(UART_ID, "AT+CIPMUX=1\r\n", 13);
     if (check_at_response(10, "OK") < 0) {
         // SET MODE TO MULTIPLE CONNECTIONS FAILED
+
+        print("%s", "SERVER MUX SET FAILED\n");
+        exit();
+
         return -1;
     }
 
@@ -186,6 +190,10 @@ int start_server() {
     uart_write_blocking(UART_ID, "AT+CIPSERVER=1,80\r\n", 19);
     if (check_at_response(10, "OK") < 0) {
         // START SERVER FAILED
+
+        print("%s", "SERVER START SERVER FAILED\n");
+        exit();
+
         return -1;
     }
 
