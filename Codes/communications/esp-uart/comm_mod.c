@@ -93,7 +93,8 @@ int get_at_response() {
             // INCREMENT DATA COUNT AND GET UART DATA BACK FROM AT
             data[data_count++] = uart_getc(UART_ID);
             // FOR DEBUG
-            uart_putc(uart1, data[data_count - 1]);
+            printf("%c", data[data_count - 1]);
+            // uart_putc(uart1, data[data_count - 1]);
         } else {
             // BREAK IF NO MORE DATA
             break;
@@ -116,6 +117,19 @@ int check_at_response(int len_to_check, char str_to_check[])
             // GET RESPONSE
             get_at_response();
             // BREAK IF AT RESPONSE MATCH STR_TO_CHECK
+
+            // md
+            // mu
+            // mr
+            // ml
+            // switch (strstr(data)) {
+            //     case ("md"):
+            //     break;
+            //     case ("mr"
+            // }
+
+            // if (strstr(data, ""))
+
             if (strstr(data, str_to_check))
                 // RETURN INDEX
                 return i;
