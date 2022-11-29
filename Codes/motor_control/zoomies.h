@@ -11,7 +11,7 @@
 
 //MACROS
 #define PWM_COUNTER 10000
-#define PWM_DEFAULTS 8000
+#define PWM_DEFAULTS 7500
 #define SPEED_CALC_FREQ 250 //In ms
 #define PID_FREQ 25 //In ms
 #define TARGET_SPEED 18

@@ -4,9 +4,9 @@
 // float Ki = 0.001; //const
 // float Kd = 5.0;   //const
 
-float KpA = 2.5, KpB = 2.5;
-float KiA = 0.003, KiB = 0.003;
-float KdA = 0.0, KdB = 0.0;
+float KpA = 6.0, KpB = 6.0;
+float KiA = 0.02, KiB = 0.02;
+float KdA = 20.0, KdB = 20.0;
 
 uint counterA = 0;
 uint counterB = 0;
@@ -21,29 +21,40 @@ absolute_time_t lastUpdateA;
 
 int integralB;
 int lastErrorB;
-absolute_time_t lastUpdateB;
+absolute_time_t lastUpdateB; 
 
 bool start = 0;
 
 repeating_timer_t speedTimer;
 repeating_timer_t pidTimer;
 
+uint32_t currentSpeedA;
+uint32_t currentTimeA;
 
+uint32_t currentSpeedB;
+uint32_t currentTimeB;
 
 void encoderIRQ() {
     //check interrupt flag and status
     if (gpio_get_irq_event_mask(pinENCA) & GPIO_IRQ_EDGE_RISE) {
         //clear interrupt
         gpio_acknowledge_irq(pinENCA, GPIO_IRQ_EDGE_RISE);
-        counterA++;
-        //printf("===\nCounter A: %d\nCounter B: %d\n", counterA, counterB);
+        // counterA++;
+        
+        uint32_t deltaA = to_ms_since_boot(get_absolute_time());
+        speedA = 1000/(deltaA - currentTimeA);
+        currentTimeA = to_ms_since_boot(get_absolute_time());
     }    
 
     if (gpio_get_irq_event_mask(pinENCB) & GPIO_IRQ_EDGE_RISE) {
         gpio_acknowledge_irq(pinENCB, GPIO_IRQ_EDGE_RISE);
-        counterB++;
+        //counterB++;
+        uint32_t deltaB = to_ms_since_boot(get_absolute_time());
+        speedB = 1000/(deltaB - currentTimeB);
+        currentTimeB = to_ms_since_boot(get_absolute_time());
         //printf("===\nCounter A: %d\nCounter B: %d\n", counterA, counterB);
     }  
+    //printf("===\nCounter A: %d\nCounter B: %d\n", currentSpeedA, currentSpeedB);
 }
 
 bool calcSpeed(repeating_timer_t* rt) {
@@ -167,7 +178,7 @@ void resetVariables() {
     integralB = 0;
     lastErrorB = 0;
     lastUpdateB = get_absolute_time();
-    pwmB = PWM_DEFAULTS;
+    pwmB = PWM_DEFAULTS + 500;
 }
 
 void initWheels(){ 
@@ -196,7 +207,7 @@ bool moveForwards(int time){
     start = 1;
     if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
         printf("hello\n");
-        return 1;
+        return 0;
     };
     gpio_put(pinIN1, 0); 
     gpio_put(pinIN2, 1); 
@@ -208,10 +219,7 @@ bool moveForwards(int time){
 bool moveBackwards(int time){
     resetVariables(); 
     start = 1;
-    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
-        printf("hello\n");
-        return 0;
-    };
+
     gpio_put(pinIN1, 1); 
     gpio_put(pinIN2, 0); 
     gpio_put(pinIN3, 1); 
@@ -262,20 +270,28 @@ int64_t stopMovement(alarm_id_t id, void *user_data) {
 }
 
 void forward() {
-    moveForwards(60000);
+    moveForwards(20000);
     //moveForwards(1200);
 }
 
 void rightTurn() {
-    moveClockWise(500);
+    moveClockWise(780);
 }
 
 void leftTurn() {
-    moveAntiClockWise(420);
+    moveAntiClockWise(800);
 }
 
 uint getAvgSpeed() {
     return (speedA + speedB)/2;
+}
+
+int64_t startPidTimer(alarm_id_t id, void *user_data) {
+    if (!add_repeating_timer_ms(PID_FREQ, computeError, NULL, &pidTimer)) {
+        printf("hello\n");
+        return 0;
+    };
+    return 0;
 }
 
 int main() {
@@ -288,9 +304,9 @@ int main() {
 
     //Speed Calc
     //create a timer to call a given function (i.e. calcSpeed) every n milliseconds) returns false if no timer slots available
-    if (!add_repeating_timer_ms(SPEED_CALC_FREQ, calcSpeed, NULL, &speedTimer)) {
-         return 1;
-    };
+    // if (!add_repeating_timer_ms(SPEED_CALC_FREQ, calcSpeed, NULL, &speedTimer)) {
+    //      return 1;
+    // };
 
     //Init and Start PWM on motors
     initPWM();
@@ -306,7 +322,7 @@ int main() {
 
     while (1) {
         forward();
-        sleep_ms(62000);
+        sleep_ms(200000);
         break;
     }
     return 0;

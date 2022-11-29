@@ -53,7 +53,7 @@ void barcodeCore(){
 int main() {
     //Enable serial output
     stdio_init_all(); 
-    sleep_ms(5000);
+    sleep_ms(10000);
     //Wait for Init
     init_comms(1, "pico_test1", "testtest");
 
