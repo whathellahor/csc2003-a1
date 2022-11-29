@@ -87,5 +87,5 @@ This method that returns a boolean value of onHump. Itis used to check if the ca
 This method returns the height of the hump as a float
 
 > <b>Height calculation:</b><br>
-height = Acc / 0.14;
+height = Acc / 0.14;<br>
 0.14 is the approximate change of acceleration of when the accelerometer moves 1cm
