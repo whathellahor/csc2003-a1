@@ -152,7 +152,7 @@ void set_esp_mode(int mode) {
     // uint8_t command[128]; 
     uint8_t command[] = "AT+CWMODE=1\r\n";
     // sprintf(command, "AT+CWMODE=%d\r\n", mode);
-    uart_write_blocking(uart0, command, 13);
+    uart_write_blocking(uart0, command, 14);
     get_at_response();
 }
 
@@ -161,14 +161,14 @@ void set_connection(char ssid[], char password[]) {
     // uint8_t command[256];
     uint8_t command[] = "AT+CWJAP=\"pico_test1\",\"testtest\"\r\n";
     // sprintf(command, "AT+CWJAP=\"%s\",\"%s\"\r\n", ssid, password);
-    uart_write_blocking(uart0, command, 34);
+    uart_write_blocking(uart0, command, 35);
     check_at_response(20, "OK");
 }
 
 // GET IP OF ESP01
 void get_ip() {
     uint8_t command[] = "AT+CIFSR\r\n";
-    uart_write_blocking(uart0, command, 10);
+    uart_write_blocking(uart0, command, 11);
     check_at_response(20, "OK");
 }
 
@@ -180,7 +180,7 @@ int start_server() {
     char id[10];
 
     // ENABLE MULTIPLE CONNECTIONS
-    uart_write_blocking(uart0, "AT+CIPMUX=1\r\n", 13); //13 
+    uart_write_blocking(uart0, "AT+CIPMUX=1\r\n", 14); //13 
     if (check_at_response(10, "OK") < 0) {
         // SET MODE TO MULTIPLE CONNECTIONS FAILED
 
@@ -191,7 +191,7 @@ int start_server() {
     }
 
     // START ESP01 SERVER
-    uart_write_blocking(uart0, "AT+CIPSERVER=1,80\r\n", 19); //
+    uart_write_blocking(uart0, "AT+CIPSERVER=1,80\r\n", 20); //
     if (check_at_response(10, "OK") < 0) {
         // START SERVER FAILED
 
