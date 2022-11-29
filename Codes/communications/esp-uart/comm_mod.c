@@ -221,6 +221,9 @@ void init_comms(int esp_mode, char ssid[], char password[]) {
     // CONFIG UART
     config_uart();
     sleep_ms(1000);
+    // RESET
+    set_rst();
+    sleep_ms(1000);
     // CONFIG WIFI SETTINGS
     set_esp_mode(esp_mode);
     set_connection(ssid, password);
