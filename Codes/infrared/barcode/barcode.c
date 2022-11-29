@@ -12,22 +12,11 @@ void barcode()
     // Color 0 = white , black = 0
     int color = colorDetection(raw_value * (3.3f / (1 << 12)));
 
-    static int previous_color = 1, color_change_count = 0, start_time = 0, end_time = 0, unit_time = 0,response_time = 0, index = 0;
+    static int previous_color = 1, color_change_count = 0, start_time = 0, end_time = 0, unit_time = 0, index = 0;
     static int sampling_time[10] = {0}, message[16] = {0};
-
-    if((to_us_since_boot(get_absolute_time()) - response_time )  <  3000000 && previous_color != 1){
-            // If there is no response of color change within a 3 second buffer , barcode it will reset.
-            // Reset all variables
-            previous_color = 1, color_change_count = 0, start_time = 0, end_time = 0, unit_time = 0,response_time = 0, index = 0;
-            memset(sampling_time, 0, sizeof sampling_time);
-            memset(message, 0, sizeof message);
-            printf("Time out Barcode will reset, please try agian.");
-    }
 
     if(color != previous_color)
     {   
-        response_time = to_us_since_boot(get_absolute_time());
-        
         //If detect color change enter here
         if(color_change_count == 0)
         {   
@@ -47,7 +36,7 @@ void barcode()
             // Get time difference
             int time_taken = end_time - start_time; 
 
-            // printf("Time taken for %i color change: %i\n", color_change_count - 1, time_taken);
+            printf("Time taken for %i color change: %i\n", color_change_count - 1, time_taken);
 
             if(color_change_count <= 11)
             {   
@@ -68,8 +57,8 @@ void barcode()
 
                     unit_time = (total_time / (sizeof(message)/sizeof(message[0])));
 
-                    // printf("Unit time: %i\n", unit_time);
-                    // printf("====================\n");
+                    printf("Unit time: %i\n", unit_time);
+                    printf("====================\n");
                 }
 
                 goto end;
@@ -102,7 +91,7 @@ void barcode()
                 printf("Thin Barcode Detected.\n");
             }
 
-            // printf("Stored Color Detected: %i \nLast Index Stored: %d \nCurrent Message: ", previous_color, index);
+            printf("Stored Color Detected: %i \nLast Index Stored: %d \nCurrent Message: ", previous_color, index);
 
             for(int counter = 0; counter < sizeof(message)/sizeof(message[0]); counter++)
             {
