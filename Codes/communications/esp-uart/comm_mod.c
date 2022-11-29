@@ -125,7 +125,9 @@ int check_at_response(int len_to_check, char str_to_check[])
             // switch (strstr(data)) {
             //     case ("md"):
             //     break;
-            //     case ("mr"
+            //     case ("mr"):
+            //     break;
+
             // }
 
             // if (strstr(data, ""))
@@ -181,7 +183,7 @@ int start_server() {
         // SET MODE TO MULTIPLE CONNECTIONS FAILED
 
         print("%s", "SERVER MUX SET FAILED\n");
-        exit();
+        exit(1);
 
         return -1;
     }
@@ -192,7 +194,7 @@ int start_server() {
         // START SERVER FAILED
 
         print("%s", "SERVER START SERVER FAILED\n");
-        exit();
+        exit(1);
 
         return -1;
     }
