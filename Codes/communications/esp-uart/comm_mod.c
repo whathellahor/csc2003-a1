@@ -218,7 +218,6 @@ void init_comms(int esp_mode, char ssid[], char password[]) {
     // START SERVER
     start_server();
     sleep_ms(1000);
-    exit();
 }
 
 // // MAIN PROGRAM ENTRY
