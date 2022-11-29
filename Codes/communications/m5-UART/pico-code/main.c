@@ -18,7 +18,7 @@ void on_uart_rx() {
     // Infinite loop to check for data in RX
     while (uart_is_readable(UART_ID)) {
         char text[6];               // Create a char variable to store value
-        sprintf(text, "%d\n", x);
+        sprintf(text, "%d\n", x);   // Using sprintf to convert int8_t to char
         uart_puts(UART_ID, text);   // Send data via TX
         x += 1;                     // Increment value
         if (x == 20){               // Reset value

@@ -9,8 +9,8 @@
 #define MOVEMENT_DISTANCE 30 // set default distance to move forward one grid as 30cm
 #define MIN_DISTANCE 10       // set default distance to check for wall to 5cm
 #define EXIT_DISTANCE 180    // set default distance for exit to be 180cm
-#define MOVEMENT_DELAY 10
-#define TURNING_DELAY 5
+#define MOVEMENT_DELAY 10    // delay after we call the car to move forward
+#define TURNING_DELAY 5      // delay after we call the car to turn
 
 // perform AND or OR operation with these to check for wall
 #define DIRECTION_0_WALL 0x01 // 0000 0001b
@@ -73,6 +73,7 @@ void delay(int number_of_seconds)
 void incrementDirection()
 {
     ++direction;
+    // if direction is incremented to 4, set it back to 0 (wraparound)
     if (direction == 4)
     {
         direction = 0;
@@ -83,6 +84,7 @@ void incrementDirection()
 void decrementDirection()
 {
     --direction;
+    // if direction is decremented to -1, set it back to 3 (wraparound)
     if (direction == -1)
     {
         direction = 3;
@@ -92,6 +94,8 @@ void decrementDirection()
 // check if exit
 void checkExit(short int direction, int distance)
 {
+    // check if the distance from the ultrasonic sensor is more than EXIT_DISTANCE
+    // if it is, save the node's index and exit wall direction as the exit
     if (distance > EXIT_DISTANCE)
     {
         isExit[0] = numberOfNodes;
@@ -100,9 +104,10 @@ void checkExit(short int direction, int distance)
 }
 
 
-// change coord.
+// change coord
 void changeCoord()
 {
+    // based on the direction the car is facing
     switch (direction)
     {
     case 0:
@@ -130,9 +135,11 @@ void carMovement()
     ++numberOfMoves; // increment number of moves
 
     // save coord. into pathArray
+    // this pathArray will be used to backtrack during debt visiting
     pathArray[numberOfMoves][0] = currentXCoord;
     pathArray[numberOfMoves][1] = currentYCoord;
 
+    // call the car to move forward to next node
     forward();
     delay(MOVEMENT_DELAY);   // delay while car moves
 
@@ -149,7 +156,9 @@ void firstGridMapping()
     nodeArray[numberOfNodes].xCoord = currentXCoord;
     nodeArray[numberOfNodes].yCoord = currentYCoord;
 
-    // check left, front, right and save
+    // for center, right, and left direction
+    // do OR operation to set its bit to indicate that there is a wall
+    // if it is an opening, check if it is an exit
     if ((getCenterDistance() < MIN_DISTANCE))
     {
         nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_1_WALL;
@@ -181,7 +190,10 @@ void firstGridMapping()
     rightTurn();
     delay(TURNING_DELAY);   // delay while car turns
     incrementDirection(); // increment direction when turn right
-    // checks if direction 3 has a wall
+
+    // for right direction
+    // do OR operation to set its bit to indicate that there is a wall
+    // if it is an opening, check if it is an exit
     if (getRightDistance() < MIN_DISTANCE)
     {
         nodeArray[numberOfNodes].wallOpenings |= DIRECTION_3_WALL; // set bitmask with 0000 1000
@@ -193,9 +205,9 @@ void firstGridMapping()
 
     // turn to face nearest open wall that is not an exit
     // check current facing direction first (2)
-    // if not, then check direction 0
-    // if not, then check direction 2
+    // if not, then check direction 3
     // if not, then check direction 1
+    // if not, then check direction 0
     // save the other open walls as debt only if they are not an exit
 
     // there is an opening in the front
@@ -300,20 +312,24 @@ void firstGridMapping()
 // debt car turning
 void debtCarTurning(short int target)
 {
+    // while the car is not facing the target direction
     while (direction != target)
     {
+        // if the target is direction 3 and the current direction is 0, do 1 left turn instead of 2 right turns
         if (target == 3 && direction == 0)
         {
             leftTurn();
             delay(TURNING_DELAY);   // delay while car turns
             decrementDirection();
         }
+        // if the target is direction 0 and the current direction is 3, do 1 right turn instead of 2 left turns
         else if (target == 0 && direction == 3)
         {
             rightTurn();
             delay(TURNING_DELAY);   // delay while car turns
             incrementDirection();
         }
+        // else, check if target > direction or direction > target, and turn accordingly
         else
         {
             if (target > direction)
@@ -341,8 +357,7 @@ void debtCarTurning(short int target)
 // remove last pathArray coords. from path stack
 // once reached, remove debt from debt list
 // move forward
-// call peripheral checking
-// go back to main while loop to explore
+// goes back to main while loop and calls peripheralChecking() to explore
 void debtVisit()
 {
     // check latest debt coord. in debt list, save into variable
@@ -350,9 +365,10 @@ void debtVisit()
     // while loop to see if reached debt coord.
     while ((currentXCoord != debt_coord[0]) && (currentYCoord != debt_coord[1]))
     {
-        //
+        // if current x coord is != to latest pathArray's x coord
         if (currentXCoord != pathArray[numberOfMoves][0])
-        {
+        {   
+            // check which direction to turn the car towards
             if (currentXCoord > pathArray[numberOfMoves][0])
             {
                 // call function to turn
@@ -365,8 +381,10 @@ void debtVisit()
             }
         }
 
+        // if current y coord is != to latest pathArray's y coord
         else if (currentYCoord != pathArray[numberOfMoves][1])
         {
+            // check which direction to turn the car towards
             if (currentYCoord > pathArray[numberOfMoves][1])
             {
                 // call function to turn
@@ -383,6 +401,7 @@ void debtVisit()
         forward();
         delay(MOVEMENT_DELAY);   // delay while car moves
         changeCoord();
+        // if the car is not at the debt coord yet, remove the last item in the pathArray
         if (!((currentXCoord == debt_coord[0]) && (currentYCoord == debt_coord[1]))){
             // remove from pathArray as we are backtracking
             pathArray[numberOfMoves][0] = NULL;
@@ -390,6 +409,7 @@ void debtVisit()
             --numberOfMoves;
         }
     }
+    // when we are at the debt coord
     // turn car to face debt open wall
     debtCarTurning(debt_coord[2]);
     // remove debt
@@ -409,6 +429,7 @@ void peripheralChecking()
     // flag to check if node has been visited
     short int flag = 1; // true means it is a new node
 
+    // check through the entire node array
     for (short int i = 0; i < numberOfNodes + 1; i++)
     {
         // check if this node has been mapped into node array
@@ -430,228 +451,235 @@ void peripheralChecking()
         // set opening counter to 0
         short int openingCounter = 0;
 
+        // save the wallOpenings based on direction the car is facing
+        // this ensures that the wallOpenings are always set correctly regardless of the orientation of the car
         switch (direction)
         {
-        case 0: // facing direction 0
-            // check if direction 3 has wall
-            if (getCenterDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_0_WALL;
-            }
-            else
-            {
-                checkExit(0, getCenterDistance()); // check if it is an exit
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0))){
-                    ++openingCounter;                          // increment opening counter
-                }
-            }
-            // check if direction 0 has a wall
-            if (getRightDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings |= DIRECTION_1_WALL;
-            }
-            else
-            {
-                checkExit(1, getRightDistance()); // check if it is an exit
-                // if there is more than 1 opening
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 1))) {
-                    if (openingCounter >= 1)
-                    {
-                        debtArray[debtCounter][0] = currentXCoord;
-                        debtArray[debtCounter][1] = currentYCoord;
-                        debtArray[debtCounter][2] = 1;
-                        ++debtCounter;
-                    }
-                }
-            }
-            // check if direction 2 has wall
-            if (getLeftDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings |= DIRECTION_3_WALL;
-            }
-            else
-            {
-                checkExit(3, getLeftDistance()); // check if it is an exit
-                // if there is more than 1 opening
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3)))
+            case 0: // facing direction 0
+                // check if direction 3 has wall
+                if (getCenterDistance() < MIN_DISTANCE)
                 {
-                    if (openingCounter >= 1)
-                    {
-                        debtArray[debtCounter][0] = currentXCoord;
-                        debtArray[debtCounter][1] = currentYCoord;
-                        debtArray[debtCounter][2] = 3;
-                        ++debtCounter;
-                    }
+                    nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_0_WALL;
                 }
-            }
-            break;
-        case 1: // facing direction 1
-            // check if direction 1 has wall
-            if (getCenterDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_1_WALL;
-            }
-            else
-            {
-                checkExit(1, getCenterDistance()); // check if it is an exit
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 1))){
-                    ++openingCounter;                          // increment opening counter
-                }
-            }
-            // check if direction 2 has a wall
-            if (getRightDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings |= DIRECTION_2_WALL;
-            }
-            else
-            {
-                checkExit(2, getRightDistance()); // check if it is an exit
-                // if there is more than 1 opening
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2)))
+                else
                 {
-                    if (openingCounter >= 1)
-                    {
-                        debtArray[debtCounter][0] = currentXCoord;
-                        debtArray[debtCounter][1] = currentYCoord;
-                        debtArray[debtCounter][2] = 2;
-                        ++debtCounter;
+                    checkExit(0, getCenterDistance()); // check if it is an exit
+                    // if it is an opening but not an exit, increase the opening counter
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0))){
+                        ++openingCounter;                          // increment opening counter
                     }
                 }
-            }
-            // check if direction 0 has wall
-            if (getLeftDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings |= DIRECTION_0_WALL;
-            }
-            else
-            {
-                checkExit(0, getLeftDistance()); // check if it is an exit
-                // if there is more than 1 opening
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0)))
+                // check if direction 0 has a wall
+                if (getRightDistance() < MIN_DISTANCE)
                 {
-                    if (openingCounter >= 1)
-                    {
-                        debtArray[debtCounter][0] = currentXCoord;
-                        debtArray[debtCounter][1] = currentYCoord;
-                        debtArray[debtCounter][2] = 0;
-                        ++debtCounter;
-                    }
+                    nodeArray[numberOfNodes].wallOpenings |= DIRECTION_1_WALL;
                 }
-            }
-            break;
-        case 2: // facing direction 2
-            // check if direction 2 has wall
-            if (getCenterDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_2_WALL;
-            }
-            else
-            {
-                checkExit(2, getCenterDistance()); // check if it is an exit
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2))){
-                    ++openingCounter;                          // increment opening counter
-                }
-            }
-            // check if direction 3 has a wall
-            if (getRightDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings |= DIRECTION_3_WALL;
-            }
-            else
-            {
-                checkExit(3, getRightDistance()); // check if it is an exit
-                // if there is more than 1 opening
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3)))
+                else
                 {
-                    if (openingCounter >= 1)
-                    {
-                        debtArray[debtCounter][0] = currentXCoord;
-                        debtArray[debtCounter][1] = currentYCoord;
-                        debtArray[debtCounter][2] = 3;
-                        ++debtCounter;
+                    checkExit(1, getRightDistance()); // check if it is an exit
+                    // if there is more than 1 opening and it is not an exit, save coord and wall to debt
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 1))) {
+                        if (openingCounter >= 1)
+                        {
+                            debtArray[debtCounter][0] = currentXCoord;
+                            debtArray[debtCounter][1] = currentYCoord;
+                            debtArray[debtCounter][2] = 1;
+                            ++debtCounter;
+                        }
                     }
                 }
-            }
-            // check if direction 1 has wall
-            if (getLeftDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings |= DIRECTION_1_WALL;
-            }
-            else
-            {
-                checkExit(1, getLeftDistance()); // check if it is an exit
-                // if there is more than 1 opening
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == currentYCoord) && (isExit[1] == 1)))
+                // check if direction 2 has wall
+                if (getLeftDistance() < MIN_DISTANCE)
                 {
-                    if (openingCounter >= 1)
-                    {
-                        debtArray[debtCounter][0] = currentXCoord;
-                        debtArray[debtCounter][1] = currentYCoord;
-                        debtArray[debtCounter][2] = 1;
-                        ++debtCounter;
-                    }
+                    nodeArray[numberOfNodes].wallOpenings |= DIRECTION_3_WALL;
                 }
-            }
-            break;
-        case 3: // facing direction 3
-            // check if direction 3 has wall
-            if (getCenterDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_3_WALL;
-            }
-            else
-            {
-                checkExit(3, getCenterDistance()); // check if it is an exit
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3))){
-                    ++openingCounter;                          // increment opening counter
-                }
-            }
-            // check if direction 0 has a wall
-            if (getRightDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings |= DIRECTION_0_WALL;
-            }
-            else
-            {
-                checkExit(0, getRightDistance()); // check if it is an exit
-                // if there is more than 1 opening
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0)))
+                else
                 {
-                    if (openingCounter >= 1)
+                    checkExit(3, getLeftDistance()); // check if it is an exit
+                    // if there is more than 1 opening and it is not an exit, save coord and wall to debt
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3)))
                     {
-                        debtArray[debtCounter][0] = currentXCoord;
-                        debtArray[debtCounter][1] = currentYCoord;
-                        debtArray[debtCounter][2] = 0;
-                        ++debtCounter;
+                        if (openingCounter >= 1)
+                        {
+                            debtArray[debtCounter][0] = currentXCoord;
+                            debtArray[debtCounter][1] = currentYCoord;
+                            debtArray[debtCounter][2] = 3;
+                            ++debtCounter;
+                        }
                     }
                 }
-            }
-            // check if direction 2 has wall
-            if (getLeftDistance() < MIN_DISTANCE)
-            {
-                nodeArray[numberOfNodes].wallOpenings |= DIRECTION_2_WALL;
-            }
-            else
-            {
-                checkExit(2, getLeftDistance()); // check if it is an exit
-                // if there is more than 1 opening
-                if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2)))
+                break;
+            case 1: // facing direction 1
+                // check if direction 1 has wall
+                if (getCenterDistance() < MIN_DISTANCE)
                 {
-                    if (openingCounter >= 1)
-                    {
-                        debtArray[debtCounter][0] = currentXCoord;
-                        debtArray[debtCounter][1] = currentYCoord;
-                        debtArray[debtCounter][2] = 2;
-                        ++debtCounter;
+                    nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_1_WALL;
+                }
+                else
+                {
+                    checkExit(1, getCenterDistance()); // check if it is an exit
+                    // if it is an opening but not an exit, increase the opening counter
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 1))){
+                        ++openingCounter;                          // increment opening counter
                     }
                 }
-            }
-            break;
+                // check if direction 2 has a wall
+                if (getRightDistance() < MIN_DISTANCE)
+                {
+                    nodeArray[numberOfNodes].wallOpenings |= DIRECTION_2_WALL;
+                }
+                else
+                {
+                    checkExit(2, getRightDistance()); // check if it is an exit
+                    // if there is more than 1 opening and it is not an exit, save coord and wall to debt
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2)))
+                    {
+                        if (openingCounter >= 1)
+                        {
+                            debtArray[debtCounter][0] = currentXCoord;
+                            debtArray[debtCounter][1] = currentYCoord;
+                            debtArray[debtCounter][2] = 2;
+                            ++debtCounter;
+                        }
+                    }
+                }
+                // check if direction 0 has wall
+                if (getLeftDistance() < MIN_DISTANCE)
+                {
+                    nodeArray[numberOfNodes].wallOpenings |= DIRECTION_0_WALL;
+                }
+                else
+                {
+                    checkExit(0, getLeftDistance()); // check if it is an exit
+                    // if there is more than 1 opening and it is not an exit, save coord and wall to debt
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0)))
+                    {
+                        if (openingCounter >= 1)
+                        {
+                            debtArray[debtCounter][0] = currentXCoord;
+                            debtArray[debtCounter][1] = currentYCoord;
+                            debtArray[debtCounter][2] = 0;
+                            ++debtCounter;
+                        }
+                    }
+                }
+                break;
+            case 2: // facing direction 2
+                // check if direction 2 has wall
+                if (getCenterDistance() < MIN_DISTANCE)
+                {
+                    nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_2_WALL;
+                }
+                else
+                {
+                    checkExit(2, getCenterDistance()); // check if it is an exit
+                    // if it is an opening but not an exit, increase the opening counter
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2))){
+                        ++openingCounter;                          // increment opening counter
+                    }
+                }
+                // check if direction 3 has a wall
+                if (getRightDistance() < MIN_DISTANCE)
+                {
+                    nodeArray[numberOfNodes].wallOpenings |= DIRECTION_3_WALL;
+                }
+                else
+                {
+                    checkExit(3, getRightDistance()); // check if it is an exit
+                    // if there is more than 1 opening and it is not an exit, save coord and wall to debt
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3)))
+                    {
+                        if (openingCounter >= 1)
+                        {
+                            debtArray[debtCounter][0] = currentXCoord;
+                            debtArray[debtCounter][1] = currentYCoord;
+                            debtArray[debtCounter][2] = 3;
+                            ++debtCounter;
+                        }
+                    }
+                }
+                // check if direction 1 has wall
+                if (getLeftDistance() < MIN_DISTANCE)
+                {
+                    nodeArray[numberOfNodes].wallOpenings |= DIRECTION_1_WALL;
+                }
+                else
+                {
+                    checkExit(1, getLeftDistance()); // check if it is an exit
+                    // if there is more than 1 opening and it is not an exit, save coord and wall to debt
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == currentYCoord) && (isExit[1] == 1)))
+                    {
+                        if (openingCounter >= 1)
+                        {
+                            debtArray[debtCounter][0] = currentXCoord;
+                            debtArray[debtCounter][1] = currentYCoord;
+                            debtArray[debtCounter][2] = 1;
+                            ++debtCounter;
+                        }
+                    }
+                }
+                break;
+            case 3: // facing direction 3
+                // check if direction 3 has wall
+                if (getCenterDistance() < MIN_DISTANCE)
+                {
+                    nodeArray[numberOfNodes].wallOpenings = 0x00 | DIRECTION_3_WALL;
+                }
+                else
+                {
+                    checkExit(3, getCenterDistance()); // check if it is an exit
+                    // if it is an opening but not an exit, increase the opening counter
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 3))){
+                        ++openingCounter;                          // increment opening counter
+                    }
+                }
+                // check if direction 0 has a wall
+                if (getRightDistance() < MIN_DISTANCE)
+                {
+                    nodeArray[numberOfNodes].wallOpenings |= DIRECTION_0_WALL;
+                }
+                else
+                {
+                    checkExit(0, getRightDistance()); // check if it is an exit
+                    // if there is more than 1 opening and it is not an exit, save coord and wall to debt
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 0)))
+                    {
+                        if (openingCounter >= 1)
+                        {
+                            debtArray[debtCounter][0] = currentXCoord;
+                            debtArray[debtCounter][1] = currentYCoord;
+                            debtArray[debtCounter][2] = 0;
+                            ++debtCounter;
+                        }
+                    }
+                }
+                // check if direction 2 has wall
+                if (getLeftDistance() < MIN_DISTANCE)
+                {
+                    nodeArray[numberOfNodes].wallOpenings |= DIRECTION_2_WALL;
+                }
+                else
+                {
+                    checkExit(2, getLeftDistance()); // check if it is an exit
+                    // if there is more than 1 opening and it is not an exit, save coord and wall to debt
+                    if (!((isExit[0] == numberOfNodes) && (isExit[1] == 2)))
+                    {
+                        if (openingCounter >= 1)
+                        {
+                            debtArray[debtCounter][0] = currentXCoord;
+                            debtArray[debtCounter][1] = currentYCoord;
+                            debtArray[debtCounter][2] = 2;
+                            ++debtCounter;
+                        }
+                    }
+                }
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
+    // if the node has been mapped before
     else
     {
         // make a u-turn
@@ -683,16 +711,16 @@ void carTurning()
         // call car movement
         carMovement();
     }
-    // check if direction 3 has a wall, if it is empty, move forward
+    // check if the right side is empty, if yes, turn then move forward
     else if ((getRightDistance() > MIN_DISTANCE) && (getRightDistance() < EXIT_DISTANCE))
-    { //
+    { 
         rightTurn();
         delay(TURNING_DELAY);   // delay while car turns
         incrementDirection();
         // call car movement
         carMovement();
     }
-    // check if direction 1 has a wall, if it is empty, move forward
+    // check if the left side is empty, if yes, turn then move forward
     else if ((getLeftDistance() > MIN_DISTANCE) && (getLeftDistance() < EXIT_DISTANCE))
     {
         leftTurn();
@@ -701,7 +729,7 @@ void carTurning()
         // call car movement
         carMovement();
     }
-    // else, make a u-turn
+    // else, it is a dead end so make a u-turn
     else
     {
         rightTurn();
@@ -945,7 +973,6 @@ void navToExit(short int shortestPathArray[], short int shortestPathCounter, sho
 
 
 // MAIN FUNCTION TO START MAPPING
-
 int startMapping(){
     firstGridMapping(); // call method to map first grid
 
