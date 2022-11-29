@@ -36,15 +36,5 @@ int start_server();
 void init_comms(int esp_mode, char ssid[], char password[]);
 void on_uart_rx();
 
-// GLOBAL VARIABLES
-// CAR DATA
-extern Car car_data;
-// DATA BUFFER
-extern uint8_t data[BUFFER_LEN];
-
-// EXTERN RX BUFFER
-extern char temp[256];
-extern char id[10];
-
 // IMPORT GUARD END
 #endif

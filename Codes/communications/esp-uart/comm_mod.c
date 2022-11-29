@@ -7,7 +7,9 @@
  * SET AND GET VALUES FROM car_data GLOBAL STRUCT
 *************************************************************************************/
 
-// GLOBAL BUFFER 
+// GLOBAL VARIABLES
+Car car_data;
+uint8_t data[BUFFER_LEN];
 char temp[256];
 char id[10];
 
@@ -25,16 +27,16 @@ void on_uart_rx() {
         strncpy(temp, b, sizeof(temp));
         char *e = strstr(temp, ",");
         int d = e - temp;
-        memset(id, '\0', sizeof(id));;
+        memset(id, '\0', sizeof(id));
         strncpy(id, temp, d);
 
         // DATA OUT TO CLIENTS
         char data_out[BUFFER_LEN];
-        sprintf(data_out, "HTTP/1.0 200 OK\r\nServer: Pico\r\nAccess-Control-Allow-Origin: *\r\nContent-type: application/json\r\n\r\n{\"hump_number\":\"%d\", \"turn_number\": \"%d\", \"car_barcode\":\"%s\", \"car_speed\":\"%d\", \"map_data\":\"%s\"}\r\n", car_data.hump, car_data.turn, car_data.barcode, car_data.speed, car_data.map_data);
+        sprintf(data_out, "HTTP/1.0 200 OK\r\nServer: Pico\r\nAccess-Control-Allow-Origin: *\r\nContent-type: application/json\r\n\r\n{\"hump_number\":\"%d\", \"turn_number\": \"%d\", \"car_barcode\":\"%s\", \"car_speed\":\"%d\", \"map_data\":\"%s\"}\n\r", car_data.hump, car_data.turn, car_data.barcode, car_data.speed, car_data.map_data);
 
         // GETTING CORRECT ID TO SEND RESPONSE
         uint8_t command[128];
-        sprintf(command, "AT+CIPSEND=%s,%d\r\n", id, strlen(data_out));
+        sprintf(command, "AT+CIPSEND=%s,%d\n\r", id, strlen(data_out));
         uart_write_blocking(uart0, command, strlen(command));
         // IF SUCCESS, ESP01 WILL INDICATE ">" TO SEND DATA
         if (check_at_response(10, ">") < 0) {
@@ -49,7 +51,7 @@ void on_uart_rx() {
         }
 
         // CLOSE SENDING CONNECTION
-        sprintf(command, "AT+CIPCLOSE=%s\r\n", id);
+        sprintf(command, "AT+CIPCLOSE=%s\n\r", id);
         uart_write_blocking(uart0, command, strlen(command));
         // CHECK IF SUCCESS
         if (check_at_response(10, "OK") < 0) {
@@ -93,7 +95,7 @@ int get_at_response() {
             // INCREMENT DATA COUNT AND GET UART DATA BACK FROM AT
             data[data_count++] = uart_getc(uart0);
             // FOR DEBUG
-            printf("%c", data[data_count - 1]);
+            // printf("%c", data[data_count - 1]);
             // uart_putc(uart1, data[data_count - 1]);
         } else {
             // BREAK IF NO MORE DATA
@@ -118,20 +120,18 @@ int check_at_response(int len_to_check, char str_to_check[])
             get_at_response();
             // BREAK IF AT RESPONSE MATCH STR_TO_CHECK
 
-            // md
-            // mu
-            // mr
-            // ml
-            // switch (strstr(data)) {
-            //     case ("md"):
-            //     break;
-            //     case ("mr"):
-            //     break;
+            // MANUAL NAVIGATION CONTROLS
+            if (strstr(data, "movedown")) {
+                printf("Moving Down\n\r");
+            } else if (strstr(data, "moveup")) {
+                printf("Moving Up\n\r");
+            } else if (strstr(data, "moveright")) {
+                printf("Moving Right\n\r");
+            } else if (strstr(data, "moveleft")) {
+                printf("Moving Left\n\r");
+            }
 
-            // }
-
-            // if (strstr(data, ""))
-
+            // RETURN INDEX IF STR TO CHECK IS FOUND
             if (strstr(data, str_to_check))
                 // RETURN INDEX
                 return i;
@@ -142,33 +142,40 @@ int check_at_response(int len_to_check, char str_to_check[])
 
 // GET AT STATUS
 void get_at_status() {
-    uint8_t command[] = "AT\r\n";
+    uint8_t command[] = "AT\n\r";
+    uart_write_blocking(uart0, command, strlen(command));
+    get_at_response();
+}
+
+// AT RST
+void set_rst() {
+    uint8_t command[] = "AT+RST\n\r";
     uart_write_blocking(uart0, command, strlen(command));
     get_at_response();
 }
 
 // SET ESP01 MODE, 1: STATION, 2: HOST, 3: BOTH
 void set_esp_mode(int mode) {
-    // uint8_t command[128]; 
-    uint8_t command[] = "AT+CWMODE=1\r\n";
-    // sprintf(command, "AT+CWMODE=%d\r\n", mode);
-    uart_write_blocking(uart0, command, 14);
+    uint8_t command[128]; 
+    // uint8_t command[] = "AT+CWMODE=1\n\r";
+    sprintf(command, "AT+CWMODE=%d\n\r", mode);
+    uart_write_blocking(uart0, command, strlen(command));
     get_at_response();
 }
 
 // SET CONNECTION OF ESP01 TO ROUTER
 void set_connection(char ssid[], char password[]) {
-    // uint8_t command[256];
-    uint8_t command[] = "AT+CWJAP=\"pico_test1\",\"testtest\"\r\n";
-    // sprintf(command, "AT+CWJAP=\"%s\",\"%s\"\r\n", ssid, password);
-    uart_write_blocking(uart0, command, 35);
+    uint8_t command[256];
+    // uint8_t command[] = "AT+CWJAP=\"pico_test1\",\"testtest\"\n\r";
+    sprintf(command, "AT+CWJAP=\"%s\",\"%s\"\n\r", ssid, password);
+    uart_write_blocking(uart0, command, strlen(command));
     check_at_response(20, "OK");
 }
 
 // GET IP OF ESP01
 void get_ip() {
-    uint8_t command[] = "AT+CIFSR\r\n";
-    uart_write_blocking(uart0, command, 11);
+    uint8_t command[] = "AT+CIFSR\n\r";
+    uart_write_blocking(uart0, command, strlen(command));
     check_at_response(20, "OK");
 }
 
@@ -180,24 +187,22 @@ int start_server() {
     char id[10];
 
     // ENABLE MULTIPLE CONNECTIONS
-    uart_write_blocking(uart0, "AT+CIPMUX=1\r\n", 14); //13 
+    uart_write_blocking(uart0, "AT+CIPMUX=1\n\r", 14); //13 
     if (check_at_response(10, "OK") < 0) {
-        // SET MODE TO MULTIPLE CONNECTIONS FAILED
 
-        printf("%s", "SERVER MUX SET FAILED\n");
+        // PRINT IF SERVER MUX FAILED AND EXIT
+        printf("%s\n\r", "SERVER MUX SET FAILED");
         exit(1);
-
         return -1;
     }
 
     // START ESP01 SERVER
-    uart_write_blocking(uart0, "AT+CIPSERVER=1,80\r\n", 20); //
+    uart_write_blocking(uart0, "AT+CIPSERVER=1,80\n\r", 20); //
     if (check_at_response(10, "OK") < 0) {
-        // START SERVER FAILED
 
-        printf("%s", "SERVER START SERVER FAILED\n");
+        // PRINT IF SERVER FAILED AND EXIT 
+        printf("%s\n\r", "SERVER START SERVER FAILED\n");
         exit(1);
-
         return -1;
     }
 
@@ -213,6 +218,9 @@ int start_server() {
 void init_comms(int esp_mode, char ssid[], char password[]) {
     // CONFIG UART
     config_uart();
+    sleep_ms(1000);
+    // RESET
+    set_rst();
     sleep_ms(1000);
     // CONFIG WIFI SETTINGS
     set_esp_mode(esp_mode);
