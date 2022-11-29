@@ -21,7 +21,7 @@ absolute_time_t lastUpdateA;
 
 int integralB;
 int lastErrorB;
-absolute_time_t lastUpdateB;
+absolute_time_t lastUpdateB; 
 
 bool start = 0;
 
@@ -55,7 +55,7 @@ bool calcSpeed(repeating_timer_t* rt) {
     //Slot in accelerometer computation
     //triggerAcc_callback();
     // COMMS FUNCTION WILL CALL ON GLOBAL VARIABLES
-    //printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
+    printf("===\nCurrent Speed of A: %d notches/s\nCurrent Speed of B: %d notches/s\n", speedA, speedB);
     return true;
 }
 
@@ -109,7 +109,7 @@ bool computeErrorA() {
     //Stores data for next cycle
     lastUpdateA = currentTime;
     lastErrorA = error;
-    printf("[%5d, %5d, %5d,", currentSpeed, integralA, pwmA);
+    //printf("[%5d, %5d, %5d,", currentSpeed, integralA, pwmA);
 
     return true;
 }
@@ -145,7 +145,7 @@ bool computeErrorB() {
     //Stores data for next cycle
     lastUpdateB = currentTime;
     lastErrorB = error;
-    printf("%5d, %5d, %5d],\n", currentSpeed, integralB, pwmB);
+    //printf("%5d, %5d, %5d],\n", currentSpeed, integralB, pwmB);
     return true;
 
 }
