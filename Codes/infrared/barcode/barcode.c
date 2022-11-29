@@ -3,6 +3,7 @@
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 #include "barcode.h"
+#include <string.h>
 char character = '^';
 
 void barcode()
@@ -14,9 +15,24 @@ void barcode()
 
     static int previous_color = 1, color_change_count = 0, start_time = 0, end_time = 0, unit_time = 0, index = 0;
     static int sampling_time[10] = {0}, message[16] = {0};
+    static absolute_time_t responseTime0 ;
+    absolute_time_t  currentTime0 = get_absolute_time();
+       
+    if(absolute_time_diff_us(responseTime0,currentTime0)  >  3000000 && color_change_count != 0 ){
+        // If there is no response of color change within a 3 second buffer , barcode it will reset.
+        // Reset all variables
+        previous_color = 1, color_change_count = 0, start_time = 0, end_time = 0, unit_time = 0, index = 0;
+        // currentTime = 0 ;    
+        memset(sampling_time, 0, sizeof sampling_time);
+        memset(message, 0, sizeof message);
+        printf("Time out Barcode will reset, please try again.\n");
+    }
 
     if(color != previous_color)
     {   
+        responseTime0 = get_absolute_time();
+        
+        
         //If detect color change enter here
         if(color_change_count == 0)
         {   
@@ -61,7 +77,10 @@ void barcode()
                     printf("====================\n");
                 }
 
-                goto end;
+                start_time = end_time;
+                previous_color = color;
+                color_change_count++;
+                return;
             }
             if (time_taken > (unit_time * 5) && color_change_count % 11 == 0)
             // if (time_taken > (unit_time * 5) && color_change_count-1 % 10 == 0)
@@ -108,7 +127,7 @@ void barcode()
             if(index == 16)
             {   
                 // If unit count is 16, when a char is completed.
-                
+                printf("enter 16");
                 for(int counter = 0; counter < sizeof(message)/sizeof(message[0]); counter++)
                 {
                     printf("Message stored: %i", message[counter]);
@@ -142,10 +161,10 @@ void barcode()
             }
         }
 
-        end:
-            start_time = end_time;
-            previous_color = color;
-            color_change_count++;
+        // end:
+        start_time = end_time;
+        previous_color = color;
+        color_change_count++;
     }
 }
 
@@ -269,6 +288,6 @@ void initBarcode(){
     {
         //Polling
         barcode();
-        sleep_ms(20);
+        sleep_ms(10);
     }
 }
