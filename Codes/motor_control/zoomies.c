@@ -86,7 +86,7 @@ bool computeErrorA() {
     int error = TARGET_SPEED - currentSpeed;
     integralA += error * deltaTime;
     //Compute PWM correction and derivative
-    int output = (Kp * error) + (Ki * integralA) + (int)(((error - lastErrorA)*Kd)/deltaTime);    
+    int output = (Kp * error) + (Ki * integralA);// + (int)(((error - lastErrorA)*Kd)/deltaTime);    
     //Limit corrected PWM pulse to range 0-10000
     if ( pwmA + output < 0) {
         pwmA = 0;
@@ -102,7 +102,7 @@ bool computeErrorA() {
     //Stores data for next cycle
     lastUpdateA = currentTime;
     lastErrorA = error;
-    printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
+    // printf("A = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralA, lastErrorA, currentSpeed, deltaTime, error, pwmA);
     return true;
 }
 
@@ -118,7 +118,7 @@ bool computeErrorB() {
     int error = TARGET_SPEED - currentSpeed;
     integralB += error * deltaTime;
     //Compute PWM correction and derivative
-    int output = (Kp * error) + (Ki * integralB) + (int)(((error - lastErrorB)*Kd)/deltaTime);    
+    int output = (Kp * error) + (Ki * integralB);// + (int)(((error - lastErrorB)*Kd)/deltaTime);    
     
     //Limit corrected PWM pulse to range 0-10000
     if ( pwmB + output < 0) {
@@ -131,7 +131,7 @@ bool computeErrorB() {
         }
     } 
 
-    printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
+    // printf("B = Integral :%d LastError: %d currentSpeed: %d deltaTime :%"PRId64" Error: %d Output: %d\n", integralB, lastErrorB, currentSpeed, deltaTime, error, pwmB);
     //Set new PWM on ENA pin
     pwm_set_chan_level(pwm_gpio_to_slice_num(pinENA), PWM_CHAN_B, pwmB);
     //Stores data for next cycle

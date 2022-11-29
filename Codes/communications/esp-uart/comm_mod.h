@@ -11,7 +11,7 @@
 // DEFINE GLOBAL CONSTANTS
 #define UART_ID uart0
 #define BUFFER_LEN 512
-#define DEBUG 0 // CHANGE TO 0 TO OFF DEBUG, 1 TO ON DEBUG
+#define DEBUG 1
 
 // GLOBAL STRUCT
 typedef struct {
@@ -34,7 +34,8 @@ void set_connection(char ssid[], char password[]);
 void get_ip();
 int start_server();
 void init_comms(int esp_mode, char ssid[], char password[]);
-void on_uart_rx();
+int on_uart_rx();
+
 
 // IMPORT GUARD END
 #endif
