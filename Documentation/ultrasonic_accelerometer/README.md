@@ -40,7 +40,7 @@ After smoothing (sample size 30)
 
 ## Optimization
 
-**pointers were used to access structs (pointer example in the smoothing algorithim**
+**Pointers were used to access structs (pointer example in the smoothing algorithim**
 ![image](https://user-images.githubusercontent.com/92626804/204518718-3c48ed9d-710e-4cee-aeae-75d912302af5.png)
 
 **Use of unsigned datatypes and also the use of uint8_t instead of other ints (The max value of uint8 is 255 e.g 1byte only)**
