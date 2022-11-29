@@ -150,7 +150,7 @@ void get_at_status() {
 // SET ESP01 MODE, 1: STATION, 2: HOST, 3: BOTH
 void set_esp_mode(int mode) {
     // uint8_t command[128]; 
-    uint8_t command[14] = "AT+CWMODE=%d\r\n";
+    uint8_t command[] = "AT+CWMODE=1\r\n";
     // sprintf(command, "AT+CWMODE=%d\r\n", mode);
     uart_write_blocking(uart0, command, 14);
     get_at_response();
@@ -159,7 +159,7 @@ void set_esp_mode(int mode) {
 // SET CONNECTION OF ESP01 TO ROUTER
 void set_connection(char ssid[], char password[]) {
     // uint8_t command[256];
-    uint8_t command[35] = "AT+CWJAP=\"pico_test1\",\"testtest\"\r\n";
+    uint8_t command[] = "AT+CWJAP=\"pico_test1\",\"testtest\"\r\n";
     // sprintf(command, "AT+CWJAP=\"%s\",\"%s\"\r\n", ssid, password);
     uart_write_blocking(uart0, command, 35);
     check_at_response(20, "OK");
@@ -168,7 +168,7 @@ void set_connection(char ssid[], char password[]) {
 // GET IP OF ESP01
 void get_ip() {
     uint8_t command[] = "AT+CIFSR\r\n";
-    uart_write_blocking(uart0, command, strlen(command));
+    uart_write_blocking(uart0, command, 11);
     check_at_response(20, "OK");
 }
 
