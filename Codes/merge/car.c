@@ -67,7 +67,7 @@ int main() {
     //Init Accelerometer over I2C
     initAcc();      
     //Init Barcode polling on core1  
-    //multicore_launch_core1(barcodeCore); 
+    multicore_launch_core1(barcodeCore); 
     //Init Alarm Pool
     alarm_pool_init_default(); 
     
