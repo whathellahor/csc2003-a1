@@ -59,7 +59,7 @@ After smoothing (sample size 30)
 
 
 
-## initialization of variables
+## Initialization of variables
 
 ![image](https://user-images.githubusercontent.com/92626804/204508233-096578d3-fcf5-4621-bd23-917f26999c17.png)
 
@@ -79,7 +79,7 @@ changing it to 10miliseconds did it fix the problem**
 ![image](https://user-images.githubusercontent.com/92626804/204510819-6bb30c63-87c7-4bec-9d50-39d5691c0d27.png)
 
 ## When echo pin interupts on a rising edge, it will start an alarm timer 
-**alarm timer is to set the duration on when the program should timeout the echo pin.**
+**Alarm timer is to set the duration on when the program should timeout the echo pin.**
 
 ![image](https://user-images.githubusercontent.com/92626804/204511189-7c658796-dc7f-4f4a-9556-457c4637a3d9.png)
 
@@ -89,7 +89,7 @@ changing it to 10miliseconds did it fix the problem**
 ![image](https://user-images.githubusercontent.com/92626804/204517755-c12d8b79-d257-4b3c-8ca4-0d4fdc408f95.png)
 
 
-## if a falling edge is detected and timeout is false, the distance is valid
+## If a falling edge is detected and timeout is false, the distance is valid
 
 ![image](https://user-images.githubusercontent.com/92626804/204518000-15802d7c-757b-4aa8-9552-c84aa82b337f.png)
 
@@ -97,7 +97,7 @@ changing it to 10miliseconds did it fix the problem**
 ## Get distance function
 ![image](https://user-images.githubusercontent.com/92626804/204518092-24f18d30-c8b4-4482-be1e-22224ad7a707.png)
 
-##Smoothing algorithim
+## Smoothing algorithim
 
 ![image](https://user-images.githubusercontent.com/92626804/204518151-34979618-0b30-4ec2-b7e9-6a2d41001246.png)
 
