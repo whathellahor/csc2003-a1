@@ -790,6 +790,7 @@ int printSolution(int dist[], int n, int parent[], short int dst)
  
 // function that implements Dijkstra's single source shortest path
 // algorithm for a graph represented using adjacency matrix representation
+// Dijkstra algorithm is considerably low complexity, which is almost linear.
 void dijkstra(short int graph[numberOfNodes + 1][numberOfNodes + 1], short int src, short int dst)
 {
     int dist[numberOfNodes + 1];  // the output array. dist[i] will hold
