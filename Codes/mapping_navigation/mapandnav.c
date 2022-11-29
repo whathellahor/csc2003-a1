@@ -977,6 +977,11 @@ int startNavigating(){
     // save nodeArray to matrix
     saveToMatrix();
 
+    // set end point (if there is no exit on maze)
+    //isExit[0] = ;
+    //isExit[1] = 1;
+    // comment out move forward in navToExit()
+
     // start point given by communication
     dijkstra(adjMatrix, startNode, isExit[0]);  // sets shortest path array and shortest path counter
 

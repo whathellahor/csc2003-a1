@@ -185,22 +185,17 @@ int start_server() {
 
 // INIT COMMS BUNDLE | ESP MODE: 1-3 | DEBUG MODE: 1 FOR DEBUG
 void init_comms(int esp_mode, char ssid[], char password[]) {
-    printf("test1");
     // CONFIG UART
     config_uart();
-    sleep_ms(2000);
-    printf("test1");
+    sleep_ms(1000);
     // CONFIG WIFI SETTINGS
     set_esp_mode(esp_mode);
     set_connection(ssid, password);
-    printf("test1");
     // GET IP
     get_ip();
-    printf("test1");
     // START SERVER
     start_server();
-    sleep_ms(8000);
-    printf("test1");
+    sleep_ms(1000);
 }
 
 // // MAIN PROGRAM ENTRY
