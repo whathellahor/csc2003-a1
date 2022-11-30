@@ -224,23 +224,25 @@ int start_server() {
 // INIT COMMS BUNDLE | ESP MODE: 1-3 | DEBUG MODE: 1 FOR DEBUG
 void init_comms(int esp_mode, char ssid[], char password[]) {
     // INIT STDIO
-    stdio_init_all();
+    //stdio_init_all();
     sleep_ms(1000);
     
     // CONFIG UART
     config_uart();
     sleep_ms(1000);
-
+    printf("uart ok\n");
     // CONFIG WIFI SETTINGS
     set_esp_mode(esp_mode);
+    printf("hi\n");
     set_connection(ssid, password);
-
+    printf("esp connected\n");
     // GET IP
     get_ip();
-
+    printf("ip ok\n");
     // START SERVER
     start_server();
     sleep_ms(1000);
+    printf("server ok\n");
 }
 
 // // MAIN PROGRAM ENTRY

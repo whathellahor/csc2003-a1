@@ -56,6 +56,7 @@ int main() {
     sleep_ms(10000);
     //Wait for Init
     init_comms(1, "pico_test1", "testtest");
+    printf("wifi ok\n");
 
     //Init Accelerometer over I2C
     initAcc();      
