@@ -145,6 +145,7 @@ int check_at_response(int len_to_check, char str_to_check[])
             // GET RESPONSE
             get_at_response();
 
+            // MANUAL CONTROLS
             if (strstr(data, "#f")) {
                 // ZOOMIES CALLBACK MOVE FORWARD
                 forward();
@@ -153,7 +154,7 @@ int check_at_response(int len_to_check, char str_to_check[])
             } else if (strstr(data, "#r")) {
                 rightTurn();
             }
-            
+
             // BREAK IF AT RESPONSE MATCH STR_TO_CHECK
             if (strstr(data, str_to_check))
                 // RETURN INDEX
