@@ -60,13 +60,13 @@ int main() {
     //Init Accelerometer over I2C
     initAcc();      
     //Init Barcode polling on core1  
-    // multicore_launch_core1(barcodeCore); 
+    multicore_launch_core1(barcodeCore); 
     //Init Alarm Pool
     alarm_pool_init_default(); 
     
     //Init Ultrasonic Sensors
-    // initializeSensorValues();
-    // setupUltrasonicPins();
+    initializeSensorValues();
+    setupUltrasonicPins();
 
     //Init Encoders
     initWheels();
@@ -81,9 +81,9 @@ int main() {
     initPWM();
 
     //Adds a timer to send pulses from ultrasonic sensors
-    // if (!add_repeating_timer_ms(PULpSE_INTERVAL, triggerUltraSonic_callback , NULL, &triggerTimer)){
-    //     return 1;  
-    // };
+    if (!add_repeating_timer_ms(PULSE_INTERVAL, triggerUltraSonic_callback , NULL, &triggerTimer)){
+         return 1;  
+    };
 
     //Set up GPIO interrupt on Ultrasonic sensor and Encoder pins
     gpio_set_irq_enabled(sensor_center.echoPin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true);
@@ -102,15 +102,16 @@ int main() {
     // irq_set_priority(GPIO_IRQ_EDGE_FALL, 11);
     // irq_set_priority(IRQ_HANDLER, 12);
 
+    forward();
+
     while (1) {
-        forward();
-        sleep_ms(2000);
+        //forward();
 
         // rightTurn();
         // sleep_ms(2000);
         // leftTurn();
         // sleep_ms(2000);
-        //tight_loop_contents();
+        tight_loop_contents();
         // call main function to start mapping
         //startMapping();
 
