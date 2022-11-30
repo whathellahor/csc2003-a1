@@ -102,8 +102,9 @@ int main() {
     // irq_set_priority(GPIO_IRQ_EDGE_FALL, 11);
     // irq_set_priority(IRQ_HANDLER, 12);
 
-    forward();
+    // forward();
 
+    printf("Ready!\n");
     while (1) {
         //forward();
 

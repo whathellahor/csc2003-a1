@@ -11,7 +11,7 @@
 // DEFINE GLOBAL CONSTANTS
 #define UART_ID uart0
 #define BUFFER_LEN 512
-#define DEBUG 1
+#define DEBUG 0
 
 // GLOBAL STRUCT
 typedef struct {

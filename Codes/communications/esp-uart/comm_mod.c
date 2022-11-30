@@ -1,6 +1,7 @@
 // INCLUDE HEADER FILE
 #include "comm_mod.h"
 
+
 /************************************************************************************
  * INSTRUCTIONS:
  * SET DEBUG IN HEADER FILE TO 0 FOR PRODUCTION
@@ -144,10 +145,15 @@ int check_at_response(int len_to_check, char str_to_check[])
             // GET RESPONSE
             get_at_response();
 
-            if (strstr(data, "#")) {
-                printf("%s\n", data);
+            if (strstr(data, "#f")) {
+                // ZOOMIES CALLBACK MOVE FORWARD
+                forward();
+            } else if (strstr(data, "#l")) {
+                leftTurn();
+            } else if (strstr(data, "#r")) {
+                rightTurn();
             }
-
+            
             // BREAK IF AT RESPONSE MATCH STR_TO_CHECK
             if (strstr(data, str_to_check))
                 // RETURN INDEX
