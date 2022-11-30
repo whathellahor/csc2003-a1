@@ -81,7 +81,7 @@ int main() {
     initPWM();
 
     //Adds a timer to send pulses from ultrasonic sensors
-    // if (!add_repeating_timer_ms(PULSE_INTERVAL, triggerUltraSonic_callback , NULL, &triggerTimer)){
+    // if (!add_repeating_timer_ms(PULpSE_INTERVAL, triggerUltraSonic_callback , NULL, &triggerTimer)){
     //     return 1;  
     // };
 

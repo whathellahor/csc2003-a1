@@ -4,9 +4,9 @@
 // float Ki = 0.001; //const
 // float Kd = 5.0;   //const
 
-float KpA = 6.0, KpB = 6.0;
-float KiA = 0.02, KiB = 0.02;
-float KdA = 20.0, KdB = 20.0;
+float KpA = 2.5, KpB = 2.5;
+float KiA = 0.003, KiB = 0.003;
+float KdA = 0.0, KdB = 0.0;
 
 uint counterA = 0;
 uint counterB = 0;
@@ -28,33 +28,21 @@ bool start = 0;
 repeating_timer_t speedTimer;
 repeating_timer_t pidTimer;
 
-uint32_t currentSpeedA;
-uint32_t currentTimeA;
-
-uint32_t currentSpeedB;
-uint32_t currentTimeB;
 
 void encoderIRQ() {
     //check interrupt flag and status
     if (gpio_get_irq_event_mask(pinENCA) & GPIO_IRQ_EDGE_RISE) {
         //clear interrupt
         gpio_acknowledge_irq(pinENCA, GPIO_IRQ_EDGE_RISE);
-        // counterA++;
-        
-        uint32_t deltaA = to_ms_since_boot(get_absolute_time());
-        speedA = 1000/(deltaA - currentTimeA);
-        currentTimeA = to_ms_since_boot(get_absolute_time());
+        counterA++;
+        //printf("===\nCounter A: %d\nCounter B: %d\n", counterA, counterB);
     }    
 
     if (gpio_get_irq_event_mask(pinENCB) & GPIO_IRQ_EDGE_RISE) {
         gpio_acknowledge_irq(pinENCB, GPIO_IRQ_EDGE_RISE);
-        //counterB++;
-        uint32_t deltaB = to_ms_since_boot(get_absolute_time());
-        speedB = 1000/(deltaB - currentTimeB);
-        currentTimeB = to_ms_since_boot(get_absolute_time());
+        counterB++;
         //printf("===\nCounter A: %d\nCounter B: %d\n", counterA, counterB);
     }  
-    //printf("===\nCounter A: %d\nCounter B: %d\n", currentSpeedA, currentSpeedB);
 }
 
 bool calcSpeed(repeating_timer_t* rt) {
@@ -178,7 +166,7 @@ void resetVariables() {
     integralB = 0;
     lastErrorB = 0;
     lastUpdateB = get_absolute_time();
-    pwmB = PWM_DEFAULTS + 500;
+    pwmB = PWM_DEFAULTS;
 }
 
 void initWheels(){ 
