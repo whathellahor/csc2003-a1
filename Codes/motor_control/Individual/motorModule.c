@@ -257,17 +257,32 @@ int64_t stopMovement(alarm_id_t id, void *user_data) {
     return 0; //Do not repeat
 }
 
-void forward() {
-    moveForwards(20000);
-    //moveForwards(1200);
+bool forward() {
+    moveForwards(800);
+    return 0;
+    
 }
 
-void rightTurn() {
-    moveClockWise(780);
+bool halfRightTurn() {
+    moveClockWise(400);
+    return 0;
 }
 
-void leftTurn() {
-    moveAntiClockWise(800);
+bool halfLeftTurn() {
+    moveAntiClockWise(380);
+    return 0;
+}
+
+bool rightTurn() {
+    moveClockWise(400);
+    sleep_ms(1000);
+    moveClockWise(400);
+}
+
+bool leftTurn() {
+    moveAntiClockWise(380);
+    sleep_ms(1000);
+    moveAntiClockWise(380);
 }
 
 uint getAvgSpeed() {
@@ -286,15 +301,15 @@ int main() {
     //Enable serial output
     stdio_init_all(); 
     //Wait for Init
-    sleep_ms(10000);  
+    sleep_ms(5000);  
     //Init Encoders
     initWheels();
 
-    //Speed Calc
-    //create a timer to call a given function (i.e. calcSpeed) every n milliseconds) returns false if no timer slots available
-    // if (!add_repeating_timer_ms(SPEED_CALC_FREQ, calcSpeed, NULL, &speedTimer)) {
-    //      return 1;
-    // };
+    // Speed Calc
+    // create a timer to call a given function (i.e. calcSpeed) every n milliseconds) returns false if no timer slots available
+    if (!add_repeating_timer_ms(SPEED_CALC_FREQ, calcSpeed, NULL, &speedTimer)) {
+         return 1;
+    };
 
     //Init and Start PWM on motors
     initPWM();
@@ -310,8 +325,17 @@ int main() {
 
     while (1) {
         forward();
-        sleep_ms(200000);
-        break;
+        sleep_ms(2000);
+        rightTurn();
+        sleep_ms(2000);
+        rightTurn();
+        sleep_ms(2000);
+        forward();
+        sleep_ms(2000);
+        leftTurn();
+        sleep_ms(2000);
+        leftTurn();
+        sleep_ms(2000);
     }
     return 0;
 }

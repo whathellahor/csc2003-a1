@@ -69,8 +69,10 @@ bool moveClockWise(int time);
 int64_t stopMovement(alarm_id_t id, void *user_data);
 int64_t startPidTimer(alarm_id_t id, void *user_data);
 uint getAvgSpeed();
-void rightTurn();
-void leftTurn();
-void forward();
+bool rightTurn();
+bool leftTurn();
+bool halfRightTurn();
+bool halfLeftTurn();
+bool forward();
 
 #endif
